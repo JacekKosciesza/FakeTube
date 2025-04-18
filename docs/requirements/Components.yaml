@@ -1,0 +1,40 @@
+- Application Shell:
+    - Masthead:
+        - Guide Button
+        - Logo:
+            - Logomark
+            - Logotype
+    - App Drawer:
+        - Guide:
+            - Item:
+                - Icon
+                - Title
+        - Overlay
+    - Mini Guide:
+        - Item:
+            - Icon
+            - Title
+    - Pivot Bar:
+        - Item:
+            - Icon
+            - Title
+- Home Page:
+    - Browse Grid:
+        - Media Skeleton
+        - Spinner
+        - Media Item:
+            - Thumbnail:
+                - Image
+                - Player:
+                    - Video
+                    - Unmute/Mute Button
+                    - Progress Bar
+                - Time Status
+            - Details:
+                - Channel Avatar
+                - Meta:
+                    - Title
+                    - Metadata:
+                        - Channel Name
+                        - Separator
+                        - Publish Date
