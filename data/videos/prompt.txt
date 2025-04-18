@@ -1,0 +1,36 @@
+Instruction:
+Generate an example video metadata for a given [CATEGORY]
+and [TOPIC] suggestion (if provided). Output should be in
+a JSON format, with the following kay-value pairs
+
+- category: provided category in the input
+- title: video title
+- slug: title slug
+- description: video description
+- thumbnail: prompt for Amazon Nova Canvas model, which will generate video thumbnail
+- video: prompt for Amazon Nova Reel, which will generate video (based on that prompt and generated thumbnail)
+- audio: text for Amazon Polly, which will be synthesised into speech and will be part of the video's audio track
+  Make all parts of the metadata are concise, consistent and easily understandable by a 12 year old child. Make sure that video is exactly 6 seconds long and synthesised audio is 5 seconds long. Video script should be simple but engaging animation with a moving parts and changing lights. Don't add any statistics or text overlays to the thumbnail or video.
+
+Context:  
+This video content will be used on YouTube clone, which is an educational software engineering project. The video content will be used to showcase the capabilities of the platform.
+
+Examples:
+
+Input:
+[CATEGORY] is "Autos & Vehicles"
+Output:
+{
+  "category": "Autos & Vehicles",
+  "title": "Magic Wheels: The Future of Cars",
+  "slug": "magic-wheels-the-future-of-cars",
+  "description": "Discover how cars of the future will move with magic wheels! Watch the cool animation of a car zooming around with flashing lights and see how it might change our rides!",
+  "thumbnail": "Create a dynamic and colorful thumbnail showcasing a futuristic car with spinning 'magic wheels' and flashing lights. The car should be zooming through a bright, neon-lit futuristic cityscape.",
+  "video": "Generate a 6-second dynamic video with a futuristic car featuring magic wheels that spin and emit flashing lights. The car zooms through a vibrant, neon-lit city with animated movement and bright colors. The scene should be fast-paced and full of energy.",
+  "audio": "Welcome to the future of cars! Watch this dynamic future car with magic wheels zooming through a vibrant city."
+}
+
+Input:
+[CATEGORY] is "Nonprofits & Activism"
+
+Output:
