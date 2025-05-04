@@ -4,6 +4,7 @@ import * as React from "react";
 
 import { AppDrawer } from "./AppDrawer";
 import { Masthead } from "./Masthead";
+import { MiniGuide } from "./MiniGuide";
 import { useNavigation } from "./useNavigation";
 
 interface Props {
@@ -25,6 +26,7 @@ export function AppShell({ children }: Props) {
   return (
     <>
       <Masthead onGuideButtonClick={toggleAppDrawer} />
+      {navigation.miniGuide && <MiniGuide />}
       {navigation.guide && (
         <AppDrawer
           open={isAppDrawerOpened}
