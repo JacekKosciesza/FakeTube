@@ -5,6 +5,7 @@ import * as React from "react";
 import { AppDrawer } from "./AppDrawer";
 import { Masthead } from "./Masthead";
 import { MiniGuide } from "./MiniGuide";
+import { PageManager } from "./PageManager";
 import { PivotBar } from "./PivotBar";
 import { useNavigation } from "./useNavigation";
 
@@ -39,7 +40,7 @@ export function AppShell({ children }: Props) {
           variant={navigation.variant}
         />
       )}
-      {children}
+      <PageManager navigation={navigation}>{children}</PageManager>
     </>
   );
 }
