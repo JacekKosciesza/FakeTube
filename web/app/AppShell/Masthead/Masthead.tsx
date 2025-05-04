@@ -6,13 +6,14 @@ import { GuideButton } from "../AppDrawer/Guide";
 
 export interface Props {
   onGuideButtonClick: () => void;
+  showGuideButton?: boolean;
 }
 
-export function Masthead({ onGuideButtonClick }: Props) {
+export function Masthead({ onGuideButtonClick, showGuideButton }: Props) {
   return (
     <AppBar elevation={0} position="static">
       <Toolbar>
-        <GuideButton onClick={onGuideButtonClick} />
+        {showGuideButton && <GuideButton onClick={onGuideButtonClick} />}
         <Logo />
       </Toolbar>
     </AppBar>
