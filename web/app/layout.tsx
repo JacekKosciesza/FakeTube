@@ -1,11 +1,12 @@
-import CssBaseline from "@mui/material/CssBaseline";
-import { AppRouterCacheProvider } from "@mui/material-nextjs/v15-appRouter";
 import type { Metadata } from "next";
+import { headers } from "next/headers";
 import { Roboto } from "next/font/google";
-import { ThemeProvider } from "@mui/material/styles";
+import { UAParser } from "ua-parser-js";
 
-import theme from "./theme";
 import { AppShell } from "./AppShell";
+import { Providers } from "./providers";
+
+const FALLBACK_DEVICE_TYPE = "mobile";
 
 const roboto = Roboto({
   weight: ["300", "400", "500", "700"],
@@ -20,20 +21,23 @@ export const metadata: Metadata = {
   keywords: "video, free",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const headersList = await headers();
+  const userAgent = headersList.get("user-agent") || undefined;
+  const uap = new UAParser(userAgent);
+  const deviceType =
+    (await uap.getDevice().withFeatureCheck()).type || FALLBACK_DEVICE_TYPE;
+
   return (
     <html lang="en" className={roboto.variable}>
       <body>
-        <AppRouterCacheProvider>
-          <ThemeProvider theme={theme}>
-            <CssBaseline />
-            <AppShell>{children}</AppShell>
-          </ThemeProvider>
-        </AppRouterCacheProvider>
+        <Providers deviceType={deviceType}>
+          <AppShell>{children}</AppShell>
+        </Providers>
       </body>
     </html>
   );
