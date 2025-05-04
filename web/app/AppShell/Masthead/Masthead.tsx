@@ -5,7 +5,11 @@ import Toolbar from "@mui/material/Toolbar";
 
 import { Logo } from "../Logo";
 
-export function Masthead() {
+export interface Props {
+  onGuideButtonClick: () => void;
+}
+
+export function Masthead({ onGuideButtonClick }: Props) {
   return (
     <AppBar elevation={0} position="static">
       <Toolbar>
@@ -15,6 +19,7 @@ export function Masthead() {
           color="inherit"
           aria-label="menu"
           sx={{ mr: 2 }}
+          onClick={onGuideButtonClick}
         >
           <MenuIcon />
         </IconButton>
