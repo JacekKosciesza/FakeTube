@@ -1,6 +1,8 @@
 import Box from "@mui/material/Box";
 import Drawer from "@mui/material/Drawer";
 
+import { Guide } from "./Guide";
+
 export interface Props {
   open: boolean;
   onDrawerClose: () => void;
@@ -38,7 +40,7 @@ export function AppDrawer(props: Props) {
             `calc(100% - ${theme.spacing(variant === "temporary" ? 2 : 8)})`,
         }}
       >
-        <Box p={2}>TODO: Guide</Box>
+        <Guide onDrawerClose={handleDrawerClose} variant={variant} />
       </Box>
     </Drawer>
   );

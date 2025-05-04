@@ -4,6 +4,7 @@ import * as React from "react";
 
 import { AppDrawer } from "./AppDrawer";
 import { Masthead } from "./Masthead";
+import { useNavigation } from "./useNavigation";
 
 interface Props {
   children: React.ReactNode;
@@ -19,14 +20,18 @@ export function AppShell({ children }: Props) {
     setIsAppDrawerOpened(!isAppDrawerOpened);
   };
 
+  const navigation = useNavigation(isAppDrawerOpened);
+
   return (
     <>
       <Masthead onGuideButtonClick={toggleAppDrawer} />
-      <AppDrawer
-        open={isAppDrawerOpened}
-        onDrawerClose={closeAppDrawer}
-        variant="temporary"
-      />
+      {navigation.guide && (
+        <AppDrawer
+          open={isAppDrawerOpened}
+          onDrawerClose={closeAppDrawer}
+          variant={navigation.variant}
+        />
+      )}
       {children}
     </>
   );
