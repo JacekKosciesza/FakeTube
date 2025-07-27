@@ -11,7 +11,7 @@ export interface Props {
 
 export function Masthead({ onGuideButtonClick, showGuideButton }: Props) {
   return (
-    <AppBar elevation={0} position="static">
+    <AppBar elevation={0} position="sticky">
       <Toolbar>
         {showGuideButton && <GuideButton onClick={onGuideButtonClick} />}
         <Logo />
