@@ -1,6 +1,6 @@
 import { useInfiniteQuery } from "@tanstack/react-query";
 
-import { Page } from "./page";
+import { Page } from "./pagination";
 import { Video } from "./video";
 import { VIDEOS } from "./videos.data";
 
