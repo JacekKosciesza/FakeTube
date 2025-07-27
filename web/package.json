@@ -16,6 +16,7 @@
     "@mui/material": "^7.0.2",
     "@mui/material-nextjs": "^7.0.2",
     "css-mediaquery": "^0.1.2",
+    "luxon": "^3.7.1",
     "next": "15.3.1",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
@@ -26,6 +27,7 @@
   "devDependencies": {
     "@eslint/eslintrc": "^3",
     "@types/css-mediaquery": "^0.1.4",
+    "@types/luxon": "^3.6.2",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
