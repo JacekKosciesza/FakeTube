@@ -15,11 +15,13 @@
     "@mui/icons-material": "^7.0.2",
     "@mui/material": "^7.0.2",
     "@mui/material-nextjs": "^7.0.2",
+    "@tanstack/react-query": "^5.83.0",
     "css-mediaquery": "^0.1.2",
     "luxon": "^3.7.1",
     "next": "15.3.1",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
+    "react-intersection-observer": "^9.16.0",
     "react-is": "^19.1.0",
     "react-keyed-flatten-children": "^5.0.1",
     "ua-parser-js": "^2.0.3"
