@@ -2,6 +2,11 @@ openapi: 3.0.3
 info:
   title: FakeTube Home API
   version: 0.1.0
+servers:
+  - url: https://hq528hoqja.execute-api.eu-west-1.amazonaws.com/prod
+    description: REST
+  - url: https://pzeyng8wd9.execute-api.eu-west-1.amazonaws.com
+    description: HTTP
 paths:
   /videos:
     get:
