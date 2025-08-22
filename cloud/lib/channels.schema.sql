@@ -1,0 +1,5 @@
+CREATE TABLE channels (
+    id VARCHAR(30) PRIMARY KEY,
+    avatar VARCHAR(500) NOT NULL,
+    name VARCHAR(255) NOT NULL    
+);
