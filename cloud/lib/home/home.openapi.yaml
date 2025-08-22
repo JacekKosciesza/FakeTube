@@ -1,0 +1,103 @@
+openapi: 3.0.3
+info:
+  title: FakeTube Home API
+  version: 0.1.0
+paths:
+  /videos:
+    get:
+      summary: Retrieve a paginated list of videos
+      parameters:
+        - name: page
+          in: query
+          schema:
+            type: integer
+            default: 0
+        - name: pageSize
+          in: query
+          schema:
+            type: integer
+            default: 24
+      responses:
+        "200":
+          description: The requested page of videos
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Page"
+        "400":
+          description: Bad request.
+        "500":
+          description: Server error.
+components:
+  schemas:
+    Page:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: "#/components/schemas/Video"
+        currentPage:
+          type: integer
+        hasNextPage:
+          type: boolean
+      example:
+        items:
+          - id: "q9Gm7a6Wwjk"
+            title: "The Amazing World of Octopus!"
+            thumbnail: "/videos/q9Gm7a6Wwjk/q9Gm7a6Wwjk.png"
+            duration: "PT0M6.214542S"
+            url: "/videos/q9Gm7a6Wwjk/q9Gm7a6Wwjk.mp4"
+            publishedAt: "2025-03-03T15:58:23Z"
+            channel:
+              id: "AmazonNovaReel"
+              avatar: "/channels/AmazonNovaReel/AmazonNovaReel.png"
+              name: "Amazon Nova Reel"
+        currentPage: 0
+        hasNextPage: true
+    Video:
+      type: object
+      properties:
+        id:
+          type: string
+        title:
+          type: string
+        url:
+          type: string
+          format: uri
+        channel:
+          $ref: "#/components/schemas/Channel"
+        thumbnail:
+          type: string
+          format: uri
+        duration:
+          type: string
+          format: duration
+        publishedAt:
+          type: string
+          format: date-time
+      example:
+        id: "q9Gm7a6Wwjk"
+        title: "The Amazing World of Octopus!"
+        thumbnail: "/videos/q9Gm7a6Wwjk/q9Gm7a6Wwjk.png"
+        duration: "PT0M6.214542S"
+        url: "/videos/q9Gm7a6Wwjk/q9Gm7a6Wwjk.mp4"
+        publishedAt: "2025-03-03T15:58:23Z"
+        channel:
+          id: "AmazonNovaReel"
+          avatar: "/channels/AmazonNovaReel/AmazonNovaReel.png"
+          name: "Amazon Nova Reel"
+    Channel:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        avatar:
+          type: string
+          format: uri
+      example:
+        id: "AmazonNovaReel"
+        avatar: "/channels/AmazonNovaReel/AmazonNovaReel.png"
+        name: "Amazon Nova Reel"
