@@ -3,6 +3,7 @@ import { Construct } from "constructs";
 
 import { Aurora } from "./aurora";
 import { Gateway } from "./gateway";
+import { Home } from "./home";
 import { VPC } from "./vpc";
 
 export class FakeTubeStack extends cdk.Stack {
@@ -10,7 +11,12 @@ export class FakeTubeStack extends cdk.Stack {
     super(scope, id, props);
 
     const vpc = new VPC(this, "vpc");
-    new Aurora(this, "aurora", { vpc });
-    new Gateway(this, "gateway");
+    const aurora = new Aurora(this, "aurora", { vpc });
+    const gateway = new Gateway(this, "gateway");
+
+    new Home(this, "home", {
+      aurora,
+      gateway,
+    });
   }
 }
