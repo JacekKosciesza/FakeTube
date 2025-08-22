@@ -6,6 +6,7 @@ import { ThemeProvider } from "@mui/material/styles";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 import theme from "./theme";
+import { ConfigureAmplifyClientSide } from "@/utils";
 
 const queryClient = new QueryClient();
 
@@ -17,13 +18,15 @@ export function Providers({
   deviceType: string;
 }>) {
   return (
-    <AppRouterCacheProvider>
-      <QueryClientProvider client={queryClient}>
-        <ThemeProvider theme={theme(deviceType)}>
-          <CssBaseline />
-          {children}
-        </ThemeProvider>
-      </QueryClientProvider>
-    </AppRouterCacheProvider>
+    <ConfigureAmplifyClientSide>
+      <AppRouterCacheProvider>
+        <QueryClientProvider client={queryClient}>
+          <ThemeProvider theme={theme(deviceType)}>
+            <CssBaseline />
+            {children}
+          </ThemeProvider>
+        </QueryClientProvider>
+      </AppRouterCacheProvider>
+    </ConfigureAmplifyClientSide>
   );
 }
