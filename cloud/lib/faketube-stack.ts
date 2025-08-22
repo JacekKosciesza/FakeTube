@@ -2,6 +2,7 @@ import * as cdk from "aws-cdk-lib";
 import { Construct } from "constructs";
 
 import { Aurora } from "./aurora";
+import { Gateway } from "./gateway";
 import { VPC } from "./vpc";
 
 export class FakeTubeStack extends cdk.Stack {
@@ -10,5 +11,6 @@ export class FakeTubeStack extends cdk.Stack {
 
     const vpc = new VPC(this, "vpc");
     new Aurora(this, "aurora", { vpc });
+    new Gateway(this, "gateway");
   }
 }
