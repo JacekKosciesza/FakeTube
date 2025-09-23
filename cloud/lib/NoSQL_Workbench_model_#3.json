@@ -1,0 +1,1337 @@
+{
+  "ModelName": "FakeTube",
+  "ModelMetadata": {
+    "Author": "Jacek Kościesza",
+    "DateCreated": "Sep 23, 2025, 06:15 PM",
+    "DateLastModified": "Sep 23, 2025, 06:28 PM",
+    "Description": "YouTube clone",
+    "AWSService": "Amazon DynamoDB",
+    "Version": "3.0"
+  },
+  "DataModel": [
+    {
+      "TableName": "FakeTube",
+      "KeyAttributes": {
+        "PartitionKey": {
+          "AttributeName": "PK",
+          "AttributeType": "S"
+        },
+        "SortKey": {
+          "AttributeName": "SK",
+          "AttributeType": "S"
+        }
+      },
+      "NonKeyAttributes": [
+        {
+          "AttributeName": "GSI1_PK",
+          "AttributeType": "S"
+        },
+        {
+          "AttributeName": "GSI1_SK",
+          "AttributeType": "S"
+        },
+        {
+          "AttributeName": "EntityType",
+          "AttributeType": "S"
+        },
+        {
+          "AttributeName": "id",
+          "AttributeType": "S"
+        },
+        {
+          "AttributeName": "avatar",
+          "AttributeType": "S"
+        },
+        {
+          "AttributeName": "name",
+          "AttributeType": "S"
+        },
+        {
+          "AttributeName": "title",
+          "AttributeType": "S"
+        },
+        {
+          "AttributeName": "thumbnail",
+          "AttributeType": "S"
+        },
+        {
+          "AttributeName": "duration",
+          "AttributeType": "S"
+        },
+        {
+          "AttributeName": "url",
+          "AttributeType": "S"
+        },
+        {
+          "AttributeName": "publishedAt",
+          "AttributeType": "S"
+        },
+        {
+          "AttributeName": "channelId",
+          "AttributeType": "S"
+        }
+      ],
+      "GlobalSecondaryIndexes": [
+        {
+          "IndexName": "GSI1",
+          "KeyAttributes": {
+            "PartitionKey": {
+              "AttributeName": "GSI1_PK",
+              "AttributeType": "S"
+            },
+            "SortKey": {
+              "AttributeName": "GSI1_SK",
+              "AttributeType": "S"
+            }
+          },
+          "Projection": {
+            "ProjectionType": "ALL"
+          }
+        }
+      ],
+      "TableData": [
+        {
+          "PK": {
+            "S": "c#AmazonNovaReel"
+          },
+          "SK": {
+            "S": "c#AmazonNovaReel"
+          },
+          "EntityType": {
+            "S": "channel"
+          },
+          "id": {
+            "S": "AmazonNovaReel"
+          },
+          "avatar": {
+            "S": "/channels/AmazonNovaReel/AmazonNovaReel.png"
+          },
+          "name": {
+            "S": "Amazon Nova Reel"
+          }
+        },
+        {
+          "PK": {
+            "S": "v#q9Gm7a6Wwjk"
+          },
+          "SK": {
+            "S": "v#q9Gm7a6Wwjk"
+          },
+          "GSI1_PK": {
+            "S": "video"
+          },
+          "GSI1_SK": {
+            "S": "2025-03-03T15:58:23Z"
+          },
+          "EntityType": {
+            "S": "video"
+          },
+          "id": {
+            "S": "q9Gm7a6Wwjk"
+          },
+          "title": {
+            "S": "The Amazing World of Octopus!"
+          },
+          "thumbnail": {
+            "S": "/videos/q9Gm7a6Wwjk/q9Gm7a6Wwjk.png"
+          },
+          "duration": {
+            "S": "PT0M6.214542S"
+          },
+          "url": {
+            "S": "/videos/q9Gm7a6Wwjk/q9Gm7a6Wwjk.mp4"
+          },
+          "publishedAt": {
+            "S": "2025-03-03T15:58:23Z"
+          },
+          "channelId": {
+            "S": "AmazonNovaReel"
+          }
+        },
+        {
+          "PK": {
+            "S": "v#QYUGZ3ueoHQ"
+          },
+          "SK": {
+            "S": "v#QYUGZ3ueoHQ"
+          },
+          "GSI1_PK": {
+            "S": "video"
+          },
+          "GSI1_SK": {
+            "S": "2025-03-03T14:22:54Z"
+          },
+          "EntityType": {
+            "S": "video"
+          },
+          "id": {
+            "S": "QYUGZ3ueoHQ"
+          },
+          "title": {
+            "S": "Magic Wheels: The Future of Cars"
+          },
+          "thumbnail": {
+            "S": "/videos/QYUGZ3ueoHQ/QYUGZ3ueoHQ.png"
+          },
+          "duration": {
+            "S": "PT0M6.047708S"
+          },
+          "url": {
+            "S": "/videos/QYUGZ3ueoHQ/QYUGZ3ueoHQ.mp4"
+          },
+          "publishedAt": {
+            "S": "2025-03-03T14:22:54Z"
+          },
+          "channelId": {
+            "S": "AmazonNovaReel"
+          }
+        },
+        {
+          "PK": {
+            "S": "v#SkrDa20qGGo"
+          },
+          "SK": {
+            "S": "v#SkrDa20qGGo"
+          },
+          "GSI1_PK": {
+            "S": "video"
+          },
+          "GSI1_SK": {
+            "S": "2025-03-04T15:13:16Z"
+          },
+          "EntityType": {
+            "S": "video"
+          },
+          "id": {
+            "S": "SkrDa20qGGo"
+          },
+          "title": {
+            "S": "Dancing Pets: A Fun Animal Show"
+          },
+          "thumbnail": {
+            "S": "/videos/SkrDa20qGGo/SkrDa20qGGo.png"
+          },
+          "duration": {
+            "S": "PT0M6.047708S"
+          },
+          "url": {
+            "S": "/videos/SkrDa20qGGo/SkrDa20qGGo.mp4"
+          },
+          "publishedAt": {
+            "S": "2025-03-04T15:13:16Z"
+          },
+          "channelId": {
+            "S": "AmazonNovaReel"
+          }
+        },
+        {
+          "PK": {
+            "S": "v#snI0xHnk9vw"
+          },
+          "SK": {
+            "S": "v#snI0xHnk9vw"
+          },
+          "GSI1_PK": {
+            "S": "video"
+          },
+          "GSI1_SK": {
+            "S": "2025-03-04T15:53:08Z"
+          },
+          "EntityType": {
+            "S": "video"
+          },
+          "id": {
+            "S": "snI0xHnk9vw"
+          },
+          "title": {
+            "S": "Learning with Fun: The Magic of Numbers"
+          },
+          "thumbnail": {
+            "S": "/videos/snI0xHnk9vw/snI0xHnk9vw.png"
+          },
+          "duration": {
+            "S": "PT0M6.047708S"
+          },
+          "url": {
+            "S": "/videos/snI0xHnk9vw/snI0xHnk9vw.mp4"
+          },
+          "publishedAt": {
+            "S": "2025-03-04T15:53:08Z"
+          },
+          "channelId": {
+            "S": "AmazonNovaReel"
+          }
+        },
+        {
+          "PK": {
+            "S": "v#tO-6SL2drHA"
+          },
+          "SK": {
+            "S": "v#tO-6SL2drHA"
+          },
+          "GSI1_PK": {
+            "S": "video"
+          },
+          "GSI1_SK": {
+            "S": "2025-03-04T16:10:52Z"
+          },
+          "EntityType": {
+            "S": "video"
+          },
+          "id": {
+            "S": "tO-6SL2drHA"
+          },
+          "title": {
+            "S": "Learning with Fun: The Magic of Science"
+          },
+          "thumbnail": {
+            "S": "/videos/tO-6SL2drHA/tO-6SL2drHA.png"
+          },
+          "duration": {
+            "S": "PT0M6.047708S"
+          },
+          "url": {
+            "S": "/videos/tO-6SL2drHA/tO-6SL2drHA.mp4"
+          },
+          "publishedAt": {
+            "S": "2025-03-04T16:10:52Z"
+          },
+          "channelId": {
+            "S": "AmazonNovaReel"
+          }
+        },
+        {
+          "PK": {
+            "S": "v#51KK6cQwqdo"
+          },
+          "SK": {
+            "S": "v#51KK6cQwqdo"
+          },
+          "GSI1_PK": {
+            "S": "video"
+          },
+          "GSI1_SK": {
+            "S": "2025-03-04T16:37:57Z"
+          },
+          "EntityType": {
+            "S": "video"
+          },
+          "id": {
+            "S": "51KK6cQwqdo"
+          },
+          "title": {
+            "S": "Desert Motorcycle Adventure"
+          },
+          "thumbnail": {
+            "S": "/videos/51KK6cQwqdo/51KK6cQwqdo.png"
+          },
+          "duration": {
+            "S": "PT0M6.047708S"
+          },
+          "url": {
+            "S": "/videos/51KK6cQwqdo/51KK6cQwqdo.mp4"
+          },
+          "publishedAt": {
+            "S": "2025-03-04T16:37:57Z"
+          },
+          "channelId": {
+            "S": "AmazonNovaReel"
+          }
+        },
+        {
+          "PK": {
+            "S": "v#6Pz1MlphyvA"
+          },
+          "SK": {
+            "S": "v#6Pz1MlphyvA"
+          },
+          "GSI1_PK": {
+            "S": "video"
+          },
+          "GSI1_SK": {
+            "S": "2025-03-04T16:54:19Z"
+          },
+          "EntityType": {
+            "S": "video"
+          },
+          "id": {
+            "S": "6Pz1MlphyvA"
+          },
+          "title": {
+            "S": "Amazing Soccer Tricks"
+          },
+          "thumbnail": {
+            "S": "/videos/6Pz1MlphyvA/6Pz1MlphyvA.png"
+          },
+          "duration": {
+            "S": "PT0M6.047708S"
+          },
+          "url": {
+            "S": "/videos/6Pz1MlphyvA/6Pz1MlphyvA.mp4"
+          },
+          "publishedAt": {
+            "S": "2025-03-04T16:54:19Z"
+          },
+          "channelId": {
+            "S": "AmazonNovaReel"
+          }
+        },
+        {
+          "PK": {
+            "S": "v#rX4LkHQLKSw"
+          },
+          "SK": {
+            "S": "v#rX4LkHQLKSw"
+          },
+          "GSI1_PK": {
+            "S": "video"
+          },
+          "GSI1_SK": {
+            "S": "2025-03-04T17:12:16Z"
+          },
+          "EntityType": {
+            "S": "video"
+          },
+          "id": {
+            "S": "rX4LkHQLKSw"
+          },
+          "title": {
+            "S": "Tennis Magic: The Spin of Champions"
+          },
+          "thumbnail": {
+            "S": "/videos/rX4LkHQLKSw/rX4LkHQLKSw.png"
+          },
+          "duration": {
+            "S": "PT0M6.047708S"
+          },
+          "url": {
+            "S": "/videos/rX4LkHQLKSw/rX4LkHQLKSw.mp4"
+          },
+          "publishedAt": {
+            "S": "2025-03-04T17:12:16Z"
+          },
+          "channelId": {
+            "S": "AmazonNovaReel"
+          }
+        },
+        {
+          "PK": {
+            "S": "v#mYiQU9_bvAA"
+          },
+          "SK": {
+            "S": "v#mYiQU9_bvAA"
+          },
+          "GSI1_PK": {
+            "S": "video"
+          },
+          "GSI1_SK": {
+            "S": "2025-03-05T15:47:29Z"
+          },
+          "EntityType": {
+            "S": "video"
+          },
+          "id": {
+            "S": "mYiQU9_bvAA"
+          },
+          "title": {
+            "S": "Mud Monster Truck Adventure"
+          },
+          "thumbnail": {
+            "S": "/videos/mYiQU9_bvAA/mYiQU9_bvAA.png"
+          },
+          "duration": {
+            "S": "PT0M6.047708S"
+          },
+          "url": {
+            "S": "/videos/mYiQU9_bvAA/mYiQU9_bvAA.mp4"
+          },
+          "publishedAt": {
+            "S": "2025-03-05T15:47:29Z"
+          },
+          "channelId": {
+            "S": "AmazonNovaReel"
+          }
+        },
+        {
+          "PK": {
+            "S": "v#1ccSDKMvpGA"
+          },
+          "SK": {
+            "S": "v#1ccSDKMvpGA"
+          },
+          "GSI1_PK": {
+            "S": "video"
+          },
+          "GSI1_SK": {
+            "S": "2025-03-05T16:01:54Z"
+          },
+          "EntityType": {
+            "S": "video"
+          },
+          "id": {
+            "S": "1ccSDKMvpGA"
+          },
+          "title": {
+            "S": "Exploring the Magic of Motorhomes"
+          },
+          "thumbnail": {
+            "S": "/videos/1ccSDKMvpGA/1ccSDKMvpGA.png"
+          },
+          "duration": {
+            "S": "PT0M6.047708S"
+          },
+          "url": {
+            "S": "/videos/1ccSDKMvpGA/1ccSDKMvpGA.mp4"
+          },
+          "publishedAt": {
+            "S": "2025-03-05T16:01:54Z"
+          },
+          "channelId": {
+            "S": "AmazonNovaReel"
+          }
+        },
+        {
+          "PK": {
+            "S": "v#8ibeIVJKsYQ"
+          },
+          "SK": {
+            "S": "v#8ibeIVJKsYQ"
+          },
+          "GSI1_PK": {
+            "S": "video"
+          },
+          "GSI1_SK": {
+            "S": "2025-03-05T16:20:43Z"
+          },
+          "EntityType": {
+            "S": "video"
+          },
+          "id": {
+            "S": "8ibeIVJKsYQ"
+          },
+          "title": {
+            "S": "Rocket Science: Blast Off!"
+          },
+          "thumbnail": {
+            "S": "/videos/8ibeIVJKsYQ/8ibeIVJKsYQ.png"
+          },
+          "duration": {
+            "S": "PT0M6.047708S"
+          },
+          "url": {
+            "S": "/videos/8ibeIVJKsYQ/8ibeIVJKsYQ.mp4"
+          },
+          "publishedAt": {
+            "S": "2025-03-05T16:20:43Z"
+          },
+          "channelId": {
+            "S": "AmazonNovaReel"
+          }
+        },
+        {
+          "PK": {
+            "S": "v#PcxHBLxkNuA"
+          },
+          "SK": {
+            "S": "v#PcxHBLxkNuA"
+          },
+          "GSI1_PK": {
+            "S": "video"
+          },
+          "GSI1_SK": {
+            "S": "2025-03-05T16:30:52Z"
+          },
+          "EntityType": {
+            "S": "video"
+          },
+          "id": {
+            "S": "PcxHBLxkNuA"
+          },
+          "title": {
+            "S": "The Magic of Magnets"
+          },
+          "thumbnail": {
+            "S": "/videos/PcxHBLxkNuA/PcxHBLxkNuA.png"
+          },
+          "duration": {
+            "S": "PT0M6.047708S"
+          },
+          "url": {
+            "S": "/videos/PcxHBLxkNuA/PcxHBLxkNuA.mp4"
+          },
+          "publishedAt": {
+            "S": "2025-03-05T16:30:52Z"
+          },
+          "channelId": {
+            "S": "AmazonNovaReel"
+          }
+        },
+        {
+          "PK": {
+            "S": "v#j5az8g8QEZ4"
+          },
+          "SK": {
+            "S": "v#j5az8g8QEZ4"
+          },
+          "GSI1_PK": {
+            "S": "video"
+          },
+          "GSI1_SK": {
+            "S": "2025-03-05T16:44:19Z"
+          },
+          "EntityType": {
+            "S": "video"
+          },
+          "id": {
+            "S": "j5az8g8QEZ4"
+          },
+          "title": {
+            "S": "Snail's Slow and Steady Adventure"
+          },
+          "thumbnail": {
+            "S": "/videos/j5az8g8QEZ4/j5az8g8QEZ4.png"
+          },
+          "duration": {
+            "S": "PT0M6.047708S"
+          },
+          "url": {
+            "S": "/videos/j5az8g8QEZ4/j5az8g8QEZ4.mp4"
+          },
+          "publishedAt": {
+            "S": "2025-03-05T16:44:19Z"
+          },
+          "channelId": {
+            "S": "AmazonNovaReel"
+          }
+        },
+        {
+          "PK": {
+            "S": "v#j4aY8zGqcLQ"
+          },
+          "SK": {
+            "S": "v#j4aY8zGqcLQ"
+          },
+          "GSI1_PK": {
+            "S": "video"
+          },
+          "GSI1_SK": {
+            "S": "2025-03-05T16:56:10Z"
+          },
+          "EntityType": {
+            "S": "video"
+          },
+          "id": {
+            "S": "j4aY8zGqcLQ"
+          },
+          "title": {
+            "S": "Rattlesnake's Dance: A Wild Adventure"
+          },
+          "thumbnail": {
+            "S": "/videos/j4aY8zGqcLQ/j4aY8zGqcLQ.png"
+          },
+          "duration": {
+            "S": "PT0M6.047708S"
+          },
+          "url": {
+            "S": "/videos/j4aY8zGqcLQ/j4aY8zGqcLQ.mp4"
+          },
+          "publishedAt": {
+            "S": "2025-03-05T16:56:10Z"
+          },
+          "channelId": {
+            "S": "AmazonNovaReel"
+          }
+        },
+        {
+          "PK": {
+            "S": "v#ZG5ixKK6ABs"
+          },
+          "SK": {
+            "S": "v#ZG5ixKK6ABs"
+          },
+          "GSI1_PK": {
+            "S": "video"
+          },
+          "GSI1_SK": {
+            "S": "2025-03-05T17:18:03Z"
+          },
+          "EntityType": {
+            "S": "video"
+          },
+          "id": {
+            "S": "ZG5ixKK6ABs"
+          },
+          "title": {
+            "S": "Classic Golf: The Art of the Swing"
+          },
+          "thumbnail": {
+            "S": "/videos/ZG5ixKK6ABs/ZG5ixKK6ABs.png"
+          },
+          "duration": {
+            "S": "PT0M6.047708S"
+          },
+          "url": {
+            "S": "/videos/ZG5ixKK6ABs/ZG5ixKK6ABs.mp4"
+          },
+          "publishedAt": {
+            "S": "2025-03-05T17:18:03Z"
+          },
+          "channelId": {
+            "S": "AmazonNovaReel"
+          }
+        },
+        {
+          "PK": {
+            "S": "v#cJanxpcCwq0"
+          },
+          "SK": {
+            "S": "v#cJanxpcCwq0"
+          },
+          "GSI1_PK": {
+            "S": "video"
+          },
+          "GSI1_SK": {
+            "S": "2025-03-05T17:34:12Z"
+          },
+          "EntityType": {
+            "S": "video"
+          },
+          "id": {
+            "S": "cJanxpcCwq0"
+          },
+          "title": {
+            "S": "Retro Hockey: A Blast from the Past"
+          },
+          "thumbnail": {
+            "S": "/videos/cJanxpcCwq0/cJanxpcCwq0.png"
+          },
+          "duration": {
+            "S": "PT0M6.047708S"
+          },
+          "url": {
+            "S": "/videos/cJanxpcCwq0/cJanxpcCwq0.mp4"
+          },
+          "publishedAt": {
+            "S": "2025-03-05T17:34:12Z"
+          },
+          "channelId": {
+            "S": "AmazonNovaReel"
+          }
+        },
+        {
+          "PK": {
+            "S": "v#7qgegT-6tq8"
+          },
+          "SK": {
+            "S": "v#7qgegT-6tq8"
+          },
+          "GSI1_PK": {
+            "S": "video"
+          },
+          "GSI1_SK": {
+            "S": "2025-03-06T15:15:29Z"
+          },
+          "EntityType": {
+            "S": "video"
+          },
+          "id": {
+            "S": "7qgegT-6tq8"
+          },
+          "title": {
+            "S": "Exploring Magical Festivals"
+          },
+          "thumbnail": {
+            "S": "/videos/7qgegT-6tq8/7qgegT-6tq8.png"
+          },
+          "duration": {
+            "S": "PT0M6.047708S"
+          },
+          "url": {
+            "S": "/videos/7qgegT-6tq8/7qgegT-6tq8.mp4"
+          },
+          "publishedAt": {
+            "S": "2025-03-06T15:15:29Z"
+          },
+          "channelId": {
+            "S": "AmazonNovaReel"
+          }
+        },
+        {
+          "PK": {
+            "S": "v#wCYxsFwXVAk"
+          },
+          "SK": {
+            "S": "v#wCYxsFwXVAk"
+          },
+          "GSI1_PK": {
+            "S": "video"
+          },
+          "GSI1_SK": {
+            "S": "2025-03-06T15:30:21Z"
+          },
+          "EntityType": {
+            "S": "video"
+          },
+          "id": {
+            "S": "wCYxsFwXVAk"
+          },
+          "title": {
+            "S": "Adventure Awaits: Mountain Hiking"
+          },
+          "thumbnail": {
+            "S": "/videos/wCYxsFwXVAk/wCYxsFwXVAk.png"
+          },
+          "duration": {
+            "S": "PT0M6.047708S"
+          },
+          "url": {
+            "S": "/videos/wCYxsFwXVAk/wCYxsFwXVAk.mp4"
+          },
+          "publishedAt": {
+            "S": "2025-03-06T15:30:21Z"
+          },
+          "channelId": {
+            "S": "AmazonNovaReel"
+          }
+        },
+        {
+          "PK": {
+            "S": "v#aD5_u3q6KUM"
+          },
+          "SK": {
+            "S": "v#aD5_u3q6KUM"
+          },
+          "GSI1_PK": {
+            "S": "video"
+          },
+          "GSI1_SK": {
+            "S": "2025-03-06T15:52:52Z"
+          },
+          "EntityType": {
+            "S": "video"
+          },
+          "id": {
+            "S": "aD5_u3q6KUM"
+          },
+          "title": {
+            "S": "City Adventure: Walking Tour"
+          },
+          "thumbnail": {
+            "S": "/videos/aD5_u3q6KUM/aD5_u3q6KUM.png"
+          },
+          "duration": {
+            "S": "PT0M6.047708S"
+          },
+          "url": {
+            "S": "/videos/aD5_u3q6KUM/aD5_u3q6KUM.mp4"
+          },
+          "publishedAt": {
+            "S": "2025-03-06T15:52:52Z"
+          },
+          "channelId": {
+            "S": "AmazonNovaReel"
+          }
+        },
+        {
+          "PK": {
+            "S": "v#aFwvWFVIUww"
+          },
+          "SK": {
+            "S": "v#aFwvWFVIUww"
+          },
+          "GSI1_PK": {
+            "S": "video"
+          },
+          "GSI1_SK": {
+            "S": "2025-03-06T16:06:33Z"
+          },
+          "EntityType": {
+            "S": "video"
+          },
+          "id": {
+            "S": "aFwvWFVIUww"
+          },
+          "title": {
+            "S": "Live from the Big Conference!"
+          },
+          "thumbnail": {
+            "S": "/videos/aFwvWFVIUww/aFwvWFVIUww.png"
+          },
+          "duration": {
+            "S": "PT0M6.047708S"
+          },
+          "url": {
+            "S": "/videos/aFwvWFVIUww/aFwvWFVIUww.mp4"
+          },
+          "publishedAt": {
+            "S": "2025-03-06T16:06:33Z"
+          },
+          "channelId": {
+            "S": "AmazonNovaReel"
+          }
+        },
+        {
+          "PK": {
+            "S": "v#zGl4juMoUow"
+          },
+          "SK": {
+            "S": "v#zGl4juMoUow"
+          },
+          "GSI1_PK": {
+            "S": "video"
+          },
+          "GSI1_SK": {
+            "S": "2025-03-06T16:20:51Z"
+          },
+          "EntityType": {
+            "S": "video"
+          },
+          "id": {
+            "S": "zGl4juMoUow"
+          },
+          "title": {
+            "S": "RTS Battle: Strategy in Action"
+          },
+          "thumbnail": {
+            "S": "/videos/zGl4juMoUow/zGl4juMoUow.png"
+          },
+          "duration": {
+            "S": "PT0M6.047708S"
+          },
+          "url": {
+            "S": "/videos/zGl4juMoUow/zGl4juMoUow.mp4"
+          },
+          "publishedAt": {
+            "S": "2025-03-06T16:20:51Z"
+          },
+          "channelId": {
+            "S": "AmazonNovaReel"
+          }
+        },
+        {
+          "PK": {
+            "S": "v#cCps60RZP4g"
+          },
+          "SK": {
+            "S": "v#cCps60RZP4g"
+          },
+          "GSI1_PK": {
+            "S": "video"
+          },
+          "GSI1_SK": {
+            "S": "2025-03-06T16:34:34Z"
+          },
+          "EntityType": {
+            "S": "video"
+          },
+          "id": {
+            "S": "cCps60RZP4g"
+          },
+          "title": {
+            "S": "Retro Platformer Adventure"
+          },
+          "thumbnail": {
+            "S": "/videos/cCps60RZP4g/cCps60RZP4g.png"
+          },
+          "duration": {
+            "S": "PT0M6.047708S"
+          },
+          "url": {
+            "S": "/videos/cCps60RZP4g/cCps60RZP4g.mp4"
+          },
+          "publishedAt": {
+            "S": "2025-03-06T16:34:34Z"
+          },
+          "channelId": {
+            "S": "AmazonNovaReel"
+          }
+        },
+        {
+          "PK": {
+            "S": "v#LvQMMXWXOvE"
+          },
+          "SK": {
+            "S": "v#LvQMMXWXOvE"
+          },
+          "GSI1_PK": {
+            "S": "video"
+          },
+          "GSI1_SK": {
+            "S": "2025-03-06T16:54:22Z"
+          },
+          "EntityType": {
+            "S": "video"
+          },
+          "id": {
+            "S": "LvQMMXWXOvE"
+          },
+          "title": {
+            "S": "Chess Showdown: The Ultimate Battle"
+          },
+          "thumbnail": {
+            "S": "/videos/LvQMMXWXOvE/LvQMMXWXOvE.png"
+          },
+          "duration": {
+            "S": "PT0M6.047708S"
+          },
+          "url": {
+            "S": "/videos/LvQMMXWXOvE/LvQMMXWXOvE.mp4"
+          },
+          "publishedAt": {
+            "S": "2025-03-06T16:54:22Z"
+          },
+          "channelId": {
+            "S": "AmazonNovaReel"
+          }
+        },
+        {
+          "PK": {
+            "S": "v#z-dBt8MpAnA"
+          },
+          "SK": {
+            "S": "v#z-dBt8MpAnA"
+          },
+          "GSI1_PK": {
+            "S": "video"
+          },
+          "GSI1_SK": {
+            "S": "2025-03-06T17:16:39Z"
+          },
+          "EntityType": {
+            "S": "video"
+          },
+          "id": {
+            "S": "z-dBt8MpAnA"
+          },
+          "title": {
+            "S": "Chess Showdown: The Ultimate Battle"
+          },
+          "thumbnail": {
+            "S": "/videos/z-dBt8MpAnA/z-dBt8MpAnA.png"
+          },
+          "duration": {
+            "S": "PT0M6.047708S"
+          },
+          "url": {
+            "S": "/videos/z-dBt8MpAnA/z-dBt8MpAnA.mp4"
+          },
+          "publishedAt": {
+            "S": "2025-03-06T17:16:39Z"
+          },
+          "channelId": {
+            "S": "AmazonNovaReel"
+          }
+        },
+        {
+          "PK": {
+            "S": "v#k1DF_Rcan6M"
+          },
+          "SK": {
+            "S": "v#k1DF_Rcan6M"
+          },
+          "GSI1_PK": {
+            "S": "video"
+          },
+          "GSI1_SK": {
+            "S": "2025-03-07T14:05:46Z"
+          },
+          "EntityType": {
+            "S": "video"
+          },
+          "id": {
+            "S": "k1DF_Rcan6M"
+          },
+          "title": {
+            "S": "Standing Up for Change: Peaceful Road Block"
+          },
+          "thumbnail": {
+            "S": "/videos/k1DF_Rcan6M/k1DF_Rcan6M.png"
+          },
+          "duration": {
+            "S": "PT0M6.047708S"
+          },
+          "url": {
+            "S": "/videos/k1DF_Rcan6M/k1DF_Rcan6M.mp4"
+          },
+          "publishedAt": {
+            "S": "2025-03-07T14:05:46Z"
+          },
+          "channelId": {
+            "S": "AmazonNovaReel"
+          }
+        },
+        {
+          "PK": {
+            "S": "v#SJOCLMEuoh0"
+          },
+          "SK": {
+            "S": "v#SJOCLMEuoh0"
+          },
+          "GSI1_PK": {
+            "S": "video"
+          },
+          "GSI1_SK": {
+            "S": "2025-03-07T14:20:26Z"
+          },
+          "EntityType": {
+            "S": "video"
+          },
+          "id": {
+            "S": "SJOCLMEuoh0"
+          },
+          "title": {
+            "S": "Tree Guardians: Protecting Nature's Champions"
+          },
+          "thumbnail": {
+            "S": "/videos/SJOCLMEuoh0/SJOCLMEuoh0.png"
+          },
+          "duration": {
+            "S": "PT0M6.047708S"
+          },
+          "url": {
+            "S": "/videos/SJOCLMEuoh0/SJOCLMEuoh0.mp4"
+          },
+          "publishedAt": {
+            "S": "2025-03-07T14:20:26Z"
+          },
+          "channelId": {
+            "S": "AmazonNovaReel"
+          }
+        },
+        {
+          "PK": {
+            "S": "v#M8V1FcKde2g"
+          },
+          "SK": {
+            "S": "v#M8V1FcKde2g"
+          },
+          "GSI1_PK": {
+            "S": "video"
+          },
+          "GSI1_SK": {
+            "S": "2025-03-07T14:36:03Z"
+          },
+          "EntityType": {
+            "S": "video"
+          },
+          "id": {
+            "S": "M8V1FcKde2g"
+          },
+          "title": {
+            "S": "Street Volunteers: Collecting for a Cause"
+          },
+          "thumbnail": {
+            "S": "/videos/M8V1FcKde2g/M8V1FcKde2g.png"
+          },
+          "duration": {
+            "S": "PT0M6.047708S"
+          },
+          "url": {
+            "S": "/videos/M8V1FcKde2g/M8V1FcKde2g.mp4"
+          },
+          "publishedAt": {
+            "S": "2025-03-07T14:36:03Z"
+          },
+          "channelId": {
+            "S": "AmazonNovaReel"
+          }
+        },
+        {
+          "PK": {
+            "S": "v#saYIayqn6I0"
+          },
+          "SK": {
+            "S": "v#saYIayqn6I0"
+          },
+          "GSI1_PK": {
+            "S": "video"
+          },
+          "GSI1_SK": {
+            "S": "2025-03-07T14:48:26Z"
+          },
+          "EntityType": {
+            "S": "video"
+          },
+          "id": {
+            "S": "saYIayqn6I0"
+          },
+          "title": {
+            "S": "Charity Run: Running Together for a Cause"
+          },
+          "thumbnail": {
+            "S": "/videos/saYIayqn6I0/saYIayqn6I0.png"
+          },
+          "duration": {
+            "S": "PT0M6.047708S"
+          },
+          "url": {
+            "S": "/videos/saYIayqn6I0/saYIayqn6I0.mp4"
+          },
+          "publishedAt": {
+            "S": "2025-03-07T14:48:26Z"
+          },
+          "channelId": {
+            "S": "AmazonNovaReel"
+          }
+        },
+        {
+          "PK": {
+            "S": "v#NzB9W_14tgE"
+          },
+          "SK": {
+            "S": "v#NzB9W_14tgE"
+          },
+          "GSI1_PK": {
+            "S": "video"
+          },
+          "GSI1_SK": {
+            "S": "2025-03-07T15:01:18Z"
+          },
+          "EntityType": {
+            "S": "video"
+          },
+          "id": {
+            "S": "NzB9W_14tgE"
+          },
+          "title": {
+            "S": "Hair Magic: A Girl's New Haircut"
+          },
+          "thumbnail": {
+            "S": "/videos/NzB9W_14tgE/NzB9W_14tgE.png"
+          },
+          "duration": {
+            "S": "PT0M6.047708S"
+          },
+          "url": {
+            "S": "/videos/NzB9W_14tgE/NzB9W_14tgE.mp4"
+          },
+          "publishedAt": {
+            "S": "2025-03-07T15:01:18Z"
+          },
+          "channelId": {
+            "S": "AmazonNovaReel"
+          }
+        },
+        {
+          "PK": {
+            "S": "v#RQmLNnELeFQ"
+          },
+          "SK": {
+            "S": "v#RQmLNnELeFQ"
+          },
+          "GSI1_PK": {
+            "S": "video"
+          },
+          "GSI1_SK": {
+            "S": "2025-03-07T15:13:21Z"
+          },
+          "EntityType": {
+            "S": "video"
+          },
+          "id": {
+            "S": "RQmLNnELeFQ"
+          },
+          "title": {
+            "S": "Fashion Forward: Catwalk Chic"
+          },
+          "thumbnail": {
+            "S": "/videos/RQmLNnELeFQ/RQmLNnELeFQ.png"
+          },
+          "duration": {
+            "S": "PT0M6.047708S"
+          },
+          "url": {
+            "S": "/videos/RQmLNnELeFQ/RQmLNnELeFQ.mp4"
+          },
+          "publishedAt": {
+            "S": "2025-03-07T15:13:21Z"
+          },
+          "channelId": {
+            "S": "AmazonNovaReel"
+          }
+        },
+        {
+          "PK": {
+            "S": "v#8tS7B-c0b_8"
+          },
+          "SK": {
+            "S": "v#8tS7B-c0b_8"
+          },
+          "GSI1_PK": {
+            "S": "video"
+          },
+          "GSI1_SK": {
+            "S": "2025-03-07T15:42:59Z"
+          },
+          "EntityType": {
+            "S": "video"
+          },
+          "id": {
+            "S": "8tS7B-c0b_8"
+          },
+          "title": {
+            "S": "Easy Soup Cooking Fun"
+          },
+          "thumbnail": {
+            "S": "/videos/8tS7B-c0b_8/8tS7B-c0b_8.png"
+          },
+          "duration": {
+            "S": "PT0M6.047708S"
+          },
+          "url": {
+            "S": "/videos/8tS7B-c0b_8/8tS7B-c0b_8.mp4"
+          },
+          "publishedAt": {
+            "S": "2025-03-07T15:42:59Z"
+          },
+          "channelId": {
+            "S": "AmazonNovaReel"
+          }
+        },
+        {
+          "PK": {
+            "S": "v#EoptO2hf3tY"
+          },
+          "SK": {
+            "S": "v#EoptO2hf3tY"
+          },
+          "GSI1_PK": {
+            "S": "video"
+          },
+          "GSI1_SK": {
+            "S": "2025-03-07T16:08:48Z"
+          },
+          "EntityType": {
+            "S": "video"
+          },
+          "id": {
+            "S": "EoptO2hf3tY"
+          },
+          "title": {
+            "S": "How to Use a Yo Yo: Fun Tricks for Beginners"
+          },
+          "thumbnail": {
+            "S": "/videos/EoptO2hf3tY/EoptO2hf3tY.png"
+          },
+          "duration": {
+            "S": "PT0M6.047708S"
+          },
+          "url": {
+            "S": "/videos/EoptO2hf3tY/EoptO2hf3tY.mp4"
+          },
+          "publishedAt": {
+            "S": "2025-03-07T16:08:48Z"
+          },
+          "channelId": {
+            "S": "AmazonNovaReel"
+          }
+        }
+      ],
+      "DataAccess": {
+        "MySql": {}
+      },
+      "SampleDataFormats": {},
+      "BillingMode": "PAY_PER_REQUEST"
+    }
+  ]
+}

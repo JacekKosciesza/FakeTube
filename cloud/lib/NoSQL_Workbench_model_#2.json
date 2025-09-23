@@ -1,0 +1,159 @@
+{
+  "ModelName": "FakeTube",
+  "ModelMetadata": {
+    "Author": "Jacek Kościesza",
+    "DateCreated": "Sep 23, 2025, 06:15 PM",
+    "DateLastModified": "Sep 23, 2025, 06:28 PM",
+    "Description": "YouTube clone",
+    "AWSService": "Amazon DynamoDB",
+    "Version": "3.0"
+  },
+  "DataModel": [
+    {
+      "TableName": "FakeTube",
+      "KeyAttributes": {
+        "PartitionKey": {
+          "AttributeName": "PK",
+          "AttributeType": "S"
+        },
+        "SortKey": {
+          "AttributeName": "SK",
+          "AttributeType": "S"
+        }
+      },
+      "NonKeyAttributes": [
+        {
+          "AttributeName": "GSI1_PK",
+          "AttributeType": "S"
+        },
+        {
+          "AttributeName": "GSI1_SK",
+          "AttributeType": "S"
+        },
+        {
+          "AttributeName": "EntityType",
+          "AttributeType": "S"
+        },
+        {
+          "AttributeName": "id",
+          "AttributeType": "S"
+        },
+        {
+          "AttributeName": "avatar",
+          "AttributeType": "S"
+        },
+        {
+          "AttributeName": "name",
+          "AttributeType": "S"
+        },
+        {
+          "AttributeName": "title",
+          "AttributeType": "S"
+        },
+        {
+          "AttributeName": "thumbnail",
+          "AttributeType": "S"
+        },
+        {
+          "AttributeName": "duration",
+          "AttributeType": "S"
+        },
+        {
+          "AttributeName": "url",
+          "AttributeType": "S"
+        },
+        {
+          "AttributeName": "publishedAt",
+          "AttributeType": "S"
+        },
+        {
+          "AttributeName": "channelId",
+          "AttributeType": "S"
+        }
+      ],
+      "GlobalSecondaryIndexes": [
+        {
+          "IndexName": "GSI1",
+          "KeyAttributes": {
+            "PartitionKey": {
+              "AttributeName": "GSI1_PK",
+              "AttributeType": "S"
+            },
+            "SortKey": {
+              "AttributeName": "GSI1_SK",
+              "AttributeType": "S"
+            }
+          },
+          "Projection": {
+            "ProjectionType": "ALL"
+          }
+        }
+      ],
+      "TableData": [
+        {
+          "PK": {
+            "S": "c#AmazonNovaReel"
+          },
+          "SK": {
+            "S": "c#AmazonNovaReel"
+          },
+          "EntityType": {
+            "S": "channel"
+          },
+          "id": {
+            "S": "AmazonNovaReel"
+          },
+          "avatar": {
+            "S": "/channels/AmazonNovaReel/AmazonNovaReel.png"
+          },
+          "name": {
+            "S": "Amazon Nova Reel"
+          }
+        },
+        {
+          "PK": {
+            "S": "v#q9Gm7a6Wwjk"
+          },
+          "SK": {
+            "S": "v#q9Gm7a6Wwjk"
+          },
+          "GSI1_PK": {
+            "S": "video"
+          },
+          "GSI1_SK": {
+            "S": "2025-03-03T15:58:23Z"
+          },
+          "EntityType": {
+            "S": "video"
+          },
+          "id": {
+            "S": "q9Gm7a6Wwjk"
+          },
+          "title": {
+            "S": "The Amazing World of Octopus!"
+          },
+          "thumbnail": {
+            "S": "/videos/q9Gm7a6Wwjk/q9Gm7a6Wwjk.png"
+          },
+          "duration": {
+            "S": "PT0M6.214542S"
+          },
+          "url": {
+            "S": "/videos/q9Gm7a6Wwjk/q9Gm7a6Wwjk.mp4"
+          },
+          "publishedAt": {
+            "S": "2025-03-03T15:58:23Z"
+          },
+          "channelId": {
+            "S": "AmazonNovaReel"
+          }
+        }
+      ],
+      "DataAccess": {
+        "MySql": {}
+      },
+      "SampleDataFormats": {},
+      "BillingMode": "PAY_PER_REQUEST"
+    }
+  ]
+}
