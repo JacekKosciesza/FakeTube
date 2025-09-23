@@ -1,0 +1,36 @@
+schema { 
+  query: Query 
+  mutation: Mutation 
+  subscription: Subscription  
+}
+
+scalar AWSDateTime
+
+type Channel {
+  id: ID!
+  avatar: String!
+  name: String!
+}
+
+type Mutation
+
+type Query {
+  listVideos(nextToken: String, limit: Int = 24): VideosPage!
+}
+
+type Subscription
+
+type Video {
+  id: ID!
+  title: String!
+  thumbnail: String!
+  duration: String!
+  url: String!
+  publishedAt: AWSDateTime!
+  channel: Channel!
+}
+
+type VideosPage {
+  items: [Video!]!
+  nextToken: String
+}

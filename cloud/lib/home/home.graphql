@@ -1,0 +1,24 @@
+type Channel {
+  id: ID!
+  avatar: String!
+  name: String!
+}
+
+type Video {
+  id: ID!
+  title: String!
+  thumbnail: String!
+  duration: String!
+  url: String!
+  publishedAt: AWSDateTime!
+  channel: Channel!
+}
+
+type VideosPage {
+  items: [Video!]!
+  nextToken: String
+}
+
+extend type Query {
+  listVideos(nextToken: String, limit: Int = 24): VideosPage!
+}
