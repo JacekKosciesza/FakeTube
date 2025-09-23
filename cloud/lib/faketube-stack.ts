@@ -16,9 +16,10 @@ export class FakeTubeStack extends cdk.Stack {
     const aurora = new Aurora(this, "aurora", { vpc });
     const dynamodb = new DynamoDB(this, "dynamodb");
     const gateway = new Gateway(this, "gateway");
-    new AppSync(this, "appsync", { dynamodb });
+    const appsync = new AppSync(this, "appsync", { dynamodb });
 
     new Home(this, "home", {
+      appsync,
       aurora,
       gateway,
     });
