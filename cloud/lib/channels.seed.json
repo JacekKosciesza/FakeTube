@@ -1,0 +1,28 @@
+{
+  "FakeTube": [
+    {
+      "PutRequest": {
+        "Item": {
+          "PK": {
+            "S": "c#AmazonNovaReel"
+          },
+          "SK": {
+            "S": "c#AmazonNovaReel"
+          },
+          "EntityType": {
+            "S": "channel"
+          },
+          "id": {
+            "S": "AmazonNovaReel"
+          },
+          "avatar": {
+            "S": "/channels/AmazonNovaReel/AmazonNovaReel.png"
+          },
+          "name": {
+            "S": "Amazon Nova Reel"
+          }
+        }
+      }
+    }
+  ]
+}
