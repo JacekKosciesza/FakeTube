@@ -1,5 +1,6 @@
 export interface Page<T> {
   items: T[];
-  currentPage: number;
-  hasNextPage: boolean;
+  currentPage?: number;
+  hasNextPage?: boolean;
+  nextToken?: string;
 }

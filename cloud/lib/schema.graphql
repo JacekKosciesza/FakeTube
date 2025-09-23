@@ -16,6 +16,7 @@ type Mutation
 
 type Query {
   listVideos(nextToken: String, limit: Int = 24): VideosPage!
+  listVideosProxy(nextToken: String, limit: Int = 24): VideosPage!
 }
 
 type Subscription

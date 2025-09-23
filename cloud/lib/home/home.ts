@@ -40,6 +40,7 @@ export class Home extends Construct {
     aurora.cluster.grantDataApiAccess(listVideosLambda.function);
 
     this.dynamodbResolver(appsync);
+    this.lambdaResolver(appsync);
     this.rest(gateway.rest, listVideosLambda.function);
     this.http(gateway.http, listVideosLambda.function);
   }
@@ -57,6 +58,28 @@ export class Home extends Construct {
       typeName: "Video",
       entry: path.join(__dirname, "resolvers", "getChannel.resolver.js"),
       appsync,
+    });
+  }
+
+  lambdaResolver(appsync: AppSync): void {
+    const listVideosProxyLambda = new Lambda(this, "listVideosProxy", {
+      name: "listVideosProxy",
+      description: "Retrieve a paginated list of videos",
+      entry: path.join(__dirname, "functions", "listVideosProxy.lambda.ts"),
+      environment: {
+        SERVICE_NAME: "Home",
+        LOG_LEVEL: "INFO",
+      },
+    });
+
+    const lambdaDS = appsync.api.addLambdaDataSource(
+      `listVideosProxyDS`,
+      listVideosProxyLambda.function
+    );
+
+    lambdaDS.createResolver("listVideosProxy", {
+      typeName: "Query",
+      fieldName: "listVideosProxy",
     });
   }
 
