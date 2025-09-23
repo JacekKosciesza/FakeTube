@@ -39,12 +39,12 @@ export class Home extends Construct {
     });
     aurora.cluster.grantDataApiAccess(listVideosLambda.function);
 
-    this.dynamoResolver(appsync);
+    this.dynamodbResolver(appsync);
     this.rest(gateway.rest, listVideosLambda.function);
     this.http(gateway.http, listVideosLambda.function);
   }
 
-  dynamoResolver(appsync: AppSync): void {
+  dynamodbResolver(appsync: AppSync): void {
     new AppsyncResolver(this, "listVideosResolver", {
       name: "listVideos",
       typeName: "Query",
