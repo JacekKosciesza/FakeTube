@@ -4,6 +4,8 @@ import middy from "@middy/core";
 import validator from "@middy/validator";
 import { AppSyncResolverEvent } from "aws-lambda";
 import { captureLambdaHandler } from "@aws-lambda-powertools/tracer/middleware";
+import { DynamoDB } from "@aws-sdk/client-dynamodb";
+import { DynamoDBDocument } from "@aws-sdk/lib-dynamodb";
 import { injectLambdaContext } from "@aws-lambda-powertools/logger/middleware";
 import { Logger } from "@aws-lambda-powertools/logger";
 import { LogLevel } from "@aws-lambda-powertools/logger/types";
@@ -12,6 +14,7 @@ import { Metrics } from "@aws-lambda-powertools/metrics";
 import { Tracer } from "@aws-lambda-powertools/tracer";
 import { transpileSchema } from "@middy/validator/transpile";
 
+import { Channel } from "../channel";
 import { Video } from "../video";
 import { Page } from "../page";
 
@@ -27,6 +30,8 @@ interface Arguments {
   limit?: number;
 }
 
+const dynamodb = DynamoDBDocument.from(new DynamoDB());
+
 export const lambdaHandler = async (
   event: AppSyncResolverEvent<Arguments, Page<Video[]>>
 ) => {
@@ -35,8 +40,56 @@ export const lambdaHandler = async (
 
     const { nextToken, limit } = event.arguments || {};
 
+    const { Items, LastEvaluatedKey } = await dynamodb.query({
+      TableName: "FakeTube",
+      IndexName: "GSI1",
+      KeyConditions: {
+        GSI1_PK: {
+          ComparisonOperator: "EQ",
+          AttributeValueList: ["video"],
+        },
+      },
+      Limit: limit,
+      ExclusiveStartKey: nextToken ? JSON.parse(nextToken) : undefined,
+    });
+
+    const videos = (Items || []) as VideoItem[];
+
+    const uniqueChannelIds = Array.from(
+      new Set(videos.map((video) => video.channelId))
+    );
+
+    const channels = (
+      await dynamodb.batchGet({
+        RequestItems: {
+          ["FakeTube"]: {
+            Keys: uniqueChannelIds.map((channelId) => ({
+              PK: `c#${channelId}`,
+              SK: `c#${channelId}`,
+            })),
+          },
+        },
+      })
+    ).Responses!["FakeTube"] as Channel[];
+
+    const videosWithChannel: Video[] = videos.map((video) => ({
+      id: video.id,
+      title: video.title,
+      thumbnail: video.thumbnail,
+      duration: video.duration,
+      url: video.url,
+      publishedAt: video.publishedAt,
+      channel: (() => {
+        const c = channels.find((channel) => channel.id === video.channelId)!;
+        return { id: c.id, name: c.name, avatar: c.avatar };
+      })(),
+    }));
+
     const page: Page<Video> = {
-      items: [],
+      items: (videosWithChannel || []) as Video[],
+      nextToken: LastEvaluatedKey
+        ? JSON.stringify(LastEvaluatedKey)
+        : undefined,
     };
     console.log("Page:", page);
 
@@ -48,6 +101,16 @@ export const lambdaHandler = async (
     };
   }
 };
+
+interface VideoItem {
+  id: string;
+  title: string;
+  thumbnail: string;
+  duration: string;
+  url: string;
+  publishedAt: string;
+  channelId: string;
+}
 
 const envMap = {
   names: {

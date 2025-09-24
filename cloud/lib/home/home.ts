@@ -8,12 +8,14 @@ import { HttpLambdaIntegration } from "aws-cdk-lib/aws-apigatewayv2-integrations
 import { AppSync } from "../appsync";
 import { AppsyncResolver } from "../appsyncResolver";
 import { Aurora } from "../aurora";
+import { DynamoDB } from "../dynamodb";
 import { Gateway } from "../gateway";
 import { Lambda } from "../lambda";
 
 interface Props {
   appsync: AppSync;
   aurora: Aurora;
+  dynamodb: DynamoDB;
   gateway: Gateway;
 }
 
@@ -21,7 +23,7 @@ export class Home extends Construct {
   constructor(
     scope: Construct,
     id: string,
-    { appsync, aurora, gateway }: Props
+    { appsync, aurora, dynamodb, gateway }: Props
   ) {
     super(scope, id);
 
@@ -39,8 +41,8 @@ export class Home extends Construct {
     });
     aurora.cluster.grantDataApiAccess(listVideosLambda.function);
 
-    this.dynamodbResolver(appsync);
-    this.lambdaResolver(appsync);
+    // this.dynamodbResolver(appsync);
+    this.lambdaResolver(appsync, dynamodb);
     this.rest(gateway.rest, listVideosLambda.function);
     this.http(gateway.http, listVideosLambda.function);
   }
@@ -61,7 +63,7 @@ export class Home extends Construct {
     });
   }
 
-  lambdaResolver(appsync: AppSync): void {
+  lambdaResolver(appsync: AppSync, dynamodb: DynamoDB): void {
     const listVideosProxyLambda = new Lambda(this, "listVideosProxy", {
       name: "listVideosProxy",
       description: "Retrieve a paginated list of videos",
@@ -71,6 +73,7 @@ export class Home extends Construct {
         LOG_LEVEL: "INFO",
       },
     });
+    dynamodb.table.grantReadData(listVideosProxyLambda.function);
 
     const lambdaDS = appsync.api.addLambdaDataSource(
       `listVideosProxyDS`,

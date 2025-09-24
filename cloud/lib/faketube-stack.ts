@@ -21,6 +21,7 @@ export class FakeTubeStack extends cdk.Stack {
     new Home(this, "home", {
       appsync,
       aurora,
+      dynamodb,
       gateway,
     });
   }
