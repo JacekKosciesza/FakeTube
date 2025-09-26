@@ -41,7 +41,7 @@ export class Home extends Construct {
     });
     aurora.cluster.grantDataApiAccess(listVideosLambda.function);
 
-    // this.dynamodbResolver(appsync);
+    this.dynamodbResolver(appsync);
     this.lambdaResolver(appsync, dynamodb);
     this.rest(gateway.rest, listVideosLambda.function);
     this.http(gateway.http, listVideosLambda.function);

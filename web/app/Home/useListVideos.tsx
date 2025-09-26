@@ -1,9 +1,12 @@
 import { get } from "aws-amplify/api";
-import { useInfiniteQuery } from "@tanstack/react-query";
+import { generateClient } from "aws-amplify/api";
+import { InfiniteData, useInfiniteQuery } from "@tanstack/react-query";
 
 import { Page } from "./pagination";
 import { Video } from "./video";
 import { VIDEOS } from "./videos.data";
+
+const client = generateClient();
 
 export const PAGE_SIZE = 24;
 const DELAY_MS = 1000;
@@ -26,15 +29,17 @@ const fetchMock = async (
 
 enum ApiType {
   MOCK = "mock",
-  REST = "rest",
-  HTTP = "http",
+  API_GATEWAY_REST = "api_gateway_rest",
+  API_GATEWAY_HTTP = "api_gateway_http",
+  GRAPHQL_DYNAMODB_RESOLVER = "graphql_dynamodb_resolver",
+  GRAPHQL_LAMBDA_RESOLVER = "graphql_lambda_resolver",
 }
 
 const getApiName = (): string => {
   switch (process.env.NEXT_PUBLIC_FAKETUBE_API_TYPE_SWITCH) {
-    case ApiType.REST:
+    case ApiType.API_GATEWAY_REST:
       return process.env.NEXT_PUBLIC_FAKETUBE_AWS_API_GATEWAY_REST_NAME!;
-    case ApiType.HTTP:
+    case ApiType.API_GATEWAY_HTTP:
       return process.env.NEXT_PUBLIC_FAKETUBE_AWS_API_GATEWAY_HTTP_NAME!;
     default:
       throw new Error("Invalid API switch configuration");
@@ -75,15 +80,105 @@ const fetchApi = async (
   }
 };
 
+export const Query = (variant: "" | "Proxy") => `
+  query listVideos${variant}($nextToken: String, $limit: Int) {
+    page: listVideos${variant}(nextToken: $nextToken, limit: $limit) {    
+      items {
+        id
+        title
+        thumbnail
+        duration
+        url
+        publishedAt
+        channel {
+          id
+          avatar
+          name
+        }
+      }
+      nextToken
+    }
+  }
+`;
+
+export interface Result {
+  data: {
+    page: Page<Video>;
+  };
+}
+
+const fetchGraphQL = async (
+  nextToken: string | undefined,
+  limit: number = PAGE_SIZE
+) => {
+  try {
+    const result = (await client.graphql({
+      query: Query(
+        process.env.NEXT_PUBLIC_FAKETUBE_API_TYPE_SWITCH ===
+          ApiType.GRAPHQL_LAMBDA_RESOLVER
+          ? "Proxy"
+          : ""
+      ),
+      variables: { nextToken, limit },
+    })) as Result;
+
+    console.log(JSON.stringify(result, null, 2));
+
+    return result?.data.page;
+  } catch (e: unknown) {
+    console.error(e);
+    return {
+      items: [],
+    };
+  }
+};
+
+const fetch = (page: number | undefined | string) => {
+  switch (process.env.NEXT_PUBLIC_FAKETUBE_API_TYPE_SWITCH) {
+    case ApiType.API_GATEWAY_REST:
+    case ApiType.API_GATEWAY_HTTP:
+      return fetchApi(+(page || 0));
+    case ApiType.GRAPHQL_DYNAMODB_RESOLVER:
+    case ApiType.GRAPHQL_LAMBDA_RESOLVER:
+      return fetchGraphQL(page?.toString());
+    default:
+      return fetchMock(+(page || 0));
+  }
+};
+
+const getInitialPageParam = (): number | undefined => {
+  switch (process.env.NEXT_PUBLIC_FAKETUBE_API_TYPE_SWITCH) {
+    case ApiType.GRAPHQL_DYNAMODB_RESOLVER:
+    case ApiType.GRAPHQL_LAMBDA_RESOLVER:
+      return undefined;
+    default:
+      return 0;
+  }
+};
+
+const getNextPageParam = (
+  lastPage: Page<Video>
+): number | undefined | string => {
+  switch (process.env.NEXT_PUBLIC_FAKETUBE_API_TYPE_SWITCH) {
+    case ApiType.GRAPHQL_DYNAMODB_RESOLVER:
+    case ApiType.GRAPHQL_LAMBDA_RESOLVER:
+      return lastPage.nextToken;
+    default:
+      return lastPage.hasNextPage ? lastPage.currentPage! + 1 : undefined;
+  }
+};
+
 export const useListVideos = () => {
-  return useInfiniteQuery({
+  return useInfiniteQuery<
+    Page<Video>,
+    Error,
+    InfiniteData<Page<Video>, number | undefined | string>,
+    string[],
+    number | undefined | string
+  >({
     queryKey: ["listVideos"],
-    queryFn: ({ pageParam: page }) =>
-      process.env.NEXT_PUBLIC_FAKETUBE_API_TYPE_SWITCH === ApiType.MOCK
-        ? fetchMock(page)
-        : fetchApi(page),
-    initialPageParam: 0,
-    getNextPageParam: (lastPage) =>
-      lastPage.hasNextPage ? lastPage.currentPage + 1 : undefined,
+    queryFn: ({ pageParam: page }) => fetch(page),
+    initialPageParam: getInitialPageParam(),
+    getNextPageParam,
   });
 };
