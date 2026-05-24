@@ -15,6 +15,14 @@ body {
   min-height: 100vh;
 }
 
+/* Fix: body flex column + mx-auto on Nextra's content wrapper causes
+   shrink-wrapping instead of stretching. Force full width so auto
+   margins just center the max-width, not shrink the element. */
+body > div,
+body > main {
+  width: 100%;
+}
+
 /* Push Nextra's footer wrapper to the bottom of the viewport on short pages */
 body > [class*="bg-gray-100"] {
   margin-top: auto;
