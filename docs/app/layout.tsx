@@ -18,10 +18,10 @@ const navbar = (
   <Navbar
     logo={<Wordmark />}
     projectLink="https://github.com/JacekKosciesza/FakeTube"
-  >
-    <Search placeholder="Search" />
-  </Navbar>
+  />
 )
+
+const search = <Search placeholder="Search" />
 
 const footer = (
   <Footer>
@@ -49,6 +49,7 @@ export default async function RootLayout({
       <body>
         <Layout
           navbar={navbar}
+          search={search}
           pageMap={await getPageMap()}
           docsRepositoryBase="https://github.com/JacekKosciesza/FakeTube/tree/main/docs"
           footer={footer}
