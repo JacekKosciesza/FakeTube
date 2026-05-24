@@ -1,19 +1,22 @@
 import Link from 'next/link'
+import { Logo } from './_components/Logo'
 
 export default function HomePage() {
   return (
-    <div style={{ padding: '4rem 2rem', textAlign: 'center' }}>
-      <h1 style={{ fontSize: 48, fontWeight: 700, marginBottom: '0.5rem' }}>
-        CodeTube
-      </h1>
-      <p style={{ fontSize: 18, opacity: 0.7, marginBottom: '2rem' }}>
-        Open-source YouTube clone — documentation and articles
+    <main className="hero">
+      <Logo size={88} />
+      <h1>CodeTube</h1>
+      <p className="tagline">
+        Learn advanced software engineering by building a YouTube clone.
       </p>
-      <p>
-        <Link href="/docs">Docs</Link>
-        {' · '}
-        <Link href="/blog">Blog</Link>
-      </p>
-    </div>
+      <div className="ctas">
+        <Link href="/docs" className="cta cta-primary">
+          Read the docs
+        </Link>
+        <Link href="/blog" className="cta cta-secondary">
+          Read the blog
+        </Link>
+      </div>
+    </main>
   )
 }
