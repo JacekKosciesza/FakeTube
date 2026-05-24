@@ -1,0 +1,327 @@
+---
+title: "Build YouTube Clone with AWS - FakeTube #0"
+date: 2023-03-31
+description: "I'm a builder. For over a year I've been building a project which is a YouTube clone called..."
+source: "https://dev.to/aws-builders/build-youtube-clone-with-aws-faketube-1-2odo"
+---
+
+I'm a builder. For over a year I've been building a project which is a **YouTube clone** called **FakeTube**.
+
+![FakeTube - Responsive / Adaptive Web Design](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/a8r0bb5h3kav22lxfo19.png)
+Fig. 1. _FakeTube - Responsive / Adaptive Web Design_
+
+I spent a lot of time researching and applying the **best practices in software engineering**, starting from **DDD (Domain Driven Design)** analysis, **clear requirements** (including **UX/UI design** and **Gherkin** style **acceptance criteria**).
+
+On the frontend side - **RWD/AWS (Responsive/Adaptive Web Design)**, building a **components library** with **atomic design** or effective **state management**.
+
+DevOps aspects like advanced **CI/CD** pipelines (including all sorts of **automated tests**) and **IaC (Infrastructure as Code)**.
+
+Finally **cloud-native**, **event-driven** and **microservices** approach with some advanced **serverless** architecture on **AWS**, which look like this:
+
+![Architecture Overview - over 30 different AWS service used](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/3n92l9qyfum21lg3ji4a.png)
+Fig. 2. _Architecture Overview - over 30 different AWS service used_
+
+There are **over 30 different AWS services** used. I will go into details - what are those services and how they are interconnected, so stay tuned for that, but first let me show you how the app looks and what features I've implemented.
+
+## Demo
+
+FakeTube is a **web application** which has a lot of features from the **main YouTube app**, as well as from the **YouTube Studio**.
+
+### Responsive / Adaptive Web Design
+
+It's fully **Responsive** and **Adaptive Web Design**, which means that it renders well on many devices. Some components are different on mobile and desktop resolutions. You can see that the main menu is changing from a bottom navigation bar on mobile, through a mini drawer on tablet, to a fully opened drawer on desktop.
+
+
+![Mobile - bottom navigation bar](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/lbg0ds4mzcyaxjd8c5n7.png)
+Fig. 3. _Mobile - bottom navigation bar_
+
+
+![Tablet - mini drawer](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/i03b6filc3fd7n3alaur.png)
+Fig. 4. _Tablet - mini drawer_
+
+![Desktop - fully opened drawer](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/finpigwauusoppgjs749.png)
+Fig. 5. _Desktop - fully opened drawer_
+
+### Appearance and language
+
+There is quite an extensive **Settings / Account menu**, where we can adjust different things. This includes **appearance**, where we can switch between **light** and **dark themes**. **Internationalization** (i18n) and **localization** are another important aspect. At the moment you can switch between **English and Polish** languages, but it's easy to add more, including right-to-left ones. Here you can see the home page with a dark theme in and a Polish language selected.
+
+
+![Dark theme and Polish language](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/mdbqdeegy4u50358ytsd.png)
+Fig. 6. _Dark theme and Polish language_
+
+### Watch page
+
+**Watch page** is probably the most important place, where as a viewer you can actually watch the video or engage, connect with the creator. A lot of features like video **player**, **metadata** (with title, channel or owner info and description), **watch next** sections (with related, recommended videos) or **comments** are already implemented. I'm actively working on some other features like _subscriptions_, _like/dislike_ or _save_ (to playlist).
+
+
+![Watch page - player, metadata, comments and related videos](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/yh8c74tp4mkq6ihoziih.png)
+Fig. 7. _Watch page - player, metadata, comments and related videos_
+
+### Accounts
+
+Many **features** on YouTube (and FakeTube) such as adding comments or uploading videos are available only **for signed in users**. That's why I need to implement **account creation**, **sign up** or **forgot password** features early on.
+
+
+![Sign in - identifier](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/h0d37qhhtxfatq71noue.png)
+Fig. 8. _Sign in - identifier_
+
+
+![Sign in - password](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/srdn83bzr3zfs7239saj.png)
+Fig. 9. _Sign in - password_
+
+
+![Create account](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/eyqlh598zrrxxxbh9pxq.png)
+Fig. 10. _Create account_
+
+### Studio
+
+#### Upload video
+
+One of the coolest features I implemented is that you can actually **upload your videos**. It's part of the **FakeTube Studio** and a lot is going on under the hood. Video file is uploaded to the **object store**. This triggers an event which kicks off the video **transcoding** process, which **converts** original video into suitable **Video On Demand** **formats** and **sizes** and generates **thumbnails**. Our web application is **notified** in **real-time** about video upload and processing progress.
+
+You can add video metadata like **title**, **description** and **category**. It will be automatically saved as a **draft**, but you can set **visibility** to **private**, **unlisted** or just **publish**. It will be immediately visible in the Content section of the Studio and **available to watch** on FakeTube.
+
+
+![Studio - dashboard](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/ilwt73oyu0drnaygxcxj.png)
+Fig. 11. _Studio - dashboard_
+
+
+![Upload videos - select files](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/id4secxw7hfucrneds6z.png)
+Fig. 12. _Upload videos - select files_
+
+
+![Upload videos - details](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/iun1g531t2lzp2rqxsyt.png)
+Fig. 13. _Upload videos - details_
+
+
+![Upload videos - visibility](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/m1ipditaoqj91kpaui5l.png)
+Fig. 14. _Upload videos - visibility_
+
+
+![Studio - content](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/7t8u7z14pkiigx5ybady.png)
+Fig. 15. _Studio - content_
+
+
+![Watch - uploaded and published video](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/dx4egu4nsxmv23vmmc5g.png)
+Fig. 16. _Watch - uploaded and published video_
+
+As you can see I put a lot of effort into this project. I've learned a lot and that's why I decided to **share** this **knowledge**, but also discuss some potential improvements with you. We will build together what you see here and even go beyond. There are many more features to build and ideas to verify. This **tutorial** will have **many episodes and seasons**. Let's take this journey together.
+
+## Why, How, What
+
+I bet that many of you know "Simon Sinek" and his great book **"Start with Why"**. I broke the rules and started with **“What”** we are going to build. Let me fix it now. I will explain:
+
+- **Why YouTube?**
+- **Why AWS?**
+- **How** we will **use AWS** to build such a complex application
+
+## Learning
+
+> **There is no end to education**. It is not that you read a book, pass an examination, and finish with education. **The whole of life**, from the moment you are born to the moment you die, **is a process of learning.**
+> ~Jiddu Krishnamurti
+
+This quote couldn't be more true in the field of **software engineering**. What is the best way of learning? Theory is a foundation, but real understanding and experience comes for **practice**. So how can you learn “by doing” effectively?
+
+We can start with **“Hello World!”** example, but that is good for like 5 minutes. There are **tutorials** and this is really a good way of getting hands-on experience with a given technology, but you have to be careful. Don't believe that you will learn AWS (end to end) in 3 hours or even over the weekend. Finally we can build another **TODO app**.
+
+All those ways are useful, but **there is a problem**…
+
+It's like with this **anecdote “How to draw a horse”** (in 5 simple steps). Just draw 2 circles (or actually ellipses), draw a few lines as legs, face, hair...
+
+
+![How to draw a horse - steps 1-4 of 5](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/yru2kwfho2anvfwtyksx.jpeg)
+Fig. 17. _How to draw a horse - steps 1-4 of 5_
+
+...and the last step - **add a few small details**. “Taaaaaa-daaaaaa” here it is, beautiful horse:
+
+
+![How to draw a horse - steps 1-4 of 5](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/5kr1qh8aag76qe24bzmc.jpeg)
+Fig. 18. _How to draw a horse - steps 1-4 of 5_
+
+And then you are starting to think **how** the heck **should I go from step 4) to 5)?** This reminds me of the difference between simple tutorials and real life commercial projects like Twitter, Reddit - you name it.
+
+Depending on which **stage of the project** we get to - we will have **different challenges**. In the **early stages** of the project you can **choose technology**, **design architecture**, but probably it's **not the right time** to build **multi-site disaster recovery**. On the other hand, in **mature projects** things like **analytics**, **A/B split testing** will be important, but some **decisions** are already **made** and you don't have much influence on them. It would be great to go through all those stages, but only few of us have that opportunity.
+
+
+![Skeleton vs Prototype vs MVP vs MMP vs MLP/MDP](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/cy1s6hue5ulcjjj17wag.png)
+Fig. 19. _Skeleton vs Prototype vs MVP vs MMP vs MLP/MDP_
+
+So, what can you do - **create this opportunity yourself**. With your **own long-term project** you can do whatever you want. Go through all those stages, experiment, make mistakes, change your mind, **learn a lot** along the way.
+
+## YouTube
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/xllybem41mckbze3uqbp.png)
+
+The **subject** of the project must be **thought through** very **carefully**. Why do I think that building a YouTube (clone) is a good idea? I can see **three main reasons** for this:
+
+### Business domain
+
+First thing is the **business domain**. The application is **well known to everyone** and it's pretty **simple to understand**, at least on the high-level, **how** the YouTube **ecosystem works**. Here's quick summary form a book “The YouTube Formula” by Derral Eves:
+
+> ...creators make videos and upload them to YouTube. Brands pay YouTube to run advertising alongside uploaded content, either before or during a video. When a channel meets the ad sharing program requirements, it gets a cut of the money from the ads running on their content.
+
+We want to **focus on software engineering**, not on creating new innovative business, so this is perfect - we have a **ready plan** for what we will build.
+
+### Backlog
+
+Second (related) thing is that we have almost a **ready backlog** of things to implement. Of course we have to **discover** some not obvious **features**, make some **DDD (Domain Driven Design) analysis**, maybe an EventStorming session, but we **don't have to do it from scratch**. We have an existing app, so we can check how it works. There is an official _“How YouTube works”_ website, there are books, videos about the topic. We also have **ready UX/UI design**, what's more - it's based on **Material Design**, so we can use one of the **existing component libraries** and focus on composing more complicated UI elements and layouts.
+
+### Challenges
+
+Last thing is challenges. This model of how YouTube works is simple, but it results in **many complicated challenges** to overcome.
+
+YouTube **wants users to spend time in the app** and watch as many interesting videos for them as possible, because it means more ads, therefore profits. This means that the **recommendation system** becomes a crucial part of the solution. We can start to implement something simple e.g. based on **tags** and then improve it using **graph databases** or **Machine Learning** models.
+
+All sorts of **analytics** also become super important. It's not only about analytics for creators inside YouTube Studio. All those **events** like **impressions**, **clicks**, **watchtime**, **likes/dislikes**, **survey responses**, **comments** are also signals for the recommendation system.
+
+Statistics related to YouTube are astonishing. They have more than **2.6 billion** users and there is **500 hours of content uploaded** to YouTube **every minute**. As Marques Brownlee put it “...if there's a problem that's so small it only affects 0.1% of people on YouTube, that problem now affects 2.6 million people.”
+
+As Eric Schmidt said “Every problem they have is a **problem at scale**”. We can also think from the engineering perspective how we can **design** our **solution** to be so **scalable**.
+
+There are **many more things under the hood**, things which we don't see in the UX/UI, but are key aspects of the YouTube ecosystem.
+
+## AWS
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/80y4b7m388eiqaro9h7c.png)
+
+Choosing a **cloud provider** for your project is not a trivial task. You can take **dozens of factors** into account. I wanted to focus on **major players** on the market, because I wanted mature, well tested solutions with large communities. The three biggest players on the market are:
+
+- AWS (**Amazon Web Services**) with over 30% of the market share
+- **Microsoft Azure** with over 20%
+- GCP (**Google Cloud Platform**) with around 10%
+
+Google Cloud Platform seems like a reasonable choice for FakeTube - **YouTube** is **part of Google**, so it probably **works on GCP, right?** It's not so simple. In 2021 Thomas Kurian, CEO of GCP announced that Google will migrate part of YouTube's infrastructure to Google Cloud. Turns out that YouTube is/was hosted on **internal infrastructure separate from GCP**. So unfortunately that's not as simple as “let's use the same services which real YouTube is using”.
+
+After doing some research, I found that **AWS and Azure offerings seem more complete and mature**. This conclusion can also be made when you look at “Gartner® Magic Quadrant™ for Cloud Infrastructure and Platform Services”.
+
+
+![Gartner - Magic Quadrant for Cloud Infrastructure and Platform Services 2022](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/5hkgnj9ezb73c9c0ryb8.png)
+Fig. 20. _Gartner - Magic Quadrant for Cloud Infrastructure and Platform Services 2022_
+
+So AWS or Azure? Frankly speaking I think that both of them would work well, but a few things **convinced me to AWS**.
+
+I really like the serverless-first approach. It seems that AWS has the most **mature and complete offering of serverless services**. There are serverless services in all categories - **compute**, **data store**, **application integration** and even **analytics**. AFAIK AWS is still the only cloud provider which offers **serverless GraphQL service** (called **AppSync**).
+
+**Infrastructure as Code** was another good practice I wanted to use. AWS has a great, native solution for that called **AWS CDK (Cloud Development Kit)**, where you can use programming languages you know to define cloud infrastructure.
+
+Great offer of more than 15 **purpose-built databases**, which allows me to use **polyglot persistence** was also a plus.
+
+This project is a **VOD (Video on Demand)** solution, so super important for me was the offering of **media services** called **AWS Elemental** (Azure also has similar services).
+
+### LEGO
+
+
+![LEGO - Star Wars Millennium Falcon - Assembled](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/8scrgwb0n22qib78661a.png)
+Fig. 21. _LEGO - Star Wars Millennium Falcon - Assembled_
+
+This is the **LEGO Star Wars Millennium Falcon**, a mega big set, which has over 75 000 pieces and when assembled it's 84 cm long and 60 cm wide.
+
+
+![LEGO - Star Wars Millennium Falcon - Pieces](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/o4ue1mz6pjrvkai506ko.png)
+Fig. 22. _LEGO - Star Wars Millennium Falcon - Pieces_
+
+Such a big **number of elements is overwhelming**. Fortunately, there are always **instructions included** with LEGO sets, which guides you step-by-step how to create another increment. You **find a few pieces**, **connect them together** and **put** them **in the right place**. Imagine how hard it would be to assemble this set without an instruction.
+
+What does this have to do with AWS and building software? **AWS services are similar to LEGO bricks**, you need to **find the right ones**, **connect them together** and put them in the **right place in the architecture** to build an app. There are also similar problems - the **number of services is overwhelming** - there are **more than 200** of them.
+
+
+![200+ AWS services](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/vxq86b691jszf38d5qkv.png)
+Fig. 23. _200+ AWS services_
+
+Now imagine that you have to build an app in AWS **without an instruction**. Luckily **I have one**, so let's see **which services** we can use and **how to compose them** to deliver FakeTube features.
+
+
+![AWS instruction](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/if453hzpjthurzep6oj2.png)
+Fig. 24. _AWS instruction_
+
+### Hosting
+
+
+![Hosting](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/csh3rvhdrh24znerim51.png)
+Fig. 25. _Hosting_
+
+This project is a **web application**, so we have to **host** it somewhere. Service which is perfect for this is **Amplify**. Under the hood there are a lot of other services which you can use directly if you need more control, but Amplify simplifies this a lot. Those services include **Route 53** which is **DNS** (Domain Name System) **in the cloud**, you can for example register and configure your own domain. **Certificate Manager** can be used to **manage SSL/TLS certificates** to enable **HTTPS** communication. **CloudFront** is a **CDN** (Content Delivery Network) which allows you to **deliver** app assets, images, and videos **faster**. **S3 (Simple Storage Service)** is an **object store** where we **upload** and **keep** all those **assets**. There is also **Lambda@Edge**, which is **FaaS (Function as a Service)** on the **CDN** level (it's part of CloudFront). It allows you for example to use **SSR (Server Side Rendering)** with a framework like **Next.js**.
+
+### Homepage
+
+
+![Homepage](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/6nmpqxhsyc1s22y730v8.png)
+Fig. 26. _Homepage_
+
+The YouTube **homepage** is mainly a **list of recommended videos**. In a simplest solution, without personalized recommendations, we will need some kind of **API** and **database** where we will keep a list of videos. There are at least two ways of doing it.
+
+We can go with a more traditional approach with a **RESTful** API and **relational database**. **API Gateway** will be perfect to build this kind of API. When it comes to databases, there are a number of different services in **RDS (Relational Database Service)**. I would recommend a **serverless** version of **Aurora** with a **Postgres** compatible engine. We will also need to **run** some **code**, so **Lambda** will be a good fit.
+
+Second approach, which is the modern one, would be to use **GraphQL** and **noSQL** database. For the API we can use **AppSync**, which is a kind of **GraphQL gateway**, which has direct integration with many other AWS services, including **DynamoDB**, which is a **key-value database**. This means that we don't need additional code which runs on Lambda, but in practice it's sometimes simpler to use one, instead of doing complicated things in **VTL (Velocity Template Language)** templates.
+
+We will keep **static assets** in **S3 (Simple Storage Service)** and deliver them using **CloudFront**.
+
+### Authentication
+
+
+![Authentication](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/i3rhtryum5kh5zaw9vog.png)
+Fig. 27. _Authentication_
+
+You have to be **signed in user** to use **some** of the YouTube **features**. Examples would be adding a comment or uploading a video. **Cognito** can help us with that. It's an **identity** and **access management** service which we can use to authenticate users and create accounts. Integration is very simple with **Amplify library**, it's only one function call to sign in a user. **SES (Simple Email Service)** allows us to send confirmation emails. We can keep templates of those emails in **S3 (Simple Storage Service)** and use **Lambda** function to prepare content of this email based on the template and needed data.
+
+### Upload
+
+
+![Upload](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/pd0a163mrgi30u36pyi0.png)
+Fig. 28. _Upload_
+
+The real fun starts when we **upload videos**. In a simplest version we can upload a file to **S3 (Simple Storage Service)**. This will trigger **Lambda** function, which will run a job in **Elemental MediaConvert** to **transcode** original video into suitable **VOD (Video On Demand) formats and sizes** and **generate thumbnails**. Those assets are uploaded back to **S3** and we use **CloudFront** to efficiently deliver them. We can track progress of the transcoding process using **CloudWatch** and even send notifications using **SNS (Simple Notification Service)** and **Lambda**.
+
+In practice this workflow can be even more complicated and enhanced.
+
+
+![Upload - enhanced](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/uncqeztuu8r69p40vb9w.png)
+Fig. 29. _Upload - enhanced_
+
+In Fig. 29 we can see **Glacier** which can be used to **archive** original video **files** in a cost-effective way. **Step Functions** will provide a **state machine**, which will **orchestrate** the whole **workflow** in a reliable way, for example by providing **retries** if needed. We also have an **Elemental MediaPackage**, which will **prepare video content** for a broad **range** of connected **devices**.
+There are even more **Elemental services** such as **MedaTaylor** which can **insert personalized ads** to video, which is essential in the YouTube ecosystem.
+
+### Recommendations
+
+
+![Recommendations](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/bbdnujb2mah9kq8r6pno.png)
+Fig. 30. _Recommendations_
+
+Another key feature is **“Watch next”** and its **video recommendations**. We will need an **API** for that for example **GraphQL** based solution in **AppSync**. We will keep a list of videos in **DynamoDB**, but we need a way to **deliver related and personalized video recommendations**. One option is to use a **graph database** called **Neptune** and **Gremlin query language**. A Simple use case would be like this: I like video “A” and “B”, other user likes video “B”, so let's recommend video “A” for him, maybe he will enjoy it as I did. It's pretty simple to write queries like that using graph databases. Another possibility is to use **Personalize**, **ML (Machine Learning)** based service created exactly for this purpose - **personalized recommendations**. It's **used by Amazon.com**, so you can imagine how powerful it is.
+
+### Search
+
+
+![Search](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/5ms0t52mb68987dhrm4x.png)
+Fig. 31. _Search_
+
+**Search** is an important feature of many apps. YouTube is no different. As previously we keep a list of videos in **DynamoDB**, but for search there are better, specialized solutions such as **Elaticsearch**. In AWS there is **OpenSearch** which is derived from Elasticsearch and even more powerful. This is an example of **polyglot persistence**, where we use **multiple data storage** services in a single solution, depending on the use case. This is also an example of **CQRS (Command Query Responsibility Segregation)** - we use **different technologies** for **commands** (e.g. create, update, delete video) and **queries** (e.g. search). Interesting problem is how can we **synchronize data** between DynamoDB and OpenSearch, how can we create **materialized views** in OpenSearch. Luckily **DynamoDB** supports **streams**, which are a **time-ordered sequence of modifications**, which we can **process using Lambda** and **modify** the **OpenSearch index** appropriately.
+
+### Comments
+
+
+![Comments](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/kzcbbse9xau42aivb2k3.png)
+Fig. 32. _Comments_
+
+**Comments** are not very complicated in their basic form. As always we need an API for example using **GraphQL** based **AppSync**. We can keep comments in **DynamoDB**, but we will need **two indexes** for **sorting** comments by **date** (“Newest first” option) or by **relevance** (“Top comments” option). Comments can give us useful **analytical data** and become a signal for recommendations. Number of comments for the given video is important, but we can also check **sentiment** (negative or positive comment). For that purpose we can use **Comprehend**, which is an **NLP (Natural-Language Processing)** service.
+
+### Analytics
+
+
+![Analytics](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/4fnm4i3j8opo63f56rla.png)
+Fig. 33. _Analytics_
+
+**Analytics** is important not only for **creators in Studio**, but to make the whole YouTube **ecosystem work efficiently**. There are a few options here. We can use **Kinesis Data Firehose** directly and **store** all the **events** from the web app directly in **S3 (Simple Storage Service)**. S3 will be used as a **Data Lake** in this scenario. We can also send events directly to **Pinpoint**, which is an engagement and communication service. In that use case it's also possible to upload this stream of events **from Pinpoint to S3 using Kinesis Data Firehose**. Next we can **query S3 using SQL** thanks to **Athena** and **visualize** interesting things in **QuickSight**, which is a **BI (Business Intelligence)** tool.
+
+### Payments
+
+
+![Payments](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/f1kr6u3xu0ad4d7m9uys.png)
+Fig. 34. _Payments_
+
+**Renting** or **buying a movie** is a less known feature in YouTube. Implementing this feature can be however a great opportunity to practice integration with some 3rd party services e.g. **payment processing** service like **Stripe**. In addition to the standard service we already used, we can use **SQS (Simple Queue Service)** to provide better **scalability** and **decoupling**. Very useful can be **EventBridge**, which is a kind of **event bus**, which can be used for internal **communication between microservices**, as well as for **external integrations**. Things like **API keys** can be stored in **Secrets Manager** in a secure way.
+
+### Just a start
+
+As you can see possibilities are almost endless and this is just the **tip of the iceberg**. We didn't discuss **security** topics like **WAF (Web Application Firewall)** or **Shield** service, which can protect us from **DDoS (Distributed Denial of Service)** attacks. We can try different **Disaster Recovery** solutions including the most advanced **Multi-Site Active/Active** option. There are more advanced, scalable services related to **analytics** like **Redshift** which is a **Data Warehouse** solution. We can experiment with different **versions of UX/UI** and **features** with **A/B**, **split testing** thanks to **CloudWatch Evidently**. We will try all of this, so stay tuned.
