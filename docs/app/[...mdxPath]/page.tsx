@@ -28,8 +28,10 @@ export default async function Page(props: PageProps) {
   const { default: MDXContent, toc, metadata, sourceCode } = await importPage(
     params.mdxPath
   )
+  const title = (metadata as { title?: string } | undefined)?.title
   return (
     <Wrapper toc={toc} metadata={metadata} sourceCode={sourceCode}>
+      {title && <h1 className="ct-page-title">{title}</h1>}
       <MDXContent {...props} params={params} />
     </Wrapper>
   )

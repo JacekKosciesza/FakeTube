@@ -20,6 +20,16 @@ body > [class*="bg-gray-100"] {
   margin-top: auto;
 }
 
+/* Page title (rendered by the catch-all from frontmatter) --------------- */
+
+.ct-page-title {
+  font-size: clamp(1.875rem, 4vw, 2.5rem);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+  margin: 0 0 1.5rem 0;
+}
+
 /* Footer content -------------------------------------------------------- */
 
 .ct-footer-inner {
