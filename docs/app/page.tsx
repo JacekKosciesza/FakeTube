@@ -10,20 +10,20 @@ export default function HomePage() {
         Learn advanced software engineering by building a YouTube clone.
       </p>
       <div className="ctas">
-        <Link href="/docs" className="cta cta-primary">
+        <a
+          href="https://faketube.app/"
+          target="_blank"
+          rel="noreferrer"
+          className="cta cta-primary"
+        >
+          Demo
+        </a>
+        <Link href="/docs" className="cta cta-secondary">
           Docs
         </Link>
         <Link href="/blog" className="cta cta-secondary">
           Blog
         </Link>
-        <a
-          href="https://faketube.app/"
-          target="_blank"
-          rel="noreferrer"
-          className="cta cta-secondary"
-        >
-          Demo
-        </a>
       </div>
     </main>
   )
