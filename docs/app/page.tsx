@@ -11,11 +11,19 @@ export default function HomePage() {
       </p>
       <div className="ctas">
         <Link href="/docs" className="cta cta-primary">
-          Read the docs
+          Docs
         </Link>
         <Link href="/blog" className="cta cta-secondary">
-          Read the blog
+          Blog
         </Link>
+        <a
+          href="https://faketube.app/"
+          target="_blank"
+          rel="noreferrer"
+          className="cta cta-secondary"
+        >
+          Demo
+        </a>
       </div>
     </main>
   )

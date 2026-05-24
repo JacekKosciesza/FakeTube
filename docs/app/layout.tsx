@@ -1,5 +1,5 @@
 import { Footer, Layout, Navbar } from 'nextra-theme-docs'
-import { Head } from 'nextra/components'
+import { Head, Search } from 'nextra/components'
 import { getPageMap } from 'nextra/page-map'
 import type { ReactNode } from 'react'
 import 'nextra-theme-docs/style.css'
@@ -20,6 +20,8 @@ const navbar = (
     projectLink="https://github.com/JacekKosciesza/FakeTube"
   />
 )
+
+const search = <Search placeholder="Search" />
 
 const footer = (
   <Footer>
@@ -47,6 +49,7 @@ export default async function RootLayout({
       <body>
         <Layout
           navbar={navbar}
+          search={search}
           pageMap={await getPageMap()}
           docsRepositoryBase="https://github.com/JacekKosciesza/FakeTube/tree/main/docs"
           footer={footer}
