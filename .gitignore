@@ -1,6 +1,9 @@
 # dependencies
 node_modules/
 
+# Next.js (any nested .next that escapes a workspace gitignore)
+.next/
+
 # logs
 npm-debug.log*
 yarn-debug.log*

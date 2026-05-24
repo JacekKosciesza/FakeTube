@@ -3,24 +3,37 @@ import { Head } from 'nextra/components'
 import { getPageMap } from 'nextra/page-map'
 import type { ReactNode } from 'react'
 import 'nextra-theme-docs/style.css'
+import './globals.css'
+import { Wordmark } from './_components/Logo'
 
 export const metadata = {
   title: {
     default: 'CodeTube',
     template: '%s — CodeTube'
   },
-  description: 'Open-source YouTube clone — documentation and articles'
+  description: 'Learn advanced software engineering by building a YouTube clone'
 }
 
 const navbar = (
   <Navbar
-    logo={<b>CodeTube</b>}
+    logo={<Wordmark />}
     projectLink="https://github.com/JacekKosciesza/FakeTube"
   />
 )
 
 const footer = (
-  <Footer>MIT {new Date().getFullYear()} © CodeTube</Footer>
+  <Footer>
+    <div className="ct-footer-inner">
+      Built by{' '}
+      <a
+        href="https://www.linkedin.com/in/jacekkosciesza/"
+        target="_blank"
+        rel="noreferrer"
+      >
+        Jacek Kościesza
+      </a>
+    </div>
+  </Footer>
 )
 
 export default async function RootLayout({
