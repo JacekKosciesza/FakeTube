@@ -4,8 +4,12 @@
   "version": "0.0.0",
   "workspaces": [
     "web",
+    "docs",
     "cloud"
   ],
+  "overrides": {
+    "zod": "4.3.6"
+  },
   "scripts": {
     "dev": "npm run dev -w web",
     "build": "npm run build -w web && npm run build -w cloud",
