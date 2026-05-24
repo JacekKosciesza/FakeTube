@@ -1,5 +1,4 @@
 export default {
-  index: 'Overview',
   'build-youtube-clone-with-aws': {
     title: 'Build YouTube Clone with AWS - CodeTube #0'
   },
@@ -20,5 +19,6 @@ export default {
   },
   'videos-graphql-api-with-appsync-lambda-dynamodb': {
     title: 'Videos GraphQL API - CodeTube #6'
-  }
+  },
+  index: { display: 'hidden' }
 }
