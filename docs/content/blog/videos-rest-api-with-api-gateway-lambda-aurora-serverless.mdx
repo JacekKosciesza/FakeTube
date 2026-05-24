@@ -1,5 +1,5 @@
 ---
-title: "Videos REST API with API Gateway, Lambda, Aurora Serverless - FakeTube #5"
+title: "Videos REST API with API Gateway, Lambda, Aurora Serverless - CodeTube #5"
 date: 2025-08-23
 description: "faketube.app  In the previous episodes, we created a solid frontend foundation for our project -..."
 source: "https://dev.to/jacekkosciesza/videos-rest-api-with-api-gateway-lambda-aurora-serverless-faketube-5-1102"
@@ -50,7 +50,7 @@ cdk --version
 
 ### Init
 
-Let's create our AWS CDK FakeTube app. There is a quite good **[Tutorial: Create your first AWS CDK app](https://docs.aws.amazon.com/cdk/v2/guide/hello-world.html)** provided by AWS, so don't hesitate to check it out for more details.  
+Let's create our AWS CDK CodeTube app. There is a quite good **[Tutorial: Create your first AWS CDK app](https://docs.aws.amazon.com/cdk/v2/guide/hello-world.html)** provided by AWS, so don't hesitate to check it out for more details.  
 
 A CDK project should be in **its own directory**, with its own local module dependencies, so let's **create and navigate** to a `faketube` **directory**. 
 
@@ -550,7 +550,7 @@ cdk deploy
 
 During the CDK deployment we got this warning.
 
-> [Warning at /FakeTubeStack/aurora/rds-database-cluster] Cluster rds-database-cluster only has serverless readers and no reader is in promotion tier 0-1.Serverless readers in promotion tiers >= 2 **will NOT scale with the writer**, which can lead to **availability issues if a failover event occurs**. It is **recommended that at least one reader has `scaleWithWriter` set to true** [ack: @aws-cdk/aws-rds:noFailoverServerlessReaders]
+> [Warning at /CodeTubeStack/aurora/rds-database-cluster] Cluster rds-database-cluster only has serverless readers and no reader is in promotion tier 0-1.Serverless readers in promotion tiers >= 2 **will NOT scale with the writer**, which can lead to **availability issues if a failover event occurs**. It is **recommended that at least one reader has `scaleWithWriter` set to true** [ack: @aws-cdk/aws-rds:noFailoverServerlessReaders]
 
 [Choosing the minimum Aurora Serverless v2 capacity setting for a cluster](https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/aurora-serverless-v2.setting-capacity.html#aurora-serverless-v2-examples-setting-capacity-range-for-cluster), gives some more context to that
 
@@ -960,7 +960,7 @@ When we configure the `defaultCorsPreflightOptions` property, notice how we retr
     "@aws-cdk/aws-lambda:recognizeLayerVersion": true,
 ```
 
-We specifically set the **CORS origins** to `http://localhost:3000` and `https://faketube.app` to allow our frontend application (on development and production environments) to make **requests to the API**. The browser's same-origin policy **would otherwise block** these requests.
+We specifically set the **CORS origins** to ` 0  and `https://faketube.app` to allow our frontend application (on development and production environments) to make **requests to the API**. The browser's same-origin policy **would otherwise block** these requests.
 
 #### HTTP API
 
@@ -2480,7 +2480,7 @@ NEXT_PUBLIC_FAKETUBE_AWS_API_GATEWAY_HTTP_NAME=faketubeHttp
 +NEXT_PUBLIC_FAKETUBE_API_TYPE_SWITCH=rest
 ```
 
-![FakeTube Home - REST API](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/76ofgtzvrpv4sha5cvfe.png)
+![CodeTube Home - REST API](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/76ofgtzvrpv4sha5cvfe.png)
 
 HTTP API
 
@@ -2495,7 +2495,7 @@ NEXT_PUBLIC_FAKETUBE_AWS_API_GATEWAY_HTTP_NAME=faketubeHttp
 +NEXT_PUBLIC_FAKETUBE_API_TYPE_SWITCH=http
 ```
 
-![FakeTube Home - HTTP API](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/4kvjc6o88ezr5iqjtpzc.png)
+![CodeTube Home - HTTP API](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/4kvjc6o88ezr5iqjtpzc.png)
 
 GitHub: [feat(home): backend integration using amplify (#7)](https://github.com/JacekKosciesza/FakeTube/commit/8d38c95a03a2fcfd931c5eec8f764950d4660cff)
 
@@ -2503,4 +2503,4 @@ GitHub: [feat(home): backend integration using amplify (#7)](https://github.com/
 
 #### Trademark Notice
 
-It turns out that [FakeTube](https://faketube.cz/) is an already [registered trademark](https://www.tmdn.org/tmview/#/tmview/detail/CZ500000000595843). I started a rebranding process, but it will take a while.
+It turns out that [CodeTube](https://faketube.cz/) is an already [registered trademark](https://www.tmdn.org/tmview/#/tmview/detail/CZ500000000595843). I started a rebranding process, but it will take a while.

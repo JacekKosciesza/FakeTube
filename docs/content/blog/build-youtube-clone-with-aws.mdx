@@ -1,14 +1,14 @@
 ---
-title: "Build YouTube Clone with AWS - FakeTube #0"
+title: "Build YouTube Clone with AWS - CodeTube #0"
 date: 2023-03-31
 description: "I'm a builder. For over a year I've been building a project which is a YouTube clone called..."
 source: "https://dev.to/aws-builders/build-youtube-clone-with-aws-faketube-1-2odo"
 ---
 
-I'm a builder. For over a year I've been building a project which is a **YouTube clone** called **FakeTube**.
+I'm a builder. For over a year I've been building a project which is a **YouTube clone** called **CodeTube**.
 
-![FakeTube - Responsive / Adaptive Web Design](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/a8r0bb5h3kav22lxfo19.png)
-Fig. 1. _FakeTube - Responsive / Adaptive Web Design_
+![CodeTube - Responsive / Adaptive Web Design](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/a8r0bb5h3kav22lxfo19.png)
+Fig. 1. _CodeTube - Responsive / Adaptive Web Design_
 
 I spent a lot of time researching and applying the **best practices in software engineering**, starting from **DDD (Domain Driven Design)** analysis, **clear requirements** (including **UX/UI design** and **Gherkin** style **acceptance criteria**).
 
@@ -25,7 +25,7 @@ There are **over 30 different AWS services** used. I will go into details - what
 
 ## Demo
 
-FakeTube is a **web application** which has a lot of features from the **main YouTube app**, as well as from the **YouTube Studio**.
+CodeTube is a **web application** which has a lot of features from the **main YouTube app**, as well as from the **YouTube Studio**.
 
 ### Responsive / Adaptive Web Design
 
@@ -60,7 +60,7 @@ Fig. 7. _Watch page - player, metadata, comments and related videos_
 
 ### Accounts
 
-Many **features** on YouTube (and FakeTube) such as adding comments or uploading videos are available only **for signed in users**. That's why I need to implement **account creation**, **sign up** or **forgot password** features early on.
+Many **features** on YouTube (and CodeTube) such as adding comments or uploading videos are available only **for signed in users**. That's why I need to implement **account creation**, **sign up** or **forgot password** features early on.
 
 
 ![Sign in - identifier](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/h0d37qhhtxfatq71noue.png)
@@ -78,9 +78,9 @@ Fig. 10. _Create account_
 
 #### Upload video
 
-One of the coolest features I implemented is that you can actually **upload your videos**. It's part of the **FakeTube Studio** and a lot is going on under the hood. Video file is uploaded to the **object store**. This triggers an event which kicks off the video **transcoding** process, which **converts** original video into suitable **Video On Demand** **formats** and **sizes** and generates **thumbnails**. Our web application is **notified** in **real-time** about video upload and processing progress.
+One of the coolest features I implemented is that you can actually **upload your videos**. It's part of the **CodeTube Studio** and a lot is going on under the hood. Video file is uploaded to the **object store**. This triggers an event which kicks off the video **transcoding** process, which **converts** original video into suitable **Video On Demand** **formats** and **sizes** and generates **thumbnails**. Our web application is **notified** in **real-time** about video upload and processing progress.
 
-You can add video metadata like **title**, **description** and **category**. It will be automatically saved as a **draft**, but you can set **visibility** to **private**, **unlisted** or just **publish**. It will be immediately visible in the Content section of the Studio and **available to watch** on FakeTube.
+You can add video metadata like **title**, **description** and **category**. It will be automatically saved as a **draft**, but you can set **visibility** to **private**, **unlisted** or just **publish**. It will be immediately visible in the Content section of the Studio and **available to watch** on CodeTube.
 
 
 ![Studio - dashboard](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/ilwt73oyu0drnaygxcxj.png)
@@ -191,7 +191,7 @@ Choosing a **cloud provider** for your project is not a trivial task. You can ta
 - **Microsoft Azure** with over 20%
 - GCP (**Google Cloud Platform**) with around 10%
 
-Google Cloud Platform seems like a reasonable choice for FakeTube - **YouTube** is **part of Google**, so it probably **works on GCP, right?** It's not so simple. In 2021 Thomas Kurian, CEO of GCP announced that Google will migrate part of YouTube's infrastructure to Google Cloud. Turns out that YouTube is/was hosted on **internal infrastructure separate from GCP**. So unfortunately that's not as simple as “let's use the same services which real YouTube is using”.
+Google Cloud Platform seems like a reasonable choice for CodeTube - **YouTube** is **part of Google**, so it probably **works on GCP, right?** It's not so simple. In 2021 Thomas Kurian, CEO of GCP announced that Google will migrate part of YouTube's infrastructure to Google Cloud. Turns out that YouTube is/was hosted on **internal infrastructure separate from GCP**. So unfortunately that's not as simple as “let's use the same services which real YouTube is using”.
 
 After doing some research, I found that **AWS and Azure offerings seem more complete and mature**. This conclusion can also be made when you look at “Gartner® Magic Quadrant™ for Cloud Infrastructure and Platform Services”.
 
@@ -229,7 +229,7 @@ What does this have to do with AWS and building software? **AWS services are sim
 ![200+ AWS services](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/vxq86b691jszf38d5qkv.png)
 Fig. 23. _200+ AWS services_
 
-Now imagine that you have to build an app in AWS **without an instruction**. Luckily **I have one**, so let's see **which services** we can use and **how to compose them** to deliver FakeTube features.
+Now imagine that you have to build an app in AWS **without an instruction**. Luckily **I have one**, so let's see **which services** we can use and **how to compose them** to deliver CodeTube features.
 
 
 ![AWS instruction](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/if453hzpjthurzep6oj2.png)

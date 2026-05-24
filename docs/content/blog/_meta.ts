@@ -1,24 +1,24 @@
 export default {
   index: 'Overview',
   'build-youtube-clone-with-aws': {
-    title: 'FakeTube #0 — Build YouTube Clone with AWS'
+    title: 'Build YouTube Clone with AWS - CodeTube #0'
   },
   'initial-requirements-using-gherkin-github-codecatalyst': {
-    title: 'FakeTube #1 — Initial Requirements'
+    title: 'Initial Requirements - CodeTube #1'
   },
   'generative-ai-videos-using-bedrock-polly-imovie': {
-    title: 'FakeTube #2 — Generative AI Videos'
+    title: 'Generative AI Videos - CodeTube #2'
   },
   'application-shell-using-nextjs-material-ui-amplify-hosting': {
-    title: 'FakeTube #3 — Application Shell'
+    title: 'Application Shell - CodeTube #3'
   },
   'home-page-using-nextjs-material-ui-tanstack-query': {
-    title: 'FakeTube #4 — Home Page'
+    title: 'Home Page - CodeTube #4'
   },
   'videos-rest-api-with-api-gateway-lambda-aurora-serverless': {
-    title: 'FakeTube #5 — Videos REST API'
+    title: 'Videos REST API - CodeTube #5'
   },
   'videos-graphql-api-with-appsync-lambda-dynamodb': {
-    title: 'FakeTube #6 — Videos GraphQL API'
+    title: 'Videos GraphQL API - CodeTube #6'
   }
 }
