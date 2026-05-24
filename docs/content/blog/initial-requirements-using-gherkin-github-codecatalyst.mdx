@@ -1,0 +1,721 @@
+---
+title: "Initial Requirements using Gherkin, GitHub, CodeCatalyst - FakeTube #1"
+date: 2025-03-31
+description: "We are building FakeTube - a YouTube clone software engineering project using cloud-native and web..."
+source: "https://dev.to/aws-builders/initial-requirements-using-gherkin-github-codecatalyst-faketube-1-3087"
+---
+
+We are building **FakeTube - a YouTube clone** software engineering project using cloud-native and web technologies. As a first step we have to **define our vision and project requirements**. 
+
+**YouTube** is arguably **one of the biggest software engineering projects** in the world. Since it was founded in February 2005, it took more than **20 years of development**, **thousands of people** involved and **billions of dollars** spent. 
+
+Is it even possible for a **single software engineer** or at least a small team or community to **approach a YouTube scale project**?
+
+---
+
+## How complex is YouTube?
+
+### Interesting statistics
+
+YouTube is huge without a doubt. We can find some **astonishing statistics** on the official **[How YouTube Works](https://www.youtube.com/intl/en_us/howyoutubeworks/)** website and **[YouTube article on Wikipedia](https://en.wikipedia.org/wiki/YouTube)**. 
+
+> it is the **second-most-visited website in the world**, after Google Search
+
+> In January 2024, YouTube had more than **2.7 billion monthly active users**, who collectively **watched** more than **one billion hours of videos every day**.
+
+Let's think about what it means: 2.7 billion users - that's around **1/3 of the world population**
+
+> **videos** were being **uploaded** to the platform at a **rate of** more than **500 hours of content per minute**
+
+Imagine **compute resources needed** to process all of those videos: transcoding, thumbnail generation, copyright protection.
+
+> as of mid-2024, there were approximately **14.8 billion videos in total**
+
+This means a huge **amount of space** needed to **store** all those **videos**. 
+
+### Modern cloud
+
+Those are shocking numbers, but this is all a consequence of a **massive scale of YouTube**.
+
+Maybe with a right approach to **software architecture** and by using **cloud-native**, **serverless** technologies with **automatic scaling**, **built-in high availability** we would be able to achieve it with **limited engineering resources**? 
+
+Let's take **Object Storage Services (OSS)** as an example. With modern services from the biggest cloud providers you can **potentially store any amount of data** like videos and thumbnails.
+
+The **[Amazon S3 (Simple Storage Service](https://aws.amazon.com/s3/)** documentation states that it's:
+
+> Object storage built to retrieve **any amount of data from anywhere**
+
+Sounds like a perfect fit for our project, but is that the case with **other building blocks** needed for FakeTube? We will definitely look into that, do some **experiments** and try to **find the limits**.
+
+### Feature set
+
+How about a feature set? Does YouTube have **a lot of features?** Well...the answer is **yes**.
+
+It's **not even a single product**, rather a **family of products** that complement each other and create an entire **platform**. A quick look at the [How YouTube Works](https://www.youtube.com/intl/en_us/howyoutubeworks/) footer reveals:
+
+- _YouTube Main Web App_
+- YouTube Main Mobile App
+- YouTube Kids
+- YouTube Music
+- YouTube Originals
+- YouTube Podcasts
+- YouTube Premium
+- YouTube Select
+- _YouTube Studio_
+- YouTube TV
+
+It's also the entire **ecosystem connecting viewers, creators and business** (or advertisers) through ad **[revenue sharing](https://www.youtube.com/intl/en_us/howyoutubeworks/our-commitments/sharing-revenue/)**, so it's much more complex than just uploading and watching videos.
+
+![YouTube ecosystem](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/b9uuu00ho4j32e0yai8n.png)
+
+For those interested in the **evolution of YouTube**, the **[Creator Insider](https://www.youtube.com/@creatorinsider/) channel** provides valuable updates on product development, new features, and changes. It offers truly interesting insights **directly from the YouTube team**.
+
+## Minimum Viable Product (MVP)
+
+What's involved in building a platform as complex as YouTube?
+
+There is a famous proverb:
+
+> How do you eat an elephant? One bite at a time!
+
+meaning that **large tasks** can be accomplished by **breaking them down into smaller, manageable steps**. That's exactly what we are going to do.
+
+We will start with **something simple** and **progressively enhance it** over time. It will be a real [MVP (Minimum Viable Product)](https://en.wikipedia.org/wiki/Minimum_viable_product).
+
+> A minimum viable product (MVP) is a version of a product with **just enough features to be usable by early customers** who can then provide feedback for future product development.
+
+### Vision 
+
+What would be the **minimum feature set** that would **bring value** to FakeTube users?
+
+First of all we have to focus on a **single product and type of user**. There are three main user groups: **creators, viewers and advertisers**.
+
+It **doesn't make sense to start with advertisers** without viewers, because you wouldn't have an audience for the ads. 
+
+It also **doesn't make sense to start with creators**, because no one would spend time creating a video and uploading it knowing that there is no way for other people to watch it.
+
+So the natural choice is to **start with viewers**. That means that we will focus on the **features from the YouTube Main App**.
+
+In the first version there will be **no way to upload a video** (that's part of YouTube Studio), so we will have to start with a **predefined video content**.
+
+Ideally we can start with a **single page** with a **list of videos**, which can be watched in an **inline video player** and some **static layout** around it with **branding** and **navigation** elements.
+
+That sounds like a **simplified version of [YouTube Home](https://www.youtube.com/) page**. It also feels like a real MVP, **realistic to build** and **bringing some value** for users (browse list of videos and watch them). It will be a great **foundation for future development and experiments**.
+
+### Design
+
+One of the benefits of building a **clone** is the **reduced upfront effort**. Instead of defining requirements and designing the user experience, your main focus becomes **understanding and replicating the existing application's features and design**.
+
+While creating a new product is undoubtedly exciting, this project **prioritizes software engineering**. Therefore, **leveraging an existing UX/UI design** and clearly **defining the pre-existing behavior** of the application will allow us to begin **development as quickly as possible**.
+
+It **doesn't mean that it will be trivial** to discover all the features and nuances of YouTube. At some point we will have to put on a Business Analyst or a Product Owner hat and spend probably a lot of time discovering how YouTube works under the hood, doing **DDD (Domain Driven Design) analysis** or creating **Figma designs**.
+
+For now let's **look at the existing YouTube** app and decide what we will implement or what is more important - **what we will skip for now**.
+
+> Perfection is achieved, not when there is nothing to add, but when there is nothing left to take away.
+>
+> ~ Antoine de Saint Exupéry
+
+#### Chrome DevTools
+
+**[Chrome DevTools](https://developer.chrome.com/docs/devtools)** will be our helpful tool, which we will **use like a chainsaw to cut off unnecessary things**. It will also give us better understanding of the **components hierarchy** and **naming conventions**.
+
+Let's open the [YouTube](https://www.youtube.com/) home page in a [Chrome](https://www.google.com/chrome/) browser and activate **Chrome DevTools [inspect mode](https://developer.chrome.com/docs/devtools/inspect-mode)** with a shortcut: **Command+Shift+C on MacOS** or **Ctrl+Shift+C on Windows**.
+
+![Inspecting YouTube homepage with Chrome DevTools](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/azjyz7kxt3mvo0rr0kf5.png)
+
+#### Application Shell
+
+We can start with **inspecting and removing components from** the static layout around the home page, which is sometimes called **[Application Shell](https://developer.chrome.com/blog/app-shell)**.
+
+##### Masthead
+
+Top element is called **Masthead**. YouTube UX/UI is based on the **[Material Design](https://m2.material.io/)** visual language and this element is called **[Top App Bar](https://m2.material.io/components/app-bars-top)** in that convention.
+
+There are three sections: start, center, end. We only need the start section with a **Guide Button** and **Logo**, so let's **remove other components** (just select the element using the inspect tool and delete it).
+
+- **center** section with **Search** - **OUT**
+- **end** section with **Buttons** - **OUT**
+
+![Masthead cleanup](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/dk8x20jai4qmp0w3yztm.gif)
+
+We are like Javier Milei eliminating unnecessary ministries.
+
+https://www.youtube.com/watch?v=1fXr95TcSxY
+
+##### App Drawer and Guide
+
+Now let's look at the sidebar on the left, which is known as a **[Navigation drawer](https://m2.material.io/components/navigation-drawer)** in a Material Design world.
+
+It's an **App Drawer with a Guide** inside it. It can be **opened and closed using the Guide Button** located in the Masthead. There are many items inside the Guide, but we **only need a Home item** for now. So let's put our inspect tool to work and remove all those elements.
+
+![App drawer and guid cleanup](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/3c25ikth4ggvvjphk7q9.gif)
+
+##### Mini Guide
+
+When we close the App Drawer using Guide Button, we will see another navigation bar called **Mini Guide**. It has the most commonly used **navigation elements**, but again, we **only need Home item** at this point. Let's remove other items.
+
+![Mini guide cleanup](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/u19vufw92dylqa0zgy4x.gif)
+
+Application Shell starts to look quite good - there are only elements which we need in the first version of FakeTube. Now it's **time for home page cleanup**.
+
+#### Homepage
+
+We will start with bigger elements. First one is a **Header** with **Feed Filter Chip Bar**, we will implement filtering later, so let's remove it for now. Second thing is any **Shelf** element like **Shorts** or **Trending**, we don't need it, so OUT.
+
+There are also a few smaller elements on the **Media** item ([Card](https://m2.material.io/components/cards) in Material Design), which are not necessary: **View Count**, **Verified Badge** or **Action Menu Button** - OUT.
+
+![Home page cleanup](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/risl6yy5g5xdpuelz20j.gif)
+
+After all those drastic cuts, we have something **more realistic to implement** in a **first version**:
+
+![Simplified home page with guide](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/nywr2auxcmhqxxtkkeyd.png)
+
+But what about the **mobile version?** Let's take a look.
+
+#### Mobile
+
+##### Application Shell
+
+The most obvious **difference is related to navigation**. There is no App Drawer, Guide or Mini Guide. Instead there is a **Pivot Bar**, which is a **[Bottom App Bar](https://m2.material.io/components/app-bars-bottom)** in Material Design terms. As previously we **only need a Home item**. We can also remove the **Search Button** from the Masthead.
+
+![Mobile apps shell cleanup](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/on7kgejnc5uu5hu3x4td.gif)
+
+##### Homepage
+
+Homepage looks very similar to the desktop/tablet version. We have to remove the **Shorts Shelf** and a few smaller things from the Media item: **View Count**, **Separator** and **Action Menu Button**. 
+
+![Mobile home page cleanup](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/319hjtrmxjpc85qhswce.gif)
+
+Final result looks like this (BTW: sorry for the Rachel Zegler showing her middle finger)
+
+![Simplified mobile home page](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/ig9guvappobd9crrk7fc.png)
+
+#### Naming convention
+
+Although YouTube is using **[Material Design](https://material.io/)**, it **doesn't follow its naming convention**. One of the examples is **Masthead** instead of **Top App Bar**.
+
+There are also **differences in a naming convention** between **mobile and desktop/tablet** versions of the web app (e.g. **Channel Avatar** vs **Channel Thumbnail** or **Title** vs **Headline**) and some component **names are very generic** like **ytd-rich-item-renderer** (which doesn't necessary makes sense for us when starting from scratch). 
+
+Naming things is not a trivial task.
+
+> There are only two **hard things in Computer Science**: cache invalidation and **naming things**.
+>
+> ~ Phil Karlton
+
+So, the question is: how should we approach naming our components?
+
+Let's try to **stick to the YouTube naming convention** as closely as possible. I think that it will be easier to compare our implementations, talk with people involved in YouTube and go through the documentation.
+
+We will have to sometimes **be creative** and **make some trade-offs**, but it won't be set in stone, so if needed we will change it in the future.
+
+#### Components hierarchy
+
+How are we going to **organise the building blocks** of the FakeTube? There are many approaches, tools and conventions. At some point we will explore things like **[Storybook](https://storybook.js.org/)**, **[Atomic Design](https://atomicdesign.bradfrost.com/)** and create clear UX/UI mockups in **[Figma](https://www.figma.com/)**. For now let's focus on a **simple hierarchy of components and screenshots** from the previous section.
+
+Based on the exercise with Inspect Mode in Chrome DevTools and some creative approach to naming, here's a **proposition of the components hierarchy**.
+
+```yaml
+- Application Shell:
+    - Masthead:
+        - Guide Button
+        - Logo:
+            - Logomark
+            - Logotype
+    - App Drawer:
+        - Guide:
+            - Item:
+                - Icon
+                - Title
+        - Overlay
+    - Mini Guide:
+        - Item:
+            - Icon
+            - Title
+    - Pivot Bar:
+        - Item:
+            - Icon
+            - Title
+- Home Page:
+    - Browse Grid:
+        - Media Skeleton
+        - Spinner
+        - Media Item:
+            - Thumbnail:
+                - Image
+                - Player:
+                    - Video
+                    - Unmute/Mute Button
+                    - Progress Bar
+                - Time Status
+            - Details:
+                - Channel Avatar
+                - Meta:
+                    - Title
+                    - Metadata:
+                        - Channel Name
+                        - Separator
+                        - Publish Date
+```
+
+## Requirements
+
+People define requirements in different ways, but the end goal is the same: make it very **clear what a feature is**, **what the user interface should look like**, and **how it should all work**. Developers should know how to **build it**, and testers should know how to **test it**.
+
+Requirements typically include a **feature description**, **UX/UI mockups**, and more formal **acceptance criteria** (set of conditions that is required to be met before deliverables are accepted).
+
+My proposition is to define requirements using sections like this:
+
+| Section      | Purpose                                       |
+| ------------ | --------------------------------------------- |
+| **Overview** | Short description of the feature |
+| **Design**   | Screenshots of the UX/UI design   |
+| **Acceptance Criteria**   | Detailed BDD (Behavior-Driven Development) style specification using Gherkin language  | 
+| **Links** | Useful links |
+| **Dependencies** | Related features or subtasks  |
+
+Using **[BDD (Behavior-Driven Development)](https://en.wikipedia.org/wiki/Behavior-driven_development)** and **[Gherkin](https://cucumber.io/docs/gherkin/reference) language** to express the **behaviour and expected outcomes** of a feature can have a lot of benefits. On the one hand it uses natural-language constructs (English-like sentences), so it can be easily **understood by everyone**, on the other hand it is precise enough to serve as a **foundation for automated tests** in the future.
+
+Let's define our features, one by one.
+
+### Application Shell
+
+#### Overview
+
+The Application Shell provides a consistent and responsive user interface framework or skeleton, which has elements like navigation bars, headers, footers, sidebars and basic layout structure. App shell loads very quickly, then the dynamic content specific to then current page or section is loaded and injected into the shell.
+
+#### Design
+
+![Application shell design](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/o3kmktuwutdcqwvrst4t.gif)
+
+#### Acceptance criteria
+
+```gherkin
+Feature: Application shell
+
+As a user I want to see an application shell, which is responsive
+and adapts to different screen resolutions.
+
+Scenario: Extra small resolution
+  Given screen resolution is maximum "600px"
+  Then I should see a "Masthead"
+  And I should see a "Pivot Bar"
+
+Scenario: Small resolution
+  Given screen resolution is minimum "601px"
+  And screen resolution is maximum "791px"
+  Then I should see a "Masthead"
+  And I should NOT see a "Mini Guide"
+  And "App Drawer" should have a "temporary" variant
+  And "App Drawer" should be "closed"
+
+Scenario: Medium resolution
+  Given screen resolution is minimum "792px"
+  And screen resolution is maximum "1312px"
+  Then I should see a "Masthead"
+  And I should see a "Mini Guide"
+  And "App Drawer" should have a "temporary" variant
+  And "App Drawer" should be "closed"
+
+Scenario: Large resolution
+  Given screen resolution is minimum "1313px"
+  Then I should see a "Masthead"
+  And I should NOT see a "Mini Guide"
+  And "App Drawer" should have a "persistent" variant
+  And "App Drawer" should be "opened"
+```
+
+#### Links
+- [Instant Loading Web Apps with an Application Shell Architecture | Blog | Chrome for Developers](https://developer.chrome.com/blog/app-shell)
+- [App bars: top - Material Design](https://m2.material.io/components/app-bars-top)
+- [Navigation drawer - Material Design](https://m2.material.io/components/navigation-drawer)
+- [Bottom navigation - Material Design](https://m2.material.io/components/bottom-navigation)
+
+#### Dependencies
+- Masthead
+- App Drawer
+- Mini Guide
+- Pivot Bar
+
+### Masthead
+
+#### Overview
+
+Masthead is a top app bar, which displays information and actions relating to the current screen as well as static elements related to branding, navigation, and search.
+
+#### Design
+
+![Masthead design](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/w1mm4ac22aacc169q4fv.gif)
+
+#### Acceptance criteria
+
+```gherkin
+Feature: Masthead
+
+As a user I want to see a top app bar with a logo and a hamburger
+menu button, which opens or closes the navigation drawer sidebar.
+The logomark is the symbol or icon, and the logotype is the name
+of the company or brand. 
+
+Scenario: Extra small resolution
+  Given screen resolution is maximum "600px"
+  Then I should NOT see a "Guide Button"
+  And I should see a "Logo"
+
+Scenario: Small resolution
+  Given screen resolution is minimum "601px"
+  Then I should see a "Guide Button"
+  And I should see a "Logo"
+
+Scenario: Logomark
+  Given "Logo" is visible
+  Then I should see "FakeTube" logomark
+
+Scenario: Logotype
+  Given "Logo" is visible
+  Then I should see "FakeTube" logotype
+
+Scenario: Click logo
+  When I click a "Logo"
+  Then I should go to "/" URL
+
+Scenario: Hover over logo
+  When I "hover" over logo
+  Then I should see "FakeTube Home" tooltip
+```
+
+#### Links
+- [App bars: top - Material Design](https://m2.material.io/components/app-bars-top)
+- [Tooltips - Material Design](https://m2.material.io/components/tooltips)
+
+#### Dependencies
+- Guide Button
+- Logo
+
+### App Drawer
+
+#### Overview
+
+App drawer is a navigation sidebar, which provides an ergonomic access to a site navigation.
+
+#### Design
+
+![App Drawer design](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/9g3veaz01c8jq2rh2dcp.gif)
+
+#### Acceptance criteria
+
+```gherkin
+Feature: App Drawer
+
+As a user I want to see a left sidebar with a navigation menu.
+It should be temporary or persistent variant, depending on the
+screen resolution. Can be opened or closed by a hamburger menu button.
+
+Scenario: No app drawer
+  Given screen resolution is maximum "600px"
+  Then I "App Drawer" should NOT be present
+
+Scenario: Closed temporary variant
+  Given screen resolution is minimum "601px"
+  And screen resolution is maximum "1312px"
+  Then "App Drawer" should have a "temporary" variant
+  And "App Drawer" should be "closed"
+
+Scenario: Opened temporary variant
+  Given screen resolution is minimum "601px"
+  And screen resolution is maximum "1312px"
+  And "App Drawer" has a "temporary" variant
+  And "App Drawer" is "closed"
+  When I click "Guide Button"
+  Then "App Drawer" should be "opened"
+
+Scenario: Opened persistent variant
+  Given screen resolution is minimum "1313px"
+  Then "App Drawer" should have a "persistent" variant
+  And "App Drawer" should be "opened"
+  And I should see a "Guide"
+```
+
+#### Links
+- [Navigation drawer - Material Design](https://m2.material.io/components/navigation-drawer)
+
+#### Dependencies
+- Guide
+
+### Guide
+
+#### Overview
+
+Guide is a navigation menu, which is inside a navigation drawer sidebar.
+
+#### Design
+
+![Guide design](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/9g3veaz01c8jq2rh2dcp.gif)
+
+#### Acceptance criteria
+
+```gherkin
+Feature: Guide
+
+As a user I want to see a left sidebar with navigation items.
+
+Scenario: Home item
+  Given "Guide" is "opened"
+  Then I should see "/" link "Item"
+  And "Item" should have "Home" icon
+  And "Item" should have "Home" title
+```
+
+#### Links
+- [Navigation drawer - Material Design](https://m2.material.io/components/navigation-drawer)
+
+### Mini Guide
+
+#### Overview
+
+Mini Guide is a mini variant of a persistent navigation drawer sidebar with a navigation menu inside.
+
+#### Design
+
+![Mini Guide design](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/n0fco9mn8m6lu4l96nti.gif)
+
+#### Acceptance criteria
+
+```gherkin
+Feature: Mini Guide
+
+As a user I want to see a left sidebar with navigation items.
+
+Scenario: Home item
+  Given screen resolution is minimum "793px"
+  And screen resolution is maximum "1312px"
+  Then I should see a "Mini Guide"
+  And I should see "/" link "Item"
+  And "Item" should have "Home" icon
+  And "Item" should have "Home" title
+```
+
+#### Links
+- [Navigation drawer - Material Design](https://m2.material.io/components/navigation-drawer)
+
+### Pivot Bar
+
+#### Overview
+
+Pivot Bar is a bottom navigation bar that allows users to switch between primary views in an app.
+
+#### Design
+
+![Pivot Bar desing](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/k570wavfi4f1e75bevzi.gif)
+
+#### Acceptance criteria
+
+```gherkin
+Feature: Pivot Bar
+
+As a user I want to switch between different views in the
+application.
+
+Scenario: Extra small resolution
+  Given screen resolution is maximum "600px"
+  Then I should see a "Pivot Bar"
+  And I should see "/" link "Item"
+  And "Item" should have "Home" icon
+  And "Item" should have "Home" title
+```
+
+#### Links
+- [Bottom navigation - Material Design](https://m2.material.io/components/bottom-navigation)
+
+### Home Page
+
+#### Overview
+
+Home Page is the main page, which displays video feed in a form of a responsive grid of media items or media skeleton when content is loading.
+
+#### Design
+
+![Home Page design](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/j17hllnx5chriyj84yfm.gif)
+
+![Browse grid design](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/w8zmuyfhbio1zyjs8a3b.gif)
+
+#### Acceptance criteria
+
+```gherkin
+Feature: Home Page
+
+As a user I want to see a video feed on the main page.
+
+Scenario: Home page
+  Given I am on the "/" URL
+  Then I should see a "Home Page"
+
+Scenario: Content loading
+  Given video feed is "loading"
+  Then I should see a "Media Skeleton"
+  And I should see a "Thumbnail" placeholder
+  And I should see a "Channel Avatar" placeholder
+  And I should see a "Title" placeholder
+  And I should see a "Channel Name" placeholder 
+
+Scenario: Browse Grid
+  Given I am on the "Home Page"
+  Then I should see a "Grid" layout
+  And there is a "column gap" of "16px"
+  And there is a "row gap" of "32px"
+  And each "item" is the "same size"
+  And minimum "item" width is "310px"
+
+Scenario: Dynamic number of columns
+  Given "Home Page" width is "resized"
+  Then number of "Grid" columns should be adjusted
+  And it should be based on number of "310px" items
+      which will fit horizontally
+```
+#### Links
+- [Responsive layout grid - Material Design](https://m2.material.io/design/layout/responsive-layout-grid.html)
+- [Placeholder UI | Launch screen - Material Design](https://m2.material.io/design/communication/launch-screen.html#placeholder-ui)
+
+#### Dependencies
+- Browse Grid
+- Media Skeleton
+- Media Item
+
+### Media Item
+
+#### Overview
+
+Media item represents a video. I look similar to a Material Design's Card component with a thumbnail and details about a given video. Thumbnail can be replaced by a real video player in an autoplay mode.
+
+#### Design
+
+![Media Item design](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/rrngdxokudi7tnhj5pe0.gif)
+
+![Media Item design mobile version](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/tlabgswvw7gqjx5weys6.gif)
+
+#### Acceptance criteria
+
+```gherkin
+Feature: Media Item
+
+As a user I want to see a card which represents a video.
+It should show a video thumbnail and detailed metadata
+related to video and channel.
+
+Scenario: Thumbnail
+  Given "Media" is loaded
+  Then I should see a video a "Thumbnail"
+  And "Image" aspect ratio is "16/9"
+  And I should see a "Time status" badge
+
+Scenario: Details
+  Given "Media" is loaded
+  Then I should see a "Channel Avatar"
+  And I should see a "Channel Name"
+  And I should see video a "Title"
+  And I should see a a "Publish Date"
+
+Scenario: Player
+  Given "Media" is loaded
+  And I "hover" over "Media" item
+  Then I should see a video a "Player"
+  And it should "autoplay"
+  And "Progress Bar" should show current progress
+  And "Time Status" should show current playback time
+
+Scenario: Unmute
+  Given "Player" is visible
+  And video is "muted"
+  When I click "Unmuted" button
+  Then video should be "unmuted"
+
+Scenario: Mute
+  Given "Player" is visible
+  And video is "unmuted"
+  When I click "Muted" button
+  Then video should be "muted"
+```
+
+#### Links
+- [Cards - Material Design](https://m2.material.io/components/cards)
+
+## Project Management
+
+We will need some project **management tool**, where we can create our **backlog of tasks** and **track its progress**. For a start it can be a simple **[Kanban](https://en.wikipedia.org/wiki/Kanban_board) style board** with only 3 columns
+
+- **Todo**
+- **In progress**
+- **Done** 
+
+I used a few different tools over the years, like [Jira](https://www.atlassian.com/software/jira), [GitLab](https://about.gitlab.com/) or [Asana](https://asana.com/), but a lot of **open-source projects** are just using **[GitHub](https://github.com/)**, not only as a repository, but also for **project planning and tracking**. It's very **popular**, quite **powerful and free**, that's why we will use it as our **primary tool**.
+
+At the same time I want to explore and test **what's available from AWS (Amazon Web Services)**, because it's my cloud provider of choice. That's why I will also look into **[Amazon CodeCatalyst](https://codecatalyst.aws/explore)** and **compare it with GitHub**.
+
+### GitHub
+
+GitHub offers **[GitHub Projects](https://docs.github.com/en/issues/planning-and-tracking-with-projects/learning-about-projects/about-projects)**, which 
+
+> is an adaptable, flexible tool for **planning and tracking work** on GitHub.
+
+That's exactly what we need.
+
+I will start by going to [my GitHub account](https://github.com/JacekKosciesza), selecting the **"Projects tab"** and clicking the **"New Project"** button. Let's select the **"Team planning"** template, name our project **"FakeTube"** and click the **"Create project"** button.
+
+![GitHub create project](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/5cjr683q90gz7u4xspkh.gif)
+
+Project was successfully created, so now we can create our backlog. Click **"+ Add item"** at the bottom of the **"Todo" column**. We will name the **item "Application Shell"** and select the **"Create new issue" button**. We will select the **"JacekKosciesza/FakeTube" repository** and use **"Blank issue"** for now. We can copy paste our requirements prepared earlier as an issue **description**. Our first backlog item is ready. 
+
+![GitHub create issue](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/a6zp7b4bk11nz88vr9kf.gif)
+
+Cool thing is that GitHub markdown supports **syntax highlighting for Gherkin** language out of the box.
+
+![GitHub Gherkin support](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/jdy00tcffuel0vsbjarn.png)
+
+We have to do one more change in the project configuration - **increase the limit of allowed items in the "Todo" column**. Column limit of **15 items** should be enough for now.
+
+![GitHub todo column limit](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/n8lyle3nnhfbq1fn7mei.gif)
+
+Now let's create all the remaining backlog items.
+
+![GitHub backlog](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/73m0vedsbyejsjy987v5.png)
+
+### Amazon CodeCatalyst
+
+**Amazon CodeCatalyst** allows you to do similar things in terms of **project management** as GitHub. It also has a concept of **[projects](https://docs.aws.amazon.com/codecatalyst/latest/userguide/projects.html)** and **[issues](https://docs.aws.amazon.com/codecatalyst/latest/userguide/issues.html)**.
+
+> You can **plan work, collaborate on code**, and build, test, and deploy applications with continuous integration/continuous delivery (CI/CD) tools.
+
+> Use issues to **create backlogs and monitor the status of in-progress tasks with boards**. Creating and maintaining a healthy backlog of items for your team to work on is an important part of developing software.
+
+I already created a personal **JKosciesza space** in CodeCatalyst, but I don't have any projects yet. Let's create one by clicking the **"Create project" button**.
+
+We will **"Start from scratch"** and name the project **"FakeTube"**. For the final confirmation let's click **"Create project"** again.
+
+![CodeCatalyst create project](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/7wg1zpacd48z1o5tbslh.gif)
+
+Let's open the **"Issues" tab**. By default there are 4 columns
+
+- **To do**
+- **In progress**
+- **In review**
+- **Done**
+
+At the moment **we don't need an "In review" column**, plus we didn't use it in GitHub, so let's remove it. We have to **open the "Active issues" dropdown** and **click "Settings"**. At the very bottom there is a **"Statuses" section**, where we can **disable the "In review" column**.
+
+![CodeCatalyst remove in review column](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/i1rfpihojx2lw99lqa8l.gif)
+
+Now we can create our backlog. Click **"Create issue"**, put **"Application Shell"** as a title and **copy-paste requirements** which we prepared earlier as an issue **description**.
+
+![CodeCatalyst create issue](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/qyjwadbe9vl3tox8nq30.gif)
+
+Unfortunately it seems that **CodeCatalyst doesn't support syntax highlighting for a Gherkin language**.
+
+![CodeCatalyst no gherkin support](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/0k51u8dsl0suqp1ws41s.png)
+
+Now let's create all the remaining backlog items.
+
+![CodeCatalyst backlog](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/sy7btn99fbidjhywra2f.png)
+
+## Repository
+
+You can find all of the acceptance criteria (Gherkin feature files) and components hierarchy (YAML file) in the GitHub [JacekKosciesza/FakeTube](https://github.com/JacekKosciesza/FakeTube/tree/8c0eeb30c82fe2bf937762ddaec41e7f2f4248de) repository. GitHub project is here: [FakeTube](https://github.com/users/JacekKosciesza/projects/9).
