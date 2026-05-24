@@ -7,9 +7,11 @@ Open-source YouTube clone. Monorepo using npm workspaces.
 ```
 .
 ├── web/      Next.js 15 web app (@faketube/web)
+├── docs/     Nextra v4 docs and blog site (@faketube/docs)
 ├── cloud/    AWS CDK infrastructure (@faketube/cloud)
-├── data/     seed data
-└── specs/    Gherkin feature specs
+└── data/     seed data
+
+Gherkin specifications live under `docs/content/specs/` and render at /specs.
 ```
 
 ## Setup
