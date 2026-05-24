@@ -1,7 +1,5 @@
 {
-  "index": "Overview",
   "app-drawer": "AppDrawer",
-  "app-shell": "AppShell",
   "guide": "Guide",
   "masthead": "Masthead",
   "mini-guide": "MiniGuide",
