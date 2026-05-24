@@ -1,4 +1,4 @@
-This is a [Next.js](https://nextjs.org) project. It is the `@faketube/web` workspace of the FakeTube monorepo.
+This is a [Next.js](https://nextjs.org) project. It is the `@codetube/web` workspace of the FakeTube monorepo.
 
 ## Getting Started
 
