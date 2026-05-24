@@ -44,7 +44,7 @@ body > [class*="bg-gray-100"] {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 1.5rem;
-  margin-top: 0.5rem;
+  margin-top: 3rem;
   clear: both;
 }
 
