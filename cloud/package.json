@@ -1,6 +1,7 @@
 {
-  "name": "faketube",
+  "name": "@faketube/cloud",
   "version": "0.1.0",
+  "private": true,
   "bin": {
     "faketube": "bin/faketube.js"
   },
