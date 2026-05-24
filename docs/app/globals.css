@@ -42,9 +42,16 @@ body > [class*="bg-gray-100"] {
 
 .ct-blog-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  grid-template-columns: repeat(2, 1fr);
   gap: 1.5rem;
-  margin-top: 1.5rem;
+  margin-top: 0.5rem;
+  clear: both;
+}
+
+@media (max-width: 640px) {
+  .ct-blog-grid {
+    grid-template-columns: 1fr;
+  }
 }
 
 .ct-blog-card {
