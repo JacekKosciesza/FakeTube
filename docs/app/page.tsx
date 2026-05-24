@@ -5,7 +5,7 @@ export default function HomePage() {
   return (
     <main className="hero">
       <Logo size={88} />
-      <h1>CodeTube<sup style={{ fontSize: '0.4em', verticalAlign: 'super' }}>&reg;</sup></h1>
+      <h1>CodeTube<sup style={{ fontSize: '0.35em', verticalAlign: 'super', opacity: 0.35, fontWeight: 400 }}>&reg;</sup></h1>
       <p className="tagline">
         Learn advanced software engineering by building a YouTube clone.
       </p>
