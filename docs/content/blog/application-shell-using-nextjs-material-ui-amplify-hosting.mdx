@@ -1,0 +1,1876 @@
+---
+title: "Application Shell using Next.js, Material UI, Amplify Hosting - FakeTube #3"
+date: 2025-07-16
+description: "We are finally ready to start coding. In the last two episodes we finalised important prerequisites -..."
+source: "https://dev.to/jacekkosciesza/application-shell-using-nextjs-material-ui-amplify-hosting-faketube-3-1ig8"
+---
+
+
+We are finally ready to **start coding**. In the last two episodes we finalised important prerequisites - preparing initial requirements and content for our **YouTube clone**. In this episode we will start **frontend development** with an **Application Shell**.
+
+Application Shell provides a **static, consistent and responsive user interface framework or skeleton**, which has elements like navigation bars, headers, footers, sidebars and basic layout structure. App shell loads very quickly, then the **dynamic content** specific to the current page or section is **loaded and injected into the shell**. In our case it will be a static layout with components like **Masthead**, **App Drawer** with **Guide**, **Mini Guide** and **Pivot Bar**. 
+
+We are going to use popular technologies like **[Next.js](https://nextjs.org/)**, **[React](https://react.dev/)**, **[TypeScript](https://www.typescriptlang.org/)** and **[Material UI](https://mui.com/material-ui/)**. Hosting will be provided by **[AWS Amplify Hosting](https://aws.amazon.com/amplify/hosting/)**, which **supports Next.js server-side rendering (SSR)** out of the box.
+
+## GitHub
+
+**[GitHub](https://github.com/)** will be our primary tool for a  **project planning** and **tracking**, but also as a **source code repository** 
+
+I already created the **project repository:[JacekKosciesza/FakeTube](https://github.com/JacekKosciesza/FakeTube)**, so let's **clone it** and change a working directory:
+
+```
+git clone https://github.com/JacekKosciesza/FakeTube.git
+cd FakeTube/
+```
+
+## Next.js
+
+### Installation
+
+The easiest way to **[start a Next.js project](https://nextjs.org/docs/app/getting-started/installation#automatic-installation)** is to use **[create-next-app](https://nextjs.org/docs/app/api-reference/cli/create-next-app)**. It launches a simple wizard in the terminal. Let's name our app `faketube` and use default values for the other options.
+
+```console
+npx create-next-app@latest
+```
+
+![Create Next.js app](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/digcem2j4ersn89bx9bk.png)
+
+I like to have top level folders in the project like this:
+- web
+- mobile
+- cloud
+
+so, let's **rename `faketube` folder** created by `crate-next-app` to **`web`**, change a working directory and **run our web application** (on the default http://localhost:3000)
+
+```
+mv faketube web
+cd web/
+npm run dev
+```
+
+![New Next.js app](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/q22tzfizee6yqtjwlevt.png)
+
+GitHub: [feat(appshell): next.js installation (#9)](https://github.com/JacekKosciesza/FakeTube/commit/79742bfcb23c9ded5ba3309c9bbf8033c623a246)
+
+## Material UI
+
+### Installation
+
+Now it's time to add our **components library** of choice - **[Material UI](https://mui.com/material-ui/)** to our project. [MUI documentation](https://mui.com/material-ui/getting-started/installation/) gives us precise instructions on how to do it.
+
+Let's start with installing **core dependencies**.
+
+```
+npm install @mui/material @emotion/react @emotion/styled
+```
+
+We will also need to **install icons** in order to use prebuilt SVG Material Icons.
+
+```npm
+npm install @mui/icons-material
+```
+
+GitHub: [feat(appshell): material ui installation (#10)](https://github.com/JacekKosciesza/FakeTube/commit/f85b38d3439f248bafbeae17abad5a097e6c4141)
+
+### Next.js integration
+
+There are a few **[integration steps](https://mui.com/material-ui/integrations/nextjs/)** we will have to do to **use Material UI with Next.js**.
+
+We will be using an **[App Router](https://nextjs.org/docs/app)** which is a **file-system based router** that uses the React's **latest features** and is an evolution of the older [Pages Router](https://nextjs.org/docs/pages/getting-started).
+
+#### Dependencies
+
+Let's start with installing the dependencies
+
+```
+npm install @mui/material-nextjs @emotion/cache
+```
+
+#### Configuration
+
+Next, let's change configuration in **`web/app/layout.tsx`** by importing the **`AppRouterCacheProvider`** component and wrapping all elements under the `<body>` with it
+
+`web/app/layout.tsx` _(diff)_
+
+```diff
++ import { AppRouterCacheProvider } from '@mui/material-nextjs/v15-appRouter';
+import type { Metadata } from "next";
+// ...
+
+export default function RootLayout({
+  children,
+}: Readonly<{ children: React.ReactNode }>) {
+  return (
+    <html lang="en">
+      <body className={`${geistSans.variable} ${geistMono.variable}`}>
++       <AppRouterCacheProvider>
+          {children}
++       </AppRouterCacheProvider>
+      </body>
+    </html>
+  );
+}
+```
+
+#### Font optimization
+
+If we want to take advantage of **[Next.js font optimization](https://nextjs.org/docs/app/getting-started/fonts)**, we will have to **customize** a few things in the **MUI theme** and **Next.js layout**.
+
+`web/app/theme.ts`
+
+```ts
+"use client";
+
+import { createTheme } from "@mui/material/styles";
+
+const theme = createTheme({
+  typography: {
+    fontFamily: "var(--font-roboto)",
+  },
+});
+
+export default theme;
+```
+
+`web/app/layout.tsx` _(diff)_
+
+```diff
++import CssBaseline from "@mui/material/CssBaseline";
+import { AppRouterCacheProvider } from '@mui/material-nextjs/v15-appRouter';
+import type { Metadata } from "next";
+-import { Geist, Geist_Mono } from "next/font/google";
+-import "./globals.css";
++import { Roboto } from 'next/font/google';
++import { ThemeProvider } from '@mui/material/styles';
+
++import theme from './theme';
+
+-const geistSans = Geist({
+-  variable: "--font-geist-sans",
+-  subsets: ["latin"],
+-});
+
+-const geistMono = Geist_Mono({
+-  variable: "--font-geist-mono",
+-  subsets: ["latin"],
+-});
+
++const roboto = Roboto({
++  weight: ['300', '400', '500', '700'],
++  subsets: ['latin'],
++  display: 'swap',
++  variable: '--font-roboto',
++});
+
+export const metadata: Metadata = {
+  title: "Create Next App",
+  description: "Generated by create next app",
+};
+
+export default function RootLayout({
+  children,
+}: Readonly<{ children: React.ReactNode }>) {
+   return (
+-    <html lang="en">
++    <html lang="en" className={roboto.variable}>
+-      <body className={`${geistSans.variable} ${geistMono.variable}`}>
++      <body>
+          <AppRouterCacheProvider>
++           <ThemeProvider theme={theme}>
++             <CssBaseline />
+              {children}
++           </ThemeProvider>
+          </AppRouterCacheProvider>
+       </body>
+     </html>
+   );
+ }
+```
+
+`web/app/layout.tsx`
+
+```tsx
+import CssBaseline from "@mui/material/CssBaseline";
+import { AppRouterCacheProvider } from "@mui/material-nextjs/v15-appRouter";
+import type { Metadata } from "next";
+import { Roboto } from "next/font/google";
+import { ThemeProvider } from "@mui/material/styles";
+
+import theme from "./theme";
+
+const roboto = Roboto({
+  weight: ["300", "400", "500", "700"],
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-roboto",
+});
+
+export const metadata: Metadata = {
+  title: "Create Next App",
+  description: "Generated by create next app",
+};
+
+export default function RootLayout({
+  children,
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
+  return (
+    <html lang="en" className={roboto.variable}>
+      <body>
+        <AppRouterCacheProvider>
+          <ThemeProvider theme={theme}>
+            <CssBaseline />
+            {children}
+          </ThemeProvider>
+        </AppRouterCacheProvider>
+      </body>
+    </html>
+  );
+}
+```
+
+Let's verify if our project still builds and runs
+
+```
+npm run build
+npm run dev
+```
+
+GitHub: [feat(appshell): next.js integration (#11)](https://github.com/JacekKosciesza/FakeTube/commit/6847ab3c537466fba4c8716bec1bb3b721d63177)
+
+## Application Shell
+
+After all those prerequisites, we can focus on a **minimalistic Application Shell component**. It will not add any visual difference (in that version), but will be a foundation for some enhancements.
+
+`web/app/AppShell/AppShell.tsx`
+
+```tsx
+import * as React from "react";
+
+interface Props {
+  children: React.ReactNode;
+}
+
+export function AppShell({ children }: Props) {
+  return <>{children}</>;
+}
+```
+
+`web/app/AppShell/index.ts`
+
+```ts
+export * from "./AppShell";
+```
+
+To use it - we will have to modify our `web/app/layout.tsx`, but first let's look at **HTML metadata**.
+
+#### Metadata
+
+Let's change web app metadata like **title**, **description** and **keywords**. This is how YouTube defines it.
+
+```html
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>YouTube</title>
+    <meta name="description" content="Enjoy the videos and music
+you love, upload original content, and share it all with friends,
+family, and the world on YouTube.">
+     <meta name="keywords" content="video, sharing, camera phone, video
+phone, free, upload">
+     <!-- ... -->
+  </head>
+</html>
+```
+
+We will do it in a similar way, but let's get rid of some features references, which we don't have yet.
+
+`web/app/layout.tsx` _(diff)_
+
+```diff
+import CssBaseline from "@mui/material/CssBaseline";
+import { AppRouterCacheProvider } from "@mui/material-nextjs/v15-appRouter";
+import type { Metadata } from "next";
+import { Roboto } from "next/font/google";
+import { ThemeProvider } from "@mui/material/styles";
+
+import theme from "../theme";
++import { AppShell } from "./AppShell";
+
+const roboto = Roboto({
+  weight: ["300", "400", "500", "700"],
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-roboto",
+});
+
+export const metadata: Metadata = {
+-  title: "Create Next App",
++  title: "FakeTube",
+-  description: "Generated by create next app",
++  description: "Enjoy the videos and music you love on FakeTube.",
++  keywords: "video, free",
+};
+
+export default function RootLayout({
+  children,
+}: Readonly<{ children: React.ReactNode }>) {
+  return (
+    <html lang="en" className={roboto.variable}>
+      <body>
+        <AppRouterCacheProvider>
+          <ThemeProvider theme={theme}>
+            <CssBaseline />
+-           {children}
++           <AppShell>{children}</AppShell>
+          </ThemeProvider>
+        </AppRouterCacheProvider>
+      </body>
+    </html>
+  );
+}
+```
+
+### Home
+
+**Defaul page** needs some **cleanup**. We will make it empty for now.
+
+`web/app/page.tsx`
+
+```tsx
+export default function Home() {
+  return null;
+}
+```
+
+### Breakpoints
+
+To make our **layout more compatible** with the real YouTube app, we will have to slightly **adjust [breakpoints](https://mui.com/material-ui/customization/breakpoints/)** by defining [custom ones](https://mui.com/material-ui/customization/breakpoints/#custom-breakpoints) in the MUI theme.
+
+`web/app/theme.ts` _(diff)_
+
+```diff
+"use client";
+
+import { createTheme } from "@mui/material/styles";
+
++declare module "@mui/material/styles" {
++  interface BreakpointOverrides {
++    xxl: true;
++    xxxl: true;
++  }
++}
+
+const theme = createTheme({
+  typography: {
+    fontFamily: "var(--font-roboto)",
+  },
++ breakpoints: {
++   values: {
++     xs: 0,
++     sm: 601,
++     md: 792,
++     lg: 1313,
++     xl: 1536,
++     xxl: 1920,
++     xxxl: 2985,
++   },
++ },
+});
+
+export default theme;
+```
+
+### Loading
+
+In Next.js we can display a meaningful **loading UI** component with React Suspense. In our case we will need a simple **[indeterminate linear progress indicator](https://mui.com/material-ui/react-progress/#linear-indeterminate)**.
+
+`web/app/loading.tsx`
+
+```tsx
+import LinearProgress from "@mui/material/LinearProgress";
+
+export default function Loading() {
+  return <LinearProgress color="error" sx={{ height: 3 }} />;
+}
+```
+
+### Favicon
+
+It's time to **replace** Next.js **favicon** with the FakeTube one. At the same time let's add the FakeTube **logo in PNG and SVG formats**.
+
+```
+web
+├── app
+│   ├── favicon.ico
+|   ├── ...
+├── public
+│   ├── faketube.png
+│   ├── faketube.svg
+|   ├── ...
+| ...
+```
+
+![FakeTube favicon](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/xf89gq33lor8l2eh4z2i.png)
+
+### Cleanup
+
+Let's also **remove** all the **unused files** created by create-nextjs-app.
+
+```
+web
+├── app
+│   ├── globals.css
+│   ├── page.module.css
+|   ├── ...
+├── public
+│   ├── file.svg
+│   ├── globe.svg
+│   ├── next.svg
+│   ├── vercel.svg
+│   ├── window.svg
+|   ├── ...
+| ...
+```
+
+### Next.js Dev Tools
+
+We don't need **Next.js Dev Tools** at the moment, so we will hide it. We can do it by modifying **devIndicators** Next.js config option.
+
+`web/next.config` _(diff)_
+
+```diff
+import type { NextConfig } from "next";
+
+const nextConfig: NextConfig = {
+- /* config options here */
++ devIndicators: false,
+};
+
+export default nextConfig;
+```
+
+GitHub: [feat(appshell): empty appshell component (#12)](https://github.com/JacekKosciesza/FakeTube/commit/eb7a6eedb493adbf8f02847fad5a08d19ce45b1d)
+
+### Masthead
+
+The next step is to create a **masthead**, which in Material Design terms is known as an **[App Bar](https://mui.com/material-ui/react-app-bar/#basic-app-bar)**. It's at the top of the screen and will be used for **branding**, **navigation**, and actions in the future.
+
+`web/app/AppShell/Masthead/Masthead.tsx`
+
+```tsx
+import AppBar from "@mui/material/AppBar";
+import IconButton from "@mui/material/IconButton";
+import MenuIcon from "@mui/icons-material/Menu";
+import Toolbar from "@mui/material/Toolbar";
+import Typography from "@mui/material/Typography";
+
+export function Masthead() {
+  return (
+    <AppBar elevation={0} position="static">
+      <Toolbar>
+        <IconButton
+          size="large"
+          edge="start"
+          color="inherit"
+          aria-label="menu"
+          sx={{ mr: 2 }}
+        >
+          <MenuIcon />
+        </IconButton>
+        <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+          FakeTube
+        </Typography>
+      </Toolbar>
+    </AppBar>
+  );
+}
+```
+
+`web/app/AppShell/Masthead/index.tsx`
+
+```ts
+export * from "./Masthead";
+```
+
+`web/app/AppShell/AppShell.tsx` _(diff)_
+
+```diff
+import * as React from "react";
+
++import { Masthead } from "./Masthead";
+
+interface Props {
+  children: React.ReactNode;
+}
+
+export function AppShell({ children }: Props) {
+- return <>{children}</>;
++ return (
++   <>
++     <Masthead />
++     {children}
++   </>
++  );
+}
+```
+
+![Basic blue masthead](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/jv0bew3imbidnkh9nfk7.png)
+
+By default it's blue, so we have to change it to look like on YouTube. We can **adjust styling** on the component level or on the **theme level**. I chose the latter to make it easier to introduce dark theme in the future.
+
+`web/app/theme.ts` _(diff)_
+
+```diff
+// ...
+const theme = createTheme({
+  typography: {
+    fontFamily: "var(--font-roboto)",
+  },
+  breakpoints: {
+    values: {
+      xs: 0,
+      sm: 601,
+      md: 792,
+      lg: 1313,
+      xl: 1536,
+      xxl: 1920,
+      xxxl: 2985,
+    },
+  },
++ components: {
++   MuiAppBar: {
++     styleOverrides: {
++       colorPrimary: {
++         backgroundColor: "#FFFFFF",
++         color: "#000000",
++       },
++     },
++   },
++ },
+});
+```
+
+![Basic masthead](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/xoqg7kg5i56op5ucucnv.png)
+
+GitHub: [feat(appshell): basic masthead component (#13)](https://github.com/JacekKosciesza/FakeTube/commit/cc0a55812ba3dca91d47524a63acff75629a8900)
+
+#### Logo
+
+So far we have created only basic "FakeTube" **logotype** (brand name), but we also need a **logomark** (icon or image) to create a complete **brand logo**. We will introduce a new logo component and update masthead to use it.
+
+`web/app/AppShell/Logo/Logo.tsx`
+
+```tsx
+"use client";
+
+import * as React from "react";
+import Image from "next/image";
+import NextLink from "next/link";
+import Tooltip from "@mui/material/Tooltip";
+import Typography from "@mui/material/Typography";
+import Stack from "@mui/material/Stack";
+
+export function Logo() {
+  return (
+    <Tooltip
+      title="FakeTube Home"
+      enterDelay={500}
+      disableInteractive
+      sx={{
+        textDecoration: "none",
+      }}
+    >
+      <NextLink href="/" style={{ textDecoration: "none" }}>
+        <Stack direction="row" alignItems="center" spacing={0.2}>
+          <Image src="faketube.svg" alt="" width={29} height={20} />
+          <Typography
+            variant="h6"
+            color="textPrimary"
+            sx={{
+              fontWeight: (theme) => theme.typography.fontWeightBold,
+              letterSpacing: "-0.075rem",
+            }}
+          >
+            FakeTube
+          </Typography>
+        </Stack>
+      </NextLink>
+    </Tooltip>
+  );
+}
+```
+
+`web/app/AppShell/Logo/index.ts`
+
+```ts
+export * from "./Logo";
+```
+
+`web/app/AppShell/Masthead/Masthead.tsx` _(diff)_
+
+```diff
+import AppBar from "@mui/material/AppBar";
+import IconButton from "@mui/material/IconButton";
+import MenuIcon from "@mui/icons-material/Menu";
+import Toolbar from "@mui/material/Toolbar";
+-import Typography from "@mui/material/Typography";
+
++import { Logo } from "../Logo";
+
+export function Masthead() {
+  return (
+    <AppBar elevation={0} position="static">
+      <Toolbar>
+        <IconButton
+          size="large"
+          edge="start"
+          color="inherit"
+          aria-label="menu"
+          sx={{ mr: 2 }}
+        >
+          <MenuIcon />
+        </IconButton>
+-       <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+-         FakeTube
+-       </Typography>
++        <Logo />
+      </Toolbar>
+    </AppBar>
+  );
+}
+```
+
+![Masthead with logo](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/4re6i5n1otvsu0w45guy.png)
+
+GitHub: [feat(appshell): logo (#14)](https://github.com/JacekKosciesza/FakeTube/commit/3792d4f038607a423b01926d87ef7928215a8fef)
+
+### App Drawer
+
+Now, let's shift focus to an **[App Drawer](https://mui.com/material-ui/react-drawer/)** - **sidebar** which will have main **navigation elements** like **Guide** or **Mini Guide**. It will have a **temporary and permanent variants** and will be controlled (open/close) by a **Guide Button**, which is also known as a **hamburger menu** button.
+
+`web/app/AppShell/AppDrawer/AppDrawer.tsx`
+
+```tsx
+import Box from "@mui/material/Box";
+import Drawer from "@mui/material/Drawer";
+
+export interface Props {
+  open: boolean;
+  onDrawerClose: () => void;
+  variant?: "temporary" | "permanent";
+}
+
+export function AppDrawer(props: Props) {
+  const { open, onDrawerClose, variant } = props;
+
+  const handleDrawerClose = () => {
+    if (variant === "temporary") onDrawerClose();
+  };
+
+  return (
+    <Drawer
+      open={open}
+      onClose={onDrawerClose}
+      sx={{
+        "& .MuiDrawer-paper": {
+          mt: variant === "temporary" ? 0 : 8,
+          borderRight: "none",
+        },
+      }}
+      variant={variant}
+    >
+      <Box
+        role="presentation"
+        onClick={handleDrawerClose}
+        onKeyDown={handleDrawerClose}
+        display="flex"
+        flexDirection="column"
+        justifyContent="space-between"
+        sx={{
+          height: (theme) =>
+            `calc(100% - ${theme.spacing(variant === "temporary" ? 2 : 8)})`,
+        }}
+      >
+        <Box p={2}>TODO: Guide</Box>
+      </Box>
+    </Drawer>
+  );
+}
+```
+
+`web/app/AppShell/AppShell.tsx` _(diff)_
+
+```diff
++"use client";
+
+import * as React from "react";
+
++import { AppDrawer } from "./AppDrawer";
+import { Masthead } from "./Masthead";
+
+interface Props {
+  children: React.ReactNode;
+}
+
+export function AppShell({ children }: Props) {
++ const [isAppDrawerOpened, setIsAppDrawerOpened] = React.useState(false);
+
++ const closeAppDrawer = () => {
++   setIsAppDrawerOpened(false);
++ };
++  const toggleAppDrawer = () => {
++   setIsAppDrawerOpened(!isAppDrawerOpened);
++ };
+
+  return (
+    <>
+-     <Masthead />
++     <Masthead onGuideButtonClick={toggleAppDrawer} />
++     <AppDrawer
++       open={isAppDrawerOpened}
++       onDrawerClose={closeAppDrawer}
++       variant="temporary"
++      />
+      {children}
+    </>
+  );
+}
+```
+
+`web/app/AppShell/AppShell.tsx`
+
+```tsx
+"use client";
+
+import * as React from "react";
+
+import { AppDrawer } from "./AppDrawer";
+import { Masthead } from "./Masthead";
+
+interface Props {
+  children: React.ReactNode;
+}
+
+export function AppShell({ children }: Props) {
+  const [isAppDrawerOpened, setIsAppDrawerOpened] = React.useState(false);
+
+  const closeAppDrawer = () => {
+    setIsAppDrawerOpened(false);
+  };
+  const toggleAppDrawer = () => {
+    setIsAppDrawerOpened(!isAppDrawerOpened);
+  };
+
+  return (
+    <>
+      <Masthead onGuideButtonClick={toggleAppDrawer} />
+      <AppDrawer
+        open={isAppDrawerOpened}
+        onDrawerClose={closeAppDrawer}
+        variant="temporary"
+      />
+      {children}
+    </>
+  );
+}
+```
+
+`web/app/AppShell/Masthead/Masthead.tsx` _(diff)_
+
+```diff
+import AppBar from "@mui/material/AppBar";
+import IconButton from "@mui/material/IconButton";
+import MenuIcon from "@mui/icons-material/Menu";
+import Toolbar from "@mui/material/Toolbar";
+
+import { Logo } from "../Logo";
+
++export interface Props {
++  onGuideButtonClick: () => void;
++}
+
+-export function Masthead() {
++export function Masthead({ onGuideButtonClick }: Props) {
+  return (
+    <AppBar elevation={0} position="static">
+      <Toolbar>
+        <IconButton
+          size="large"
+          edge="start"
+          color="inherit"
+          aria-label="menu"
+          sx={{ mr: 2 }}
++         onClick={onGuideButtonClick}
+        >
+          <MenuIcon />
+        </IconButton>
+        <Logo />
+      </Toolbar>
+    </AppBar>
+  );
+}
+```
+
+![Temporary app drawer](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/2c0v3tjyufeah3v3ulcu.png)
+
+GitHub: [feat(appshell): empty app drawer component (#15)](https://github.com/JacekKosciesza/FakeTube/commit/c7a57bac17a8b14333861c414c27761762bc9585)
+
+#### Guide
+
+A **guide** is one of the main navigation elements. It contains elements which we already have in the masthead like **Guide Button** and **Logo**, as well as unique **navigation items**.
+
+`web/app/AppShell/AppDrawer/Guide/Guide.tsx`
+
+```tsx
+import HomeIcon from "@mui/icons-material/Home";
+import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
+import List from "@mui/material/List";
+import Stack from "@mui/material/Stack";
+import Toolbar from "@mui/material/Toolbar";
+
+import { GuideButton } from "./GuideButton";
+import { GuideItem } from "./GuideItem";
+import { Logo } from "../../Logo";
+
+interface Props {
+  onDrawerClose: () => void;
+  variant?: "temporary" | "permanent";
+}
+
+export function Guide(props: Props) {
+  const { onDrawerClose, variant } = props;
+
+  const handleDrawerClose = () => {
+    if (variant === "temporary") onDrawerClose();
+  };
+
+  return (
+    <Stack>
+      {variant === "temporary" && (
+        <Toolbar>
+          <GuideButton onClick={handleDrawerClose} />
+          <Logo />
+        </Toolbar>
+      )}
+      <List sx={{ width: 240, p: 1 }}>
+        <GuideItem
+          label="Home"
+          href="/"
+          icon={<HomeOutlinedIcon />}
+          activeIcon={<HomeIcon />}
+          onClick={handleDrawerClose}
+        />
+      </List>
+    </Stack>
+  );
+}
+```
+
+Let's extract a hamburger menu button to a **reusable Guide Button** component and use it in both places (Guide and Masthead).
+
+`web/app/AppShell/AppDrawer/Guide/GuideButton.tsx`
+
+```tsx
+import IconButton from "@mui/material/IconButton";
+import MenuIcon from "@mui/icons-material/Menu";
+
+interface Props {
+  onClick: () => void;
+}
+
+export function GuideButton(props: Props) {
+  const { onClick } = props;
+
+  return (
+    <IconButton
+      onClick={onClick}
+      size="large"
+      edge="start"
+      color="inherit"
+      aria-label="Guide"
+      sx={{ mr: 2 }}
+    >
+      <MenuIcon />
+    </IconButton>
+  );
+}
+```
+
+`web/app/AppShell/AppDrawer/Guide/index.ts`
+
+```ts
+export * from "./Guide";
+export * from "./GuideButton";
+```
+
+`web/app/AppShell/Masthead/Masthead.tsx` _(diff)_
+
+```diff
+import AppBar from "@mui/material/AppBar";
+-import IconButton from "@mui/material/IconButton";
+-import MenuIcon from "@mui/icons-material/Menu";
+import Toolbar from "@mui/material/Toolbar";
+
+import { Logo } from "../Logo";
++import { GuideButton } from "../AppDrawer/Guide";
+
+export interface Props {
+  onGuideButtonClick: () => void;
+}
+
+export function Masthead({ onGuideButtonClick }: Props) {
+  return (
+    <AppBar elevation={0} position="static">
+      <Toolbar>        
+-       <IconButton
+-         size="large"
+-         edge="start"
+-         color="inherit"
+-         aria-label="menu"
+-         sx={{ mr: 2 }}
+-         onClick={onGuideButtonClick}
+-       >
+-         <MenuIcon />
+-       </IconButton>
++       <GuideButton onClick={onGuideButtonClick} />
+        <Logo />
+      </Toolbar>
+    </AppBar>
+  );
+}
+```
+
+**Guide item** will also be a **reusable component** defined like this.
+
+`web/app/AppShell/AppDrawer/Guide/GuideItem.tsx`
+
+```tsx
+import ListItem from "@mui/material/ListItem";
+import ListItemButton from "@mui/material/ListItemButton";
+import ListItemIcon from "@mui/material/ListItemIcon";
+import ListItemText from "@mui/material/ListItemText";
+import NextLink from "next/link";
+
+import { useActive } from "../../useActive";
+
+interface Props {
+  label: string;
+  href: string;
+  icon: React.ReactNode;
+  activeIcon: React.ReactNode;
+  onClick: () => void;
+}
+
+export function GuideItem(props: Props) {
+  const { label, href, icon, activeIcon, onClick } = props;
+
+  const active = useActive(href);
+
+  return (
+    <ListItem disablePadding>
+      <ListItemButton
+        component={NextLink}
+        onClick={onClick}
+        href={href}
+        sx={{
+          pl: 2,
+          borderRadius: 2.5,
+          backgroundColor: (theme) =>
+            active ? theme.palette.action.selected : "inherit",
+          fontWeight: active ? "bolder" : "normal",
+        }}
+      >
+        <ListItemIcon
+          sx={{
+            color: (theme) => theme.palette.text.primary,
+            minWidth: "42px",
+          }}
+        >
+          {active ? activeIcon : icon}
+        </ListItemIcon>
+        <ListItemText
+          primary={label}
+          slotProps={{
+            primary: {
+              sx: {
+                fontWeight: active ? "bolder" : "normal",
+                fontSize: 14,
+              },
+            },
+          }}
+        />
+      </ListItemButton>
+    </ListItem>
+  );
+}
+```
+
+To know if this is an **active (selected) element**, we created a **helper useActive hook**.
+
+`web/app/AppShell/useActive.tsx`
+
+```tsx
+import { usePathname } from "next/navigation";
+
+export function useActive(href: string): boolean {
+  const pathname = usePathname();
+
+  let active = false;
+  if (href === "/") {
+    active = pathname === href;
+  } else {
+    active = pathname.startsWith(href);
+  }
+
+  return active;
+}
+```
+
+Finally let's add Guide to the Application Drawer
+
+`web/app/AppShell/AppDrawer/AppDrawer.tsx` _(diff)_
+
+```diff
+import Box from "@mui/material/Box";
+import Drawer from "@mui/material/Drawer";
+
++import { Guide } from "./Guide";
+
+export interface Props {
+  open: boolean;
+  onDrawerClose: () => void;
+  variant?: "temporary" | "permanent";
+}
+
+export function AppDrawer(props: Props) {
+  const { open, onDrawerClose, variant } = props;
+
+  const handleDrawerClose = () => {
+    if (variant === "temporary") onDrawerClose();
+  };
+
+  return (
+    <Drawer
+      open={open}
+      onClose={onDrawerClose}
+      sx={{
+        "& .MuiDrawer-paper": {
+          mt: variant === "temporary" ? 0 : 8,
+          borderRight: "none",
+        },
+      }}
+      variant={variant}
+    >
+      <Box
+        role="presentation"
+        onClick={handleDrawerClose}
+        onKeyDown={handleDrawerClose}
+        display="flex"
+        flexDirection="column"
+        justifyContent="space-between"
+        sx={{
+          height: (theme) =>
+            `calc(100% - ${theme.spacing(variant === "temporary" ? 2 : 8)})`,
+        }}
+      >
+-       <Box p={2}>TODO: Guide</Box>
++       <Guide onDrawerClose={handleDrawerClose} variant={variant} />
+      </Box>
+    </Drawer>
+  );
+}
+```
+
+![Temporary app drawer with guide](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/tlnfhrqa12at3phtdw1i.png)
+
+Our navigation solution works well, but we only display a temporary variant of the app drawer. We want to show a **permanent variant** for the **desktop resolution**. At the same time we can prepare a **display logic** for other navigation types like **Mini Guide** and **Pivot Bar**. To do that, let's introduce a **new hook - useNavigation**.
+
+`web/app/AppShell/useNavigation.tsx`
+
+```tsx
+import useMediaQuery from "@mui/material/useMediaQuery";
+import useTheme from "@mui/system/useTheme";
+
+export interface Navigation {
+  pivotBar?: boolean;
+  miniGuide?: boolean;
+  guide?: boolean;
+  variant?: "temporary" | "permanent";
+}
+
+export function useNavigation(opened: boolean): Navigation {
+  const theme = useTheme();
+  const tablet = useMediaQuery(theme.breakpoints.between("sm", "lg"));
+  const desktop = useMediaQuery(theme.breakpoints.up("lg"));
+
+  const navigation: Navigation = {
+    pivotBar: true,
+    miniGuide: false,
+    guide: false,
+  };
+
+  if (tablet) {
+    return { guide: true, miniGuide: true, variant: "temporary" };
+  }
+
+  if (desktop) {
+    return opened
+      ? { guide: true, variant: "permanent" }
+      : { guide: false, miniGuide: true, variant: "temporary" };
+  }
+
+  return navigation;
+}
+```
+
+`web/app/AppShell/AppShell.tsx` _(diff)_
+
+```diff
+"use client";
+
+import * as React from "react";
+
+import { AppDrawer } from "./AppDrawer";
+import { Masthead } from "./Masthead";
++import { useNavigation } from "./useNavigation";
+
+interface Props {
+  children: React.ReactNode;
+}
+
+export function AppShell({ children }: Props) {
+  const [isAppDrawerOpened, setIsAppDrawerOpened] = React.useState(false);
+
+  const closeAppDrawer = () => {
+    setIsAppDrawerOpened(false);
+  };
+  const toggleAppDrawer = () => {
+    setIsAppDrawerOpened(!isAppDrawerOpened);
+  };
+
++ const navigation = useNavigation(isAppDrawerOpened);
+
+  return (
+    <>
+      <Masthead onGuideButtonClick={toggleAppDrawer} />
++     {navigation.guide && (
+        <AppDrawer
+          open={isAppDrawerOpened}
+          onDrawerClose={closeAppDrawer}
+-         variant="temporary"
++         variant={navigation.variant}
+        />
++     )}
+      {children}
+    </>
+  );
+}
+```
+
+![Permanent app drawer with guide](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/s9d5d14pwugz9nhr4p7x.png)
+
+GitHub: [feat(appshell): guide (#4)](https://github.com/JacekKosciesza/FakeTube/commit/219cdc10e8f6608544bee205548d48c64a497523)
+
+### Mini Guide
+
+In some cases we want to display a **Mini Guide** instead of a fully blown Guide. We will do that for **tablet resolution** or a desktop one, when the **app drawer** is **closed**. 
+
+`web/app/AppShell/MiniGuide/MiniGuide.tsx`
+
+```tsx
+import Drawer from "@mui/material/Drawer";
+import HomeIcon from "@mui/icons-material/Home";
+import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
+import List from "@mui/material/List";
+
+import { MiniGuideItem } from "./MiniGuideItem";
+
+export function MiniGuide() {
+  return (
+    <Drawer
+      open={true}
+      variant="permanent"
+      sx={{
+        "& .MuiDrawer-paper": {
+          width: (theme) => theme.spacing(9),
+          mt: 8,
+          pt: 0.3,
+          px: 0.8,
+          borderRight: "none",
+        },
+      }}
+    >
+      <List disablePadding>
+        <MiniGuideItem
+          label="Home"
+          href="/"
+          icon={<HomeOutlinedIcon />}
+          activeIcon={<HomeIcon />}
+        />
+      </List>
+    </Drawer>
+  );
+}
+```
+
+`web/app/AppShell/MiniGuide/MiniGuideItem.tsx`
+
+```tsx
+import ListItem from "@mui/material/ListItem";
+import ListItemButton from "@mui/material/ListItemButton";
+import NextLink from "next/link";
+import Stack from "@mui/material/Stack";
+import Typography from "@mui/material/Typography";
+
+import { useActive } from "../useActive";
+
+interface Props {
+  label: string;
+  href: string;
+  icon: React.ReactNode;
+  activeIcon: React.ReactNode;
+}
+
+export function MiniGuideItem(props: Props) {
+  const { label, href, icon, activeIcon } = props;
+
+  const active = useActive(href);
+
+  return (
+    <ListItem disablePadding>
+      <ListItemButton
+        component={NextLink}
+        href={href}
+        sx={{
+          borderRadius: 2.5,
+        }}
+      >
+        <Stack alignItems="center" pt={1}>
+          {active ? activeIcon : icon}
+          <Typography variant="caption" fontSize={10}>
+            {label}
+          </Typography>
+        </Stack>
+      </ListItemButton>
+    </ListItem>
+  );
+}
+```
+
+`web/app/AppShell/MiniGuide/index.ts`
+
+```ts
+export * from "./MiniGuide";
+```
+
+`web/app/AppShell/AppShell.tsx` _(diff)_
+
+```diff
+"use client";
+
+import * as React from "react";
+
+import { AppDrawer } from "./AppDrawer";
+import { Masthead } from "./Masthead";
++import { MiniGuide } from "./MiniGuide";
+import { useNavigation } from "./useNavigation";
+
+interface Props {
+  children: React.ReactNode;
+}
+
+export function AppShell({ children }: Props) {
+  const [isAppDrawerOpened, setIsAppDrawerOpened] = React.useState(false);
+
+  const closeAppDrawer = () => {
+    setIsAppDrawerOpened(false);
+  };
+  const toggleAppDrawer = () => {
+    setIsAppDrawerOpened(!isAppDrawerOpened);
+  };
+
+  const navigation = useNavigation(isAppDrawerOpened);
+
+  return (
+    <>
+      <Masthead onGuideButtonClick={toggleAppDrawer} />
++     {navigation.miniGuide && <MiniGuide />}
+      {navigation.guide && (
+        <AppDrawer
+          open={isAppDrawerOpened}
+          onDrawerClose={closeAppDrawer}
+          variant={navigation.variant}
+        />
+      )}
+      {children}
+    </>
+  );
+}
+```
+
+![Mini guide](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/1kcep6e5y38ckr4mejsn.png)
+
+GitHub: [feat(appshell): mini guide (#5)](https://github.com/JacekKosciesza/FakeTube/commit/0af057f6076d9b0b004acb2681009e85970ac3a8)
+
+### Pivot Bar
+
+Similarly, for the **mobile resolution** we want to display a **[bottom navigation](https://mui.com/material-ui/react-bottom-navigation/)**, which is called a **Pivot Bar**.
+
+`web/app/AppShell/PivotBar/PivotBar.tsx`
+
+```tsx
+import BottomNavigation from "@mui/material/BottomNavigation";
+import HomeIcon from "@mui/icons-material/Home";
+import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
+import Paper from "@mui/material/Paper";
+
+import { PivotBarItem } from "./PivotBarItem";
+
+export function PivotBar() {
+  return (
+    <Paper
+      sx={{
+        position: "fixed",
+        bottom: 0,
+        left: 0,
+        right: 0,
+        zIndex: (theme) => theme.zIndex.appBar,
+      }}
+      elevation={1}
+    >
+      <BottomNavigation showLabels>
+        <PivotBarItem
+          label="Home"
+          href="/"
+          icon={<HomeOutlinedIcon />}
+          activeIcon={<HomeIcon />}
+        />
+      </BottomNavigation>
+    </Paper>
+  );
+}
+```
+
+`web/app/AppShell/PivotBar/PivotBarItem.tsx`
+
+```tsx
+import BottomNavigationAction from "@mui/material/BottomNavigationAction";
+import NextLink from "next/link";
+
+import { useActive } from "../useActive";
+
+interface Props {
+  label: string;
+  href: string;
+  icon: React.ReactNode;
+  activeIcon: React.ReactNode;
+}
+
+export function PivotBarItem(props: Props) {
+  const { label, href, icon, activeIcon } = props;
+
+  const active = useActive(href);
+
+  return (
+    <BottomNavigationAction
+      component={NextLink}
+      href={href}
+      showLabel
+      label={label}
+      icon={active ? activeIcon : icon}
+      sx={{
+        "&.MuiBottomNavigationAction-root": {
+          color: "inherit",
+        },
+      }}
+    />
+  );
+}
+```
+
+`web/app/AppShell/PivotBar/index.ts`
+
+```ts
+export * from "./PivotBar";
+```
+
+`web/app/AppShell/AppShell.tsx` _(diff)_
+
+```diff
+"use client";
+
+import * as React from "react";
+
+import { AppDrawer } from "./AppDrawer";
+import { Masthead } from "./Masthead";
+import { MiniGuide } from "./MiniGuide";
++import { PivotBar } from "./PivotBar";
+import { useNavigation } from "./useNavigation";
+
+interface Props {
+  children: React.ReactNode;
+}
+
+export function AppShell({ children }: Props) {
+  const [isAppDrawerOpened, setIsAppDrawerOpened] = React.useState(false);
+
+  const closeAppDrawer = () => {
+    setIsAppDrawerOpened(false);
+  };
+  const toggleAppDrawer = () => {
+    setIsAppDrawerOpened(!isAppDrawerOpened);
+  };
+
+  const navigation = useNavigation(isAppDrawerOpened);
+
+  return (
+    <>
+      <Masthead onGuideButtonClick={toggleAppDrawer} />
++     {navigation.pivotBar && <PivotBar />}
+      {navigation.miniGuide && <MiniGuide />}
+      {navigation.guide && (
+        <AppDrawer
+          open={isAppDrawerOpened}
+          onDrawerClose={closeAppDrawer}
+          variant={navigation.variant}
+        />
+      )}
+      {children}
+    </>
+  );
+}
+```
+
+We **don't** want to **show the Guide Button** when a Pivot Bar navigation is present. Let's change that behaviour.
+
+`web/app/AppShell/Masthead/Masthead.tsx` _(diff)_
+
+```diff
+// ...
+export interface Props {
+  onGuideButtonClick: () => void;
++ showGuideButton?: boolean;
+}
+
+-export function Masthead({ onGuideButtonClick }: Props) {
++export function Masthead({ onGuideButtonClick, showGuideButton }: Props) {
+  return (
+    <AppBar elevation={0} position="static">
+      <Toolbar>
+-       <GuideButton onClick={onGuideButtonClick} />
++       {showGuideButton && <GuideButton onClick={onGuideButtonClick} />}
+        <Logo />
+      </Toolbar>
+    </AppBar>
+  );
+}
+```
+
+`web/app/AppShell/AppShell.tsx` _(diff)_
+
+```diff
+  // ...
+  return (
+    <>
+-     <Masthead onGuideButtonClick={toggleAppDrawer} />
++     <Masthead
++       onGuideButtonClick={toggleAppDrawer}
++       showGuideButton={!navigation.pivotBar}
++     />
+      {navigation.pivotBar && <PivotBar />}
+      {navigation.miniGuide && <MiniGuide />}
+      {navigation.guide && (
+        <AppDrawer
+          open={isAppDrawerOpened}
+          onDrawerClose={closeAppDrawer}
+          variant={navigation.variant}
+        />
+      )}
+      {children}
+    </>
+  );
+}
+```
+
+![Pivot bar](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/rot9rtso2rslyf75yqg3.png)
+
+GitHub: [feat(appshell): pivot bar (#6)](https://github.com/JacekKosciesza/FakeTube/commit/8956603b8e1e77a107109152e434e89ace76dbc6)
+
+### Page Manager
+
+At the moment **content of the page** is **not** displayed **in the right place**, when Guide or Mini Guide is displayed. Let's add some placeholder to the Home Page e.g. `TODO: Home Page` to show that.
+
+`web/app/page.tsx` _(diff)_
+
+```diff
++import Typography from "@mui/material/Typography";
+
+export default function Home() {
+- return null;
++ return (
++   <Typography component="h2" variant="h4">
++     TODO: Home Page
++   </Typography>
++ );
+}
+```
+
+![Mini guide hides page content](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/gisvadlhpr1qs64q55ox.png)
+
+![Guide hides page content](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/0pc7ryr7868hwfzmavkh.png)
+
+To fix that we will introduce a **Page Manger** - a component, which will **adjust margin and padding** based on the navigation elements displayed. We will also set the **maximum width** of the page to the `xxxl` breakpoint.
+
+`web/app/AppShell/PageManager/PageManager.tsx`
+
+```tsx
+import Box from "@mui/material/Box";
+import Container from "@mui/material/Container";
+
+import { Navigation } from "../useNavigation";
+
+interface Props {
+  navigation: Navigation;
+  children: React.ReactNode;
+}
+
+export function PageManager({ navigation, children }: Props) {
+  let ml = 0;
+  let px = 0;
+
+  if (navigation.guide && navigation.variant === "permanent") {
+    ml = 30;
+    px = 3;
+  }
+
+  if (navigation.miniGuide) {
+    ml = 9;
+    px = 3;
+  }
+
+  return (
+    <Container maxWidth={"xxxl"} disableGutters>
+      <Box
+        sx={{
+          ml,
+          mt: 1,
+          px,
+        }}
+      >
+        {children}
+      </Box>
+    </Container>
+  );
+}
+```
+
+`web/app/AppShell/PageManager/index.ts`
+
+```ts
+export * from "./PageManager";
+```
+
+`web/app/AppShell/AppShell.tsx` _(diff)_
+
+```diff
+"use client";
+
+import * as React from "react";
+
+import { AppDrawer } from "./AppDrawer";
+import { Masthead } from "./Masthead";
+import { MiniGuide } from "./MiniGuide";
++import { PageManager } from "./PageManager";
+import { PivotBar } from "./PivotBar";
+import { useNavigation } from "./useNavigation";
+// ...
+
+// ...
+  return (
+    <>
+      <Masthead
+        onGuideButtonClick={toggleAppDrawer}
+        showGuideButton={!navigation.pivotBar}
+      />
+      {navigation.pivotBar && <PivotBar />}
+      {navigation.miniGuide && <MiniGuide />}
+      {navigation.guide && (
+        <AppDrawer
+          open={isAppDrawerOpened}
+          onDrawerClose={closeAppDrawer}
+          variant={navigation.variant}
+        />
+      )}
+-     {children}
++     <PageManager navigation={navigation}>{children}</PageManager>
+    </>
+  );
+}
+```
+
+Looks much better now.
+
+![Mini guide doesn't hide page content](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/ntxcijo3k1b5chmcdgy0.png)
+
+![Guide doesn't hide page content](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/n3m9agfxsspp6t0pfeoc.png)
+
+GitHub: [feat(appshell): page manager (#16)](https://github.com/JacekKosciesza/FakeTube/commit/c9d1044a45583d5e22701e9513aaa1df278f2bcb)
+
+### SSR (Server-Side Rendering)
+
+When you load or refresh our web app on a tablet or mobile resolution - there is a **flash of mobile version**, **before useMediaQuery is executed on a client side** and adjusts navigation elements.
+
+![Flash of mobile version](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/dj8qe2e3tdi5hmf0jcxv.gif)
+
+To fix that - we can use **[Server-Side Rendering](https://mui.com/material-ui/react-use-media-query/#server-side-rendering) for useMediaQuery**, but there is a catch.
+
+> Server-side rendering and client-side media queries are fundamentally at odds. Be aware of the tradeoff. The support can only be partial.
+
+Let's start with extracting part of the `web/app/layout.tsx` to a separate `web/app/providers.tsx` file.
+
+```tsx
+"use client";
+
+import CssBaseline from "@mui/material/CssBaseline";
+import { AppRouterCacheProvider } from "@mui/material-nextjs/v15-appRouter";
+import { ThemeProvider } from "@mui/material/styles";
+
+import theme from "./theme";
+
+export function Providers({
+  children,
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
+  return (
+    <AppRouterCacheProvider>
+      <ThemeProvider theme={theme}>
+        <CssBaseline />
+        {children}
+      </ThemeProvider>
+    </AppRouterCacheProvider>
+  );
+}
+```
+
+`web/app/layout.tsx` _(diff)_
+
+```diff
+-import CssBaseline from "@mui/material/CssBaseline";
+-import { AppRouterCacheProvider } from "@mui/material-nextjs/v15-appRouter";
+import type { Metadata } from "next";
+import { Roboto } from "next/font/google";
+-import { ThemeProvider } from "@mui/material/styles";
+
+-import theme from "./theme";
+import { AppShell } from "./AppShell";
++import { Providers } from "./providers";
+
+const roboto = Roboto({
+  weight: ["300", "400", "500", "700"],
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-roboto",
+});
+
+export const metadata: Metadata = {
+  title: "FakeTube",
+  description: "Enjoy the videos and music you love on FakeTube.",
+  keywords: "video, free",
+};
+
+export default function RootLayout({
+  children,
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
+  return (
+    <html lang="en" className={roboto.variable}>
+      <body>
+-       <AppRouterCacheProvider>
+-       <ThemeProvider theme={theme}>
+-       <CssBaseline />
++       <Providers>
+          <AppShell>{children}</AppShell>
++       </Providers>
+-       </ThemeProvider>
+-       </AppRouterCacheProvider>
+      </body>
+    </html>
+  );
+}
+```
+
+This SSR implementation will use **[User-Agent](https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/User-Agent)** request header to **detect device type** (mobile, tablet, desktop) and based on that will provide arbitrary screen **width to the useMediaQuery**.
+
+Let's install a few dependencies first.
+
+```
+npm install css-mediaquery ua-parser-js
+npm install --save-dev @types/css-mediaquery @types/ua-parser-js
+```
+
+`web/app/layout.tsx` _(diff)_
+
+```diff
+import type { Metadata } from "next";
++import { headers } from "next/headers";
+import { Roboto } from "next/font/google";
++import { UAParser } from "ua-parser-js";
+
+// ...
+
++const FALLBACK_DEVICE_TYPE = "mobile";
+
+-export default function RootLayout({
++export default async function RootLayout({
+  children,
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
++ const headersList = await headers();
++ const userAgent = headersList.get("user-agent") || undefined;
++ const uap = new UAParser(userAgent);
++ const deviceType = (await uap.getDevice().withFeatureCheck()).type || FALLBACK_DEVICE_TYPE;
+
+  return (
+    <html lang="en" className={roboto.variable}>
+      <body>
+-       <Providers>
++       <Providers deviceType={deviceType}>
+          <AppShell>{children}</AppShell>
+        </Providers>
+      </body>
+    </html>
+  );
+}
+```
+
+`web/app/providers.tsx` _(diff)_
+
+```diff
+// ...
+
+export function Providers({
+  children,
++ deviceType,
+}: Readonly<{
+  children: React.ReactNode;
++  deviceType: string;
+}>) {
+  return (
+    <AppRouterCacheProvider>
+-     <ThemeProvider theme={theme}>
++     <ThemeProvider theme={theme(deviceType)}>
+        <CssBaseline />
+        {children}
+      </ThemeProvider>
+    </AppRouterCacheProvider>
+  );
+}
+```
+
+`web/app/theme.ts` _(diff)_
+
+```diff
+"use client";
+
++import mediaQuery from "css-mediaquery";
+import { createTheme } from "@mui/material/styles";
+
+declare module "@mui/material/styles" {
+  interface BreakpointOverrides {
+    xxl: true;
+    xxxl: true;
+  }
+}
+
++function deviceTypeToWidth(deviceType: string) {
++  switch (deviceType) {
++    case "mobile":
++      return "600px";
++    case "tablet":
++      return "792px";
++    default:
++      return "1313px";
++  }
++}
+
++const ssrMatchMedia = (deviceType: string) => (query: string) => ({
++  matches: mediaQuery.match(query, {
++    width: deviceTypeToWidth(deviceType),
++  }),
++});
+
+-const theme = createTheme({
++const theme = (deviceType: string) =>
++  createTheme({
+     typography: {
+       fontFamily: "var(--font-roboto)",
+     },
+     breakpoints: {
+       values: {
+         xs: 0,
+         sm: 601,
+         md: 792,
+         lg: 1313,
+         xl: 1536,
+         xxl: 1920,
+         xxxl: 2985,
+       },
+     },
+     components: {
++      MuiUseMediaQuery: {
++        defaultProps: {
++          ssrMatchMedia: ssrMatchMedia(deviceType),
++        },
++      },
+       MuiAppBar: {
+         styleOverrides: {
+           colorPrimary: {
+             backgroundColor: "#FFFFFF",
+             color: "#000000",
+           },
+         },
+       },
+     },
+   });
+
+export default theme;
+```
+
+Unfortunately it seems that **ua-parser-js doesn't always correctly identify a device type**, see **[iPad Air and iPad Pro - type not correctly identified](https://github.com/faisalman/ua-parser-js/issues/690)**, so it doesn't work correctly on my Chrome browser on MacOS. We will have to definitely look at improving it. At the moment we can adjust `FALLBACK_DEVICE_TYPE` to change the behaviour.
+
+GitHub: [feat(appshell): server-side rendering (#17)](https://github.com/JacekKosciesza/FakeTube/commit/71e4704ba2cb790ee32e7d0dae5eaaabde930830)
+
+## Amplify Hosting
+
+The last thing to do is to **deploy our web application** and make it publicly accessible from the **[faketube.app](https://faketube.app) domain**.
+
+We will use **[AWS Amplify](https://aws.amazon.com/amplify/)** service and its **[hosting](https://aws.amazon.com/amplify/hosting/)** feature.
+
+Go to **AWS Amplify** and click **Deploy an app** button. Choose **GitHub** as a **Git provider** and click **Next**.
+
+Choose **JacekKosciesza/FakeTube** repository and **main** branch. Our app is a monorepo, so let's set **web** as a root directory. Click **Next**.
+
+Set the name of our app to **FakeTube**. All other settings should be auto detected and configured as a Next.js app. Click **Next**.
+
+After reviewing all the settings click **Save and deploy**.
+
+After a while the app should be deployed to the **amplifyapp.com** domain with some **random subdomain**.
+
+![Amplify - Create new app](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/vrx3plx8ku74hfdu230m.gif)
+
+To use our **[faketube.app](https://faketube.app) domain**, we have to click **Add custom domain** from the **Overview** tab.
+
+Click **Add domain**, type **faketube.app** and click **Check domain availability**. We already own this domain ([GoDaddy](https://www.godaddy.com) domain registrar), so Amplify will detect it and automatically select **Create hosted zone on Route53** option. Let's click **Configure domain** button.
+
+We will have to copy the **name server** names and paste them on the **GoDaddy domain configuration** page. After some longer time (usually minutes not hours) Amplify should automatically finish setup - create SSL configuration and activate the domain. 
+
+![Amplify - Add custom domain](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/zm6w53vxk0wblg66g52z.gif)
+
+Now **[faketube.app](https://faketube.app)** should be listed as a custom domain and we should see our app when we visit it.
+
+![faketube.app](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/jzbqb7ofny3qif1upkw0.png)
