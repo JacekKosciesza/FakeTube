@@ -1,11 +1,11 @@
 ---
-title: "Videos GraphQL API with AppSync, Lambda, DynamoDB - FakeTube #6"
+title: "Videos GraphQL API with AppSync, Lambda, DynamoDB - CodeTube #6"
 date: 2025-10-02
-description: "FakeTube  In the last episode, we established a solid backend foundation using a traditional REST API..."
+description: "CodeTube  In the last episode, we established a solid backend foundation using a traditional REST API..."
 source: "https://dev.to/jacekkosciesza/videos-graphql-api-with-appsync-lambda-dynamodb-faketube-6-2jcb"
 ---
 
-[FakeTube](https://faketube.app/)
+[CodeTube](https://faketube.app/)
 
 In the last episode, we established a **solid backend foundation** using a traditional **REST API** with **API Gateway**, **Lambda**, and an **Aurora Serverless PostgreSQL database**. This approach works well, but in the world of modern cloud-native architectures, we often explore alternative patterns to address different needs, especially regarding data fetching efficiency and flexibility.
 
@@ -104,7 +104,7 @@ Click **"Create new data model"** from the **"Getting started"** section on the 
 
 | Field       | Value           |
 | ----------- | --------------- |
-| Name        | FakeTube        |
+| Name        | CodeTube        |
 | Author      | Jacek Kościesza |
 | Description | YouTube clone   |
 
@@ -118,7 +118,7 @@ Complete the form as follows:
 
 |||
 |-|-|
-| Table name | FakeTube |
+| Table name | CodeTube |
 
 In the **"Primary key attributes"** section check **"Add sort key"** option and define both - partition and sort keys:
 
@@ -792,7 +792,7 @@ aws dynamodb batch-write-item --request-items file://lib/videos_#2.seed.json
 
 Seems that it all worked. We can verify it using **AWS Console** and **Explore table items** feature:
 
-![DynamoDB - FakeTube table](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/a6jm3t6yfsdxl6jtrwcn.png)
+![DynamoDB - CodeTube table](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/a6jm3t6yfsdxl6jtrwcn.png)
 
 GitHub: [feat(home): dynamodb seed (#7)](https://github.com/JacekKosciesza/FakeTube/commit/c624e93245f5a3f6b8b279b77fd929d1e98332ad)
 
@@ -2548,4 +2548,4 @@ GitHub: [feat(home): graphql api integration (#7)](https://github.com/JacekKosci
 
 #### Trademark Notice
 
-It turns out that [FakeTube](https://faketube.cz/) is an already [registered trademark](https://www.tmdn.org/tmview/#/tmview/detail/CZ500000000595843). I started a rebranding process, but it will take a while.
+It turns out that [CodeTube](https://faketube.cz/) is an already [registered trademark](https://www.tmdn.org/tmview/#/tmview/detail/CZ500000000595843). I started a rebranding process, but it will take a while.
