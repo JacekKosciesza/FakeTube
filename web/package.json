@@ -19,7 +19,7 @@
     "aws-amplify": "^6.15.5",
     "css-mediaquery": "^0.1.2",
     "luxon": "^3.7.1",
-    "next": "15.3.1",
+    "next": "15.5.18",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-intersection-observer": "^9.16.0",
