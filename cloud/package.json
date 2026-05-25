@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "bin": {
-    "faketube": "bin/faketube.js"
+    "codetube": "bin/codetube.js"
   },
   "scripts": {
     "build": "tsc",

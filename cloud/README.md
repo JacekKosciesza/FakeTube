@@ -1,6 +1,6 @@
 # @codetube/cloud
 
-AWS CDK infrastructure for FakeTube. `@codetube/cloud` workspace of the FakeTube monorepo.
+AWS CDK infrastructure for CodeTube. `@codetube/cloud` workspace of the CodeTube monorepo.
 
 The `cdk.json` file tells the CDK Toolkit how to execute the app.
 

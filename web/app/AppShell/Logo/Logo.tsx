@@ -10,7 +10,7 @@ import Stack from "@mui/material/Stack";
 export function Logo() {
   return (
     <Tooltip
-      title="FakeTube Home"
+      title="CodeTube Home"
       enterDelay={500}
       disableInteractive
       sx={{
@@ -28,7 +28,7 @@ export function Logo() {
               letterSpacing: "-0.075rem",
             }}
           >
-            FakeTube
+            CodeTube
           </Typography>
         </Stack>
       </NextLink>

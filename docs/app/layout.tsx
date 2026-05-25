@@ -17,7 +17,7 @@ export const metadata = {
 const navbar = (
   <Navbar
     logo={<Wordmark />}
-    projectLink="https://github.com/JacekKosciesza/FakeTube"
+    projectLink="https://github.com/JacekKosciesza/CodeTube"
   />
 )
 
@@ -51,7 +51,7 @@ export default async function RootLayout({
           navbar={navbar}
           search={search}
           pageMap={await getPageMap()}
-          docsRepositoryBase="https://github.com/JacekKosciesza/FakeTube/tree/main/docs"
+          docsRepositoryBase="https://github.com/JacekKosciesza/CodeTube/tree/main/docs"
           footer={footer}
         >
           {children}

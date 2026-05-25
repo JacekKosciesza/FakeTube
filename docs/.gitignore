@@ -3,3 +3,4 @@ out/
 *.tsbuildinfo
 .env*.local
 next-env.d.ts
+_pagefind/
