@@ -1,0 +1,386 @@
+---
+title: "Watch Page with Metadata and Watch Next - CodeTube #7"
+date: 2026-05-25
+draft: true
+description: "Watch page with video metadata and related/watch next section for the CodeTube YouTube clone."
+---
+
+# Intro
+
+# Requirements
+
+## Gherkin
+
+## YouTube
+
+# Frontend
+
+## Watch page
+
+`web/app/watch/[videoId]/page.tsx`
+
+```tsx
+import { WatchPage } from "./WatchPage";
+
+export default function Watch() {
+  return <WatchPage />;
+}
+```
+
+`web/app/watch/[videoId]/WatchPage.tsx`
+
+```tsx
+"use client";
+
+import Stack from "@mui/material/Stack";
+import Typography from "@mui/material/Typography";
+import { useParams } from "next/navigation";
+
+export function WatchPage() {
+  const params = useParams();
+  const videoId = params.videoId as string;
+
+  return (
+    <Stack>
+      <Typography component="h2" variant="h4">
+        TODO: Watch Page
+      </Typography>
+      <Typography variant="caption">Video ID: {videoId}</Typography>
+    </Stack>
+  );
+}
+```
+
+`web/app/Home/MediaItem/MediaItem.tsx` _(diff)_
+
+```diff
+"use client";
+
+import * as React from "react";
+import Box from "@mui/material/Box";
++import NextLink from "next/link";
+
+import { Video } from "../video";
+import { VideoDetails } from "./VideoDetails";
+import { VideoPlayer } from "./VideoPlayer";
+import { VideoThumbnail } from "./VideoThumbnail";
+
+interface Props {
+  video: Video;
+}
+
+export function MediaItem({ video }: Props) {
+  const [isHovered, setIsHovered] = React.useState(false);
+
+  const [isMuted, setIsMuted] = React.useState(true);
+  const toggleMute = React.useCallback(() => {
+    setIsMuted((prev) => !prev);
+  }, []);
+
+  return (
+    <Box
+      sx={{
+        width: "100%",
+        mb: 2,
+        display: "block",
+        aspectRatio: "16 / 9",
+        textDecoration: "none",
+      }}
++     component={NextLink}
++     href={`/watch/${video.id}`}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+    >
+      {isHovered ? (
+        <VideoPlayer video={video} isMuted={isMuted} toggleMute={toggleMute} />
+      ) : (
+        <VideoThumbnail video={video} />
+      )}
+      <VideoDetails video={video} />
+    </Box>
+  );
+}
+```
+
+`web/app/Home/MediaItem/VideoDetails/VideoDetails.tsx` _(diff)_
+
+```diff
+...
+export function VideoDetails({ video }: Props) {
+  const date: string | null = React.useMemo(
+    () =>
+      DateTime.fromISO(video.publishedAt).toRelative({
+        unit: ["years", "months", "weeks", "days"],
+      }),
+    [video.publishedAt]
+  );
+
+  return (
+    <Box sx={{ display: "flex", alignItems: "flex-start" }}>
+      <Avatar
+        src={video.channel.avatar}
+        alt={video.channel.name}
+        sx={{
+          width: (theme) => theme.spacing(4.5),
+          height: (theme) => theme.spacing(4.5),
+          marginRight: (theme) => theme.spacing(1),
+        }}
+      />
+      <Stack>
+        <Typography
+          variant="subtitle2"
+          component="h3"
+          fontSize={16}
++         color="textPrimary"
+          gutterBottom
+          mb={0.5}
+        >
+          {video.title}
+        </Typography>
+...
+```
+
+`web/app/AppShell/useNavigation.tsx` _(diff)_
+
+```diff
+import useMediaQuery from "@mui/material/useMediaQuery";
+import useTheme from "@mui/system/useTheme";
+
++import { useActive } from "./useActive";
+
+export interface Navigation {
+  pivotBar?: boolean;
+  miniGuide?: boolean;
+  guide?: boolean;
+  variant?: "temporary" | "permanent";
+}
+
+export function useNavigation(opened: boolean): Navigation {
+  const theme = useTheme();
+  const tablet = useMediaQuery(theme.breakpoints.between("sm", "lg"));
+  const desktop = useMediaQuery(theme.breakpoints.up("lg"));
+
+  const home = useActive("/");
+
+  const navigation: Navigation = {
+    pivotBar: true,
+    miniGuide: false,
+    guide: false,
+  };
+
+  if (tablet) {
++   if (home) {
+      return { guide: true, miniGuide: true, variant: "temporary" };
++   } else {
++     return { guide: true, miniGuide: false, variant: "temporary" };
++   }
+  }
+
+  if (desktop) {
++   if (home) {
+      return opened
+        ? { guide: true, variant: "permanent" }
+        : { guide: false, miniGuide: true, variant: "temporary" };
++   } else {
++     return { guide: true, miniGuide: false, variant: "temporary" };
++   }
+  }
+
+  return navigation;
+}
+```
+
+`web/app/AppShell/PageManager/PageManager.tsx` _(diff)_
+
+```diff
+import Box from "@mui/material/Box";
+import Container from "@mui/material/Container";
++import { Breakpoint } from "@mui/material/styles";
+
+import { Navigation } from "../useNavigation";
++import { useActive } from "../useActive";
+
+interface Props {
+  navigation: Navigation;
+  children: React.ReactNode;
+}
+
+export function PageManager({ navigation, children }: Props) {
++ let maxWidth: Breakpoint = "xxl";
+  let ml = 0;
+  let px = 0;
+
++ const home = useActive("/");
++ if (home) {
++   maxWidth = "xxxl";
++ }
+
+  if (navigation.guide && navigation.variant === "permanent") {
+    ml = 30;
+    px = 3;
+  }
+
+  if (navigation.miniGuide) {
+    ml = 9;
+    px = 3;
+  }
+
+  return (
+-   <Container maxWidth={"xxxl"} disableGutters>
++   <Container maxWidth={maxWidth} disableGutters>
+      <Box
+        sx={{
+          ml,
+          mt: 1,
+          px,
+        }}
+      >
+        {children}
+      </Box>
+    </Container>
+  );
+}
+```
+
+Stage 2
+
+`web/app/Home/category.ts`
+
+```ts
+export interface Category {
+  id: number;
+  title: string;
+}
+```
+
+`web/app/Home/categories.data.ts`
+
+```ts
+import { Category } from "./category";
+
+export const CATEGORIES: Category[] = [
+  { id: 1, title: "Film & Animation" },
+  { id: 2, title: "Autos & Vehicles" },
+  { id: 10, title: "Music" },
+  { id: 15, title: "Pets & Animals" },
+  { id: 17, title: "Sports" },
+  { id: 1, title: "Film & Animation" },
+  { id: 19, title: "Travel & Events" },
+  { id: 20, title: "Gaming" },
+  { id: 22, title: "People & Blogs" },
+  { id: 23, title: "Comedy" },
+  { id: 24, title: "Entertainment" },
+  { id: 25, title: "News & Politics" },
+  { id: 26, title: "Howto & Style" },
+  { id: 27, title: "Education" },
+  { id: 28, title: "Science & Technology" },
+  { id: 29, title: "Nonprofits & Activism" },
+];
+```
+
+`web/app/Home/video.ts` _(diff)_
+
+```diff
++import { Category } from "./category";
+import { Channel } from "./channel";
+
+export interface Video {
+  id: string;
+  title: string;
+  thumbnail: string;
+  duration: string;
+  url: string;
+  publishedAt: string;
++ description: string;
+  channel: Channel;
++ category: Category;
+}
+```
+
+`web/app/Home/videos.data.ts` _(diff)_
+
+```diff
++import { CATEGORIES } from "./categories.data";
+import { CHANNELS } from "./channels.data";
+import { Video } from "./video";
+
+const channel = CHANNELS[0];
+
+export const VIDEOS: Video[] = [
+  {
+    id: "q9Gm7a6Wwjk",
+    title: "The Amazing World of Octopus!",
+    thumbnail: "/videos/q9Gm7a6Wwjk/q9Gm7a6Wwjk.png",
+    duration: "PT0M6.214542S",
+    url: "/videos/q9Gm7a6Wwjk/q9Gm7a6Wwjk.mp4",
+    publishedAt: "2025-03-03T15:58:23Z",
++   description:
+      "Hey there! Today we're going to explore the amazing world of octopuses.",
+    channel,
++   category: CATEGORIES.find((c) => c.title === "Pets & Animals")!,
+  },
+  // ... (32 videos total with description + category added)
+];
+```
+
+### Next.js routing
+
+#### Responsive layout
+
+#### Video player
+
+#### Watch Metadata
+
+#### Related/Watch Next
+
+# Backend
+
+## Get video
+
+### API
+
+### Gateway
+
+### AppSync
+
+## Get related
+
+We will get list of videos from the same category starting from the newest ones (excluding the one which we are watching).
+
+### Category
+
+YouTube Data API
+
+![YouTube Data API - VideoCategories: list](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/lmrihszetasmy3igug75.png)
+
+[YouTube Data API - VideoCategories: list](https://developers.google.com/youtube/v3/docs/videoCategories/list?apix_params=%7B%22part%22%3A%5B%22snippet%22%5D%2C%22regionCode%22%3A%22pl%22%7D)
+
+| ID | Title |
+|---|---|
+| 1 | Film & Animation |
+| 2 | Autos & Vehicles |
+| 10 | Music |
+| 15 | Pets & Animals |
+| 17 | Sports |
+| 19 | Travel & Events |
+| 20 | Gaming |
+| 22 | People & Blogs |
+| 23 | Comedy |
+| 24 | Entertainment |
+| 25 | News & Politics |
+| 26 | Howto & Style |
+| 27 | Education |
+| 28 | Science & Technology |
+| 29 | Nonprofits & Activism |
+
+### Database
+
+#### Aurora
+
+#### DynamoDB
+
+### API
+
+### Gateway
+
+### AppSync
