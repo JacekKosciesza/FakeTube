@@ -14,7 +14,7 @@ export class DocsStack extends cdk.Stack {
         repository: "CodeTube",
         oauthToken: cdk.SecretValue.secretsManager("github-token"),
       }),
-      platform: amplify.Platform.WEB_COMPUTE,
+      platform: amplify.Platform.WEB,
       buildSpec: codebuild.BuildSpec.fromObjectToYaml({
         version: "1",
         frontend: {
@@ -27,7 +27,7 @@ export class DocsStack extends cdk.Stack {
             },
           },
           artifacts: {
-            baseDirectory: "docs/.next",
+            baseDirectory: "docs/out",
             files: ["**/*"],
           },
           cache: {
@@ -43,10 +43,7 @@ export class DocsStack extends cdk.Stack {
     });
 
     amplifyApp.addDomain("codetube.org", {
-      subDomains: [
-        { branch: mainBranch, prefix: "" },
-        { branch: mainBranch, prefix: "www" },
-      ],
+      subDomains: [{ branch: mainBranch, prefix: "" }],
     });
 
     new cdk.CfnOutput(this, "AmplifyAppId", {
