@@ -1,9 +1,9 @@
 #!/usr/bin/env node
 import * as cdk from 'aws-cdk-lib';
-import { FakeTubeStack } from "../lib/faketube-stack";
+import { CodeTubeStack } from "../lib/codetube-stack";
 
 const app = new cdk.App();
-new FakeTubeStack(app, "FakeTubeStack", {
+new CodeTubeStack(app, "FakeTubeStack", {
   /* If you don't specify 'env', this stack will be environment-agnostic.
    * Account/Region-dependent features and context lookups will not work,
    * but a single synthesized template can be deployed anywhere. */

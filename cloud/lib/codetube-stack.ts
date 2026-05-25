@@ -8,7 +8,7 @@ import { Gateway } from "./gateway";
 import { Home } from "./home";
 import { VPC } from "./vpc";
 
-export class FakeTubeStack extends cdk.Stack {
+export class CodeTubeStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
 

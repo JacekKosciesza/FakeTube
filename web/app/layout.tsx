@@ -16,8 +16,8 @@ const roboto = Roboto({
 });
 
 export const metadata: Metadata = {
-  title: "FakeTube",
-  description: "Enjoy the videos and music you love on FakeTube.",
+  title: "CodeTube",
+  description: "Enjoy the videos and music you love on CodeTube.",
   keywords: "video, free",
 };
 

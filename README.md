@@ -1,4 +1,4 @@
-# FakeTube
+# CodeTube
 
 Open-source YouTube clone. Monorepo using npm workspaces.
 

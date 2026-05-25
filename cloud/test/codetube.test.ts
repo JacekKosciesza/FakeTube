@@ -1,13 +1,13 @@
 // import * as cdk from 'aws-cdk-lib';
 // import { Template } from 'aws-cdk-lib/assertions';
-// import * as Faketube from '../lib/faketube-stack';
+// import * as Codetube from '../lib/codetube-stack';
 
 // example test. To run these tests, uncomment this file along with the
-// example resource in lib/faketube-stack.ts
+// example resource in lib/codetube-stack.ts
 test('SQS Queue Created', () => {
 //   const app = new cdk.App();
 //     // WHEN
-//   const stack = new Faketube.FaketubeStack(app, 'MyTestStack');
+//   const stack = new Codetube.CodetubeStack(app, 'MyTestStack');
 //     // THEN
 //   const template = Template.fromStack(stack);
 

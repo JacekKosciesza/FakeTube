@@ -1,5 +1,5 @@
 {
-  "app": "npx ts-node --prefer-ts-exts bin/faketube.ts",
+  "app": "npx ts-node --prefer-ts-exts bin/codetube.ts",
   "watch": {
     "include": ["**"],
     "exclude": [
