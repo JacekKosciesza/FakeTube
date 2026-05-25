@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 import * as cdk from 'aws-cdk-lib';
 import { CodeTubeStack } from "../lib/codetube-stack";
+import { DocsStack } from "../lib/docs-stack";
 
 const app = new cdk.App();
 new CodeTubeStack(app, "FakeTubeStack", {
@@ -18,3 +19,5 @@ new CodeTubeStack(app, "FakeTubeStack", {
 
   /* For more information, see https://docs.aws.amazon.com/cdk/latest/guide/environments.html */
 });
+
+new DocsStack(app, "DocsStack");
