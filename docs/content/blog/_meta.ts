@@ -19,5 +19,9 @@ export default {
   },
   'videos-graphql-api-with-appsync-lambda-dynamodb': {
     title: 'Videos GraphQL API - CodeTube #6'
+  },
+  'watch-page-metadata-watch-next': {
+    title: 'Watch Page - CodeTube #7',
+    display: 'hidden'
   }
 }
