@@ -17,28 +17,23 @@ export class WebStack extends cdk.Stack {
       platform: amplify.Platform.WEB_COMPUTE,
       buildSpec: codebuild.BuildSpec.fromObjectToYaml({
         version: "1",
-        applications: [
-          {
-            appRoot: "web",
-            frontend: {
-              phases: {
-                preBuild: {
-                  commands: ["cd ..", "npm ci"],
-                },
-                build: {
-                  commands: ["cd ..", "npm run build -w web"],
-                },
-              },
-              artifacts: {
-                baseDirectory: ".next",
-                files: ["**/*"],
-              },
-              cache: {
-                paths: ["node_modules/**/*"],
-              },
+        frontend: {
+          phases: {
+            preBuild: {
+              commands: ["npm ci"],
+            },
+            build: {
+              commands: ["npm run build -w web"],
             },
           },
-        ],
+          artifacts: {
+            baseDirectory: "web/.next",
+            files: ["**/*"],
+          },
+          cache: {
+            paths: ["node_modules/**/*"],
+          },
+        },
       }),
     });
 
