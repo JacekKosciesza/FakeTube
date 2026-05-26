@@ -2,6 +2,7 @@
 import * as cdk from 'aws-cdk-lib';
 import { CodeTubeStack } from "../lib/codetube-stack";
 import { DocsStack } from "../lib/docs-stack";
+import { WebStack } from "../lib/web-stack";
 
 const app = new cdk.App();
 new CodeTubeStack(app, "FakeTubeStack", {
@@ -21,3 +22,4 @@ new CodeTubeStack(app, "FakeTubeStack", {
 });
 
 new DocsStack(app, "DocsStack");
+new WebStack(app, "WebStack");
