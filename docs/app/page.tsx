@@ -11,7 +11,7 @@ export default function HomePage() {
       </p>
       <div className="ctas">
         <a
-          href="https://faketube.app/"
+          href="https://codetube.app/"
           target="_blank"
           rel="noreferrer"
           className="cta cta-primary"

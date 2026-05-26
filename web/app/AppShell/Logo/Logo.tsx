@@ -19,7 +19,7 @@ export function Logo() {
     >
       <NextLink href="/" style={{ textDecoration: "none" }}>
         <Stack direction="row" alignItems="center" spacing={0.2}>
-          <Image src="faketube.svg" alt="" width={29} height={20} />
+          <Image src="codetube.svg" alt="" width={29} height={20} />
           <Typography
             variant="h6"
             color="textPrimary"
