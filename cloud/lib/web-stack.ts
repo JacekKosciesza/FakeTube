@@ -23,7 +23,7 @@ export class WebStack extends cdk.Stack {
             frontend: {
               phases: {
                 preBuild: {
-                  commands: ["cd .. && npm ci"],
+                  commands: ["npm ci --prefix .."],
                 },
                 build: {
                   commands: ["npx next build"],
