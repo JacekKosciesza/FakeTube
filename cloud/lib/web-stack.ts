@@ -26,7 +26,7 @@ export class WebStack extends cdk.Stack {
                   commands: ["cd .. && npm ci"],
                 },
                 build: {
-                  commands: ["cd .. && npm run build -w web"],
+                  commands: ["npx next build"],
                 },
               },
               artifacts: {
