@@ -23,5 +23,9 @@ export default {
   'watch-page-metadata-watch-next': {
     title: 'Watch Page - CodeTube #7',
     display: 'hidden'
+  },
+  'watch-page-related-watch-next': {
+    title: 'Watch Next - CodeTube #8',
+    display: 'hidden'
   }
 }

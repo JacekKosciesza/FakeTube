@@ -1,11 +1,19 @@
 ---
-title: "Watch Page with Metadata and Watch Next - CodeTube #7"
+title: "Watch Page with Video and Metadata - CodeTube #7"
 date: 2026-05-25
 draft: true
-description: "Watch page with video metadata and related/watch next section for the CodeTube YouTube clone."
+description: "Building a watch page with video player, metadata display, and responsive layout for the CodeTube YouTube clone."
 ---
 
-# Intro
+[CodeTube](https://faketube.app/)
+
+In the previous episodes, we built a **solid foundation** for our YouTube clone — a **responsive home page** with a video grid (#4), a **REST API** with API Gateway, Lambda, and Aurora (#5), and a **GraphQL API** with AppSync, Lambda, and DynamoDB (#6).
+
+Now it's time to build the **watch page** — the page users land on when they click a video. This is one of the **most important pages** in any video platform. We need to display the **video player**, **video metadata** (title, description, channel info, publish date), and wire up **navigation from the home page**.
+
+We'll also need to **adjust our responsive layout** — the watch page has a different layout than the home page, with no mini guide sidebar and a narrower content area.
+
+Let's dive in!
 
 # Requirements
 
@@ -50,6 +58,10 @@ export function WatchPage() {
   );
 }
 ```
+
+## Navigation from Home
+
+We need to **link each video thumbnail on the home page** to the watch page. We wrap the `MediaItem` component with a `NextLink` so clicking a video navigates to `/watch/{videoId}`.
 
 `web/app/Home/MediaItem/MediaItem.tsx` _(diff)_
 
@@ -102,31 +114,12 @@ export function MediaItem({ video }: Props) {
 }
 ```
 
+We also fix the **video title color** to use `textPrimary` so it's visible in both light and dark themes.
+
 `web/app/Home/MediaItem/VideoDetails/VideoDetails.tsx` _(diff)_
 
 ```diff
 ...
-export function VideoDetails({ video }: Props) {
-  const date: string | null = React.useMemo(
-    () =>
-      DateTime.fromISO(video.publishedAt).toRelative({
-        unit: ["years", "months", "weeks", "days"],
-      }),
-    [video.publishedAt]
-  );
-
-  return (
-    <Box sx={{ display: "flex", alignItems: "flex-start" }}>
-      <Avatar
-        src={video.channel.avatar}
-        alt={video.channel.name}
-        sx={{
-          width: (theme) => theme.spacing(4.5),
-          height: (theme) => theme.spacing(4.5),
-          marginRight: (theme) => theme.spacing(1),
-        }}
-      />
-      <Stack>
         <Typography
           variant="subtitle2"
           component="h3"
@@ -139,6 +132,16 @@ export function VideoDetails({ video }: Props) {
         </Typography>
 ...
 ```
+
+## Responsive layout
+
+The watch page has a **different layout** than the home page. On YouTube, when you navigate to a video:
+
+- The **mini guide disappears** (no sidebar icons)
+- The **drawer is always temporary** (slides over content, not persistent)
+- The **content area is narrower** than the home page
+
+We implement this by checking which page is active and adjusting the navigation accordingly.
 
 `web/app/AppShell/useNavigation.tsx` _(diff)_
 
@@ -189,6 +192,8 @@ export function useNavigation(opened: boolean): Navigation {
   return navigation;
 }
 ```
+
+The **PageManager** also adjusts — the home page uses the full `xxxl` width for the video grid, while other pages (like watch) use the narrower `xxl` width.
 
 `web/app/AppShell/PageManager/PageManager.tsx` _(diff)_
 
@@ -242,142 +247,15 @@ export function PageManager({ navigation, children }: Props) {
 }
 ```
 
-Stage 2
-
-`web/app/Home/category.ts`
-
-```ts
-export interface Category {
-  id: number;
-  title: string;
-}
-```
-
-`web/app/Home/categories.data.ts`
-
-```ts
-import { Category } from "./category";
-
-export const CATEGORIES: Category[] = [
-  { id: 1, title: "Film & Animation" },
-  { id: 2, title: "Autos & Vehicles" },
-  { id: 10, title: "Music" },
-  { id: 15, title: "Pets & Animals" },
-  { id: 17, title: "Sports" },
-  { id: 1, title: "Film & Animation" },
-  { id: 19, title: "Travel & Events" },
-  { id: 20, title: "Gaming" },
-  { id: 22, title: "People & Blogs" },
-  { id: 23, title: "Comedy" },
-  { id: 24, title: "Entertainment" },
-  { id: 25, title: "News & Politics" },
-  { id: 26, title: "Howto & Style" },
-  { id: 27, title: "Education" },
-  { id: 28, title: "Science & Technology" },
-  { id: 29, title: "Nonprofits & Activism" },
-];
-```
-
-`web/app/Home/video.ts` _(diff)_
-
-```diff
-+import { Category } from "./category";
-import { Channel } from "./channel";
-
-export interface Video {
-  id: string;
-  title: string;
-  thumbnail: string;
-  duration: string;
-  url: string;
-  publishedAt: string;
-+ description: string;
-  channel: Channel;
-+ category: Category;
-}
-```
-
-`web/app/Home/videos.data.ts` _(diff)_
-
-```diff
-+import { CATEGORIES } from "./categories.data";
-import { CHANNELS } from "./channels.data";
-import { Video } from "./video";
-
-const channel = CHANNELS[0];
-
-export const VIDEOS: Video[] = [
-  {
-    id: "q9Gm7a6Wwjk",
-    title: "The Amazing World of Octopus!",
-    thumbnail: "/videos/q9Gm7a6Wwjk/q9Gm7a6Wwjk.png",
-    duration: "PT0M6.214542S",
-    url: "/videos/q9Gm7a6Wwjk/q9Gm7a6Wwjk.mp4",
-    publishedAt: "2025-03-03T15:58:23Z",
-+   description:
-      "Hey there! Today we're going to explore the amazing world of octopuses.",
-    channel,
-+   category: CATEGORIES.find((c) => c.title === "Pets & Animals")!,
-  },
-  // ... (32 videos total with description + category added)
-];
-```
-
 ### Next.js routing
 
-#### Responsive layout
+### Video player
 
-#### Video player
-
-#### Watch Metadata
-
-#### Related/Watch Next
+### Watch Metadata
 
 # Backend
 
 ## Get video
-
-### API
-
-### Gateway
-
-### AppSync
-
-## Get related
-
-We will get list of videos from the same category starting from the newest ones (excluding the one which we are watching).
-
-### Category
-
-YouTube Data API
-
-![YouTube Data API - VideoCategories: list](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/lmrihszetasmy3igug75.png)
-
-[YouTube Data API - VideoCategories: list](https://developers.google.com/youtube/v3/docs/videoCategories/list?apix_params=%7B%22part%22%3A%5B%22snippet%22%5D%2C%22regionCode%22%3A%22pl%22%7D)
-
-| ID | Title |
-|---|---|
-| 1 | Film & Animation |
-| 2 | Autos & Vehicles |
-| 10 | Music |
-| 15 | Pets & Animals |
-| 17 | Sports |
-| 19 | Travel & Events |
-| 20 | Gaming |
-| 22 | People & Blogs |
-| 23 | Comedy |
-| 24 | Entertainment |
-| 25 | News & Politics |
-| 26 | Howto & Style |
-| 27 | Education |
-| 28 | Science & Technology |
-| 29 | Nonprofits & Activism |
-
-### Database
-
-#### Aurora
-
-#### DynamoDB
 
 ### API
 
