@@ -15,25 +15,33 @@ export class WebStack extends cdk.Stack {
         oauthToken: cdk.SecretValue.secretsManager("github-token"),
       }),
       platform: amplify.Platform.WEB_COMPUTE,
+      environmentVariables: {
+        AMPLIFY_MONOREPO_APP_ROOT: "web",
+      },
       buildSpec: codebuild.BuildSpec.fromObjectToYaml({
         version: "1",
-        frontend: {
-          phases: {
-            preBuild: {
-              commands: ["npm ci"],
+        applications: [
+          {
+            appRoot: "web",
+            frontend: {
+              phases: {
+                preBuild: {
+                  commands: ["npm ci --prefix .."],
+                },
+                build: {
+                  commands: ["npx next build"],
+                },
+              },
+              artifacts: {
+                baseDirectory: ".next",
+                files: ["**/*"],
+              },
+              cache: {
+                paths: ["../node_modules/**/*"],
+              },
             },
-            build: {
-              commands: ["npm run build -w web"],
-            },
           },
-          artifacts: {
-            baseDirectory: "web/.next",
-            files: ["**/*"],
-          },
-          cache: {
-            paths: ["node_modules/**/*"],
-          },
-        },
+        ],
       }),
     });
 
