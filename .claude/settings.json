@@ -1,20 +1,23 @@
-  {
-    "mcpServers": {
-      "mui-mcp": {
-        "command": "npx",
-        "args": ["-y", "@mui/mcp@latest"]
-      },
-      "aws-docs": {
-        "command": "npx",
-        "args": ["-y", "@awslabs/aws-documentation-mcp-server"]
-      },
-      "dynamodb": {
-        "command": "npx",
-        "args": ["-y", "@awslabs/dynamodb-mcp-server"]
-      },
-      "appsync": {
-        "command": "npx",
-        "args": ["-y", "@awslabs/appsync-mcp-server"]
-      }
+{
+  "mcpServers": {
+    "mui-mcp": {
+      "command": "npx",
+      "args": ["-y", "@mui/mcp@latest"]
+    },
+    "aws-docs": {
+      "command": "uvx",
+      "args": ["awslabs.aws-documentation-mcp-server@latest"],
+      "env": { "FASTMCP_LOG_LEVEL": "ERROR" }
+    },
+    "dynamodb": {
+      "command": "uvx",
+      "args": ["awslabs.dynamodb-mcp-server@latest"],
+      "env": { "FASTMCP_LOG_LEVEL": "ERROR", "AWS_REGION": "eu-west-1" }
+    },
+    "appsync": {
+      "command": "uvx",
+      "args": ["awslabs.aws-appsync-mcp-server@latest"],
+      "env": { "FASTMCP_LOG_LEVEL": "ERROR", "AWS_REGION": "eu-west-1" }
     }
   }
+}
